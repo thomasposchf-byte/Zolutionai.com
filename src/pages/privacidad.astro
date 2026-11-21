@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { SITE } from '../data/site.mjs';
+import { breadcrumb } from '../lib/schema.mjs';
+// BORRADOR: completar los campos entre corchetes y revisar con un abogado antes de publicar.
+---
+<Base
+  title="Política de privacidad | Zolutions AI"
+  description="Cómo Zolutions AI recopila, usa y protege los datos de quienes visitan su sitio y conversan con su agente de IA, conforme a la Ley 21.719 de Chile."
+  path="/privacidad"
+  pageName="Privacidad"
+  cta={false}
+  schema={[breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Privacidad', path: '/privacidad' }])]}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Privacidad' }]} />
+      <p class="eyebrow">Legal</p>
+      <h1 class="h-1" style="margin-top:.8rem">Política de privacidad</h1>
+      <p class="lead">Cómo tratamos los datos de quienes visitan este sitio y conversan con nuestro agente de IA.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="legal">
+        <h2>1. Responsable</h2>
+        <p>Zolutions AI, [razón social y RUT], con domicilio en {SITE.locality}, {SITE.city}, Chile. Contacto: {SITE.email}.</p>
+        <h2>2. Qué datos recopilamos</h2>
+        <ul>
+          <li>Los que nos entregas en formularios o en el chat: nombre, empresa, email o WhatsApp y tu mensaje.</li>
+          <li>El contenido de tus conversaciones con nuestro agente de IA.</li>
+          <li>Datos de navegación mediante cookies analíticas (Google Analytics), solo si las aceptas.</li>
+        </ul>
+        <h2>3. Para qué los usamos</h2>
+        <ul>
+          <li>Responder tus consultas y contactarte.</li>
+          <li>Preparar las propuestas comerciales que nos pidas.</li>
+          <li>Mejorar el sitio y las respuestas del agente.</li>
+        </ul>
+        <p>No vendemos tus datos ni los usamos para fines distintos a los indicados.</p>
+        <h2>4. Agente de IA</h2>
+        <p>Las conversaciones con Zoe se procesan con un proveedor de inteligencia artificial (Anthropic) para generar las respuestas. Zoe es una IA y puede equivocarse; un especialista confirma cualquier propuesta. No compartas datos sensibles en el chat.</p>
+        <h2>5. Con quién los compartimos</h2>
+        <p>Solo con proveedores que nos prestan servicios para operar el sitio (alojamiento web, inteligencia artificial, analítica, mensajería y correo), bajo obligación de confidencialidad.</p>
+        <h2>6. Cuánto tiempo los guardamos</h2>
+        <p>Mientras gestionamos tu consulta y hasta [plazo] después del último contacto, salvo que la ley exija otro plazo.</p>
+        <h2>7. Tus derechos</h2>
+        <p>Según la Ley 21.719 sobre protección de datos personales, puedes pedir acceso, rectificación, supresión, oposición, portabilidad y bloqueo de tus datos escribiendo a {SITE.email}.</p>
+        <h2>8. Cookies</h2>
+        <p>Usamos cookies analíticas solo si las aceptas en el aviso del sitio. Puedes cambiar tu decisión en cualquier momento desde el enlace "Cookies" al pie de página.</p>
+        <h2>9. Cambios</h2>
+        <p>Publicaremos aquí cualquier cambio a esta política. Última actualización: [fecha].</p>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,76 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from './Crumbs.astro';
+import Faq from './Faq.astro';
+import Steps from './Steps.astro';
+import { SITE, SOLUTIONS } from '../data/site.mjs';
+import { breadcrumb, faqPage, service } from '../lib/schema.mjs';
+
+interface Props { solKey: string }
+const s = SOLUTIONS.find((x) => x.key === Astro.props.solKey)!;
+const others = SOLUTIONS.filter((x) => x.key !== s.key);
+const crumbs = [{ name: 'Inicio', path: '/' }, { name: 'Soluciones', path: '/soluciones' }, { name: s.name, path: s.path }];
+const schema = [
+  breadcrumb(crumbs),
+  service({ name: s.name, description: s.lead, path: s.path, offer: !!s.precio }),
+  faqPage(s.faq),
+];
+const lower = s.name.toLowerCase();
+---
+<Base
+  title={s.seo.title}
+  description={s.seo.desc}
+  path={s.path}
+  pageName={s.name}
+  schema={schema}
+  chips={[`¿Cómo funciona ${lower}?`, '¿Cuánto demora?', '¿Cuánto cuesta?', 'Quiero una evaluación']}
+  nudge={[`¿Dudas sobre ${lower}?`, 'Pregúntame y te respondo al instante.']}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[crumbs[0], crumbs[1], { name: s.name }]} />
+      <p class="eyebrow">{s.name}</p>
+      <h1 class="h-1" style="margin-top:.8rem;max-width:20ch">{s.h1}</h1>
+      <p class="lead">{s.lead}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar evaluación gratis</a>
+        {s.precio && <a class="btn btn-ghost" href="/precios">Ver precios</a>}
+        <button class="btn btn-ghost" type="button" data-open-chat={`Quiero saber más sobre ${lower} para mi empresa`}>Preguntarle a Zoe</button>
+      </div>
+      <div class="chips-row">
+        {s.precio && <span class="info-chip">Precio: <b>{s.precio}</b></span>}
+        <span class="info-chip">Plazo típico: <b>{s.plazo}</b></span>
+        <span class="info-chip">Canales: <b>{s.canal}</b></span>
+        <span class="info-chip"><b>Soporte</b> 24/7</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div><h2 class="h-2 block-title">Lo que resuelve</h2><ul class="painlist">{s.pains.map((p) => <li>{p}</li>)}</ul></div>
+      <div><h2 class="h-2 block-title">Qué incluye</h2><ul class="checklist">{s.incluye.map((p) => <li>{p}</li>)}</ul></div>
+    </div>
+  </section>
+
+  <section class="section band-surface">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Ideal para</p><h2 class="h-2">{s.ideal}</h2></div>
+      <Steps />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="section-head" style="margin-bottom:0"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre {lower}</h2></div>
+      <Faq items={s.faq} />
+    </div>
+  </section>
+
+  <section class="section-tight band-surface">
+    <div class="wrap">
+      <p class="eyebrow" style="margin-bottom:1rem">Otras soluciones</p>
+      <div class="related"><a href="/vendedor-ia">Vendedor IA</a>{others.map((o) => <a href={o.path}>{o.name}</a>)}</div>
+    </div>
+  </section>
+</Base>

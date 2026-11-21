@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Icon from '../../components/Icon.astro';
+import SolutionGrid from '../../components/SolutionGrid.astro';
+import { SOLUTIONS } from '../../data/site.mjs';
+import { breadcrumb } from '../../lib/schema.mjs';
+
+const schema = [
+  breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Soluciones', path: '/soluciones' }]),
+  {
+    '@type': 'ItemList',
+    itemListElement: [{ name: 'Vendedor IA', path: '/vendedor-ia' }, ...SOLUTIONS].map((s, i) => ({
+      '@type': 'ListItem', position: i + 1, name: s.name, url: `https://zolutionsai.com${s.path}`,
+    })),
+  },
+];
+---
+<Base
+  title="Soluciones de IA para empresas | Zolutions AI"
+  description="Agentes conversacionales, automatización comercial, optimización de Ads con IA, integraciones y desarrollo a medida para empresas en Chile y LATAM."
+  path="/soluciones"
+  pageName="Soluciones"
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Soluciones' }]} />
+      <p class="eyebrow">Soluciones</p>
+      <h1 class="h-1" style="margin-top:.8rem">Soluciones de inteligencia artificial para empresas</h1>
+      <p class="lead">Agentes, automatización, marketing e integraciones. Cada solución funciona sola y todas se conectan entre sí.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap">
+      <a class="feature-banner" href="/vendedor-ia">
+        <span class="ico"><Icon name="star" /></span>
+        <span><span class="eyebrow">Producto estrella</span><h2 class="h-3" style="margin-top:.3rem">Vendedor IA</h2><p>Nuestro agente comercial: califica, recomienda, agenda y hace seguimiento hasta la venta. Listo en unos 7 días.</p></span>
+        <span class="go">Ver Vendedor IA →</span>
+      </a>
+      <SolutionGrid heading="h2" />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,8 @@
+---
+import { STEPS } from '../data/site.mjs';
+---
+<ol class="steps">
+  {STEPS.map(([name, tag, text], i) => (
+    <li class="step"><span class="k"><b>{i + 1}</b><span>{tag}</span></span><h3 class="h-3">{name}</h3><p>{text}</p></li>
+  ))}
+</ol>

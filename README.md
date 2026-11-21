@@ -1,52 +1,66 @@
 # zolutionsai.com
 
-Nuevo sitio web de **Zolutions AI**: agentes de IA y automatización comercial para empresas.
-Reemplaza el sitio actual hecho en Renderforest.
+Sitio web de **Zolutions AI**: agentes de IA y automatización comercial para empresas.
+Reemplaza el sitio hecho en Renderforest.
 
-## Estado
+## Qué incluye
 
-**Fase 1: demo de diseño y usabilidad.** La versión de producción todavía no existe.
+- **13 páginas indexables**, cada una con su title, descripción, H1, URL limpia y datos estructurados (empresa, servicio, precio, preguntas frecuentes, migas de pan). Sitemap y robots.txt automáticos.
+- **Zoe, el agente de IA** (abajo a la derecha en todas las páginas):
+  - Responde con la información del negocio.
+  - Detecta interés y pide nombre, empresa y contacto.
+  - Registra el lead y ofrece agendar o seguir por WhatsApp.
+  - Puede llevar al visitante a la página que corresponde. La conversación se mantiene al cambiar de página.
+- **Leads:** cada lead del chat y del formulario de contacto llega a **Netlify Forms** con el resumen y la conversación completa. Netlify te avisa por email.
+- **Analítica:** Google Analytics 4 (`G-Z2L62JSLEH`). Solo se carga si el visitante acepta cookies. Registra estos eventos: `chat_open`, `chat_message`, `generate_lead`, `schedule_click` y `whatsapp_click`.
 
-- `demo/index.html` es la demo navegable, un solo archivo que se abre en cualquier navegador.
-- El agente Zoe y el panel de leads funcionan solo dentro del artifact de Claude (la demo publicada). En el navegador, Zoe pasa a "modo vista previa" y ofrece WhatsApp y un formulario.
+## Estructura
 
-## Mapa del sitio (URLs definitivas)
-
-| Página | URL |
+| Carpeta | Contenido |
 |---|---|
-| Inicio | `/` |
-| Vendedor IA | `/vendedor-ia` |
-| Soluciones | `/soluciones` |
-| Agentes IA conversacionales | `/soluciones/agentes-ia-whatsapp` |
-| Automatización comercial | `/soluciones/automatizacion-comercial` |
-| Optimización de Ads con IA | `/soluciones/optimizacion-ads-ia` |
-| Integraciones | `/soluciones/integraciones-ia` |
-| Desarrollo a medida | `/soluciones/desarrollo-ia-a-medida` |
-| Asesoría IA | `/asesoria-ia` |
-| Industrias | `/industrias` |
-| Precios | `/precios` |
-| Casos | `/casos` |
-| Contacto | `/contacto` |
-| Privacidad | `/privacidad` |
+| `src/data/site.mjs` | **Todo el contenido**: servicios, precios, preguntas frecuentes, industrias, contacto |
+| `src/lib/agent.mjs` | Instrucciones, herramientas y validaciones del agente Zoe |
+| `netlify/functions/chat.mjs` | Endpoint `/api/chat` que conversa con Claude, con un límite de 12 mensajes por minuto por IP |
+| `src/pages/` | Páginas del sitio |
+| `src/components/`, `src/layouts/` | Piezas reutilizables (menú, pie, chat, tarjetas) |
+| `src/scripts/` | Chat, menú móvil, cookies y analítica |
+| `public/` | Ícono, imagen para redes (`og.png`), robots.txt y el formulario oculto de leads |
+| `tests/` | Pruebas del agente y del endpoint |
+| `demo/index.html` | Demo de diseño original (referencia, no se publica) |
 
-Cada página tiene su propio title, meta description, H1 y datos estructurados. En la demo se ven con el botón "Ver SEO de esta página".
+Para cambiar un precio o un texto, edita `src/data/site.mjs`. El agente usa los mismos datos, así que se actualiza solo.
 
-## Oferta publicada
+## Comandos
 
-- **Agente Conversacional:** desde US$500 al mes + IVA, 100 conversaciones mensuales, omnicanal (WhatsApp, web, Instagram, Facebook Messenger). Implementación sin costo. Plan mensual sin permanencia: se cancela cuando se quiera.
-- **Vendedor IA** y **Empresa:** a medida, se cotizan después de la evaluación gratuita.
-- Más de 100 conversaciones: no se publica; se cotiza solo si el cliente pregunta.
+```bash
+npm install
+npm run dev     # sitio local en http://localhost:4321 (el chat necesita `netlify dev` para /api/chat)
+npm run build   # genera dist/
+npm test        # pruebas
+node scripts/make-images.mjs   # regenera og.png e íconos
+```
 
-## Decisiones pendientes
+## Publicar en Netlify (una sola vez)
 
-- [ ] Cómo se cuenta una conversación (la demo usa "un mismo cliente dentro de 24 horas")
-- [ ] Logos y 2 o 3 casos reales de clientes
+1. **Crear el sitio:** en Netlify, Add new site → Import from GitHub → este repositorio. La configuración se toma de `netlify.toml` (build `npm run build`, carpeta `dist`).
+2. **Clave de Claude:**
+   - Crea una API key en [console.anthropic.com](https://console.anthropic.com) y carga saldo.
+   - En Netlify, ve a Site configuration → Environment variables y agrega `ANTHROPIC_API_KEY` con esa clave. **Nunca la pegues en el código.**
+   - Sin esta clave, el chat igual se ve, pero responde con el WhatsApp.
+3. **Formularios:** en Forms, activa *Form detection* y vuelve a publicar. Después ve a Forms → Form notifications → Email notification, elige "Any form" y pon tu email. Debe ser el email de tu cuenta de Netlify.
+4. **Dominio:**
+   - Ve a Domain management → Add domain → `zolutionsai.com`.
+   - Netlify te dirá qué registros DNS poner. Cámbialos donde está registrado el dominio (hoy, Renderforest) o transfiere el dominio.
+   - Netlify activa HTTPS solo.
+5. **Google Search Console:** agrega la propiedad `zolutionsai.com` y envía `https://zolutionsai.com/sitemap-index.xml`.
+
+### Opcional
+- `ZOE_MODEL`: el modelo de Claude, por defecto `claude-opus-5-5`. Para bajar el costo se puede usar `claude-haiku-5-5`, con respuestas algo menos elaboradas.
+- `ZOE_EFFORT`: cuánto piensa el modelo antes de responder, por defecto `low`.
+- `ALLOWED_ORIGINS`: dominios extra desde donde se permite usar el chat. Las vistas previas `*.netlify.app` ya están permitidas.
+
+## Pendientes antes de publicar
+
 - [ ] Crear el correo `contacto@zolutionsai.com`
-- [ ] Completar y revisar con un abogado la política de privacidad (razón social, RUT, plazo de conservación)
-- [ ] Nombre definitivo del agente (hoy: Zoe)
-
-## Próximos pasos
-
-1. Ajustar la demo con tus comentarios.
-2. Construir la versión de producción: páginas estáticas para SEO, sitemap, datos estructurados, el agente conectado a la API de Claude, los leads guardados en una base de datos y avisos por email y WhatsApp.
-3. Publicar en Netlify y apuntar el dominio `zolutionsai.com`, sin cortar el sitio actual.
+- [ ] Completar la política de privacidad (razón social, RUT, plazo de conservación, fecha) y revisarla con un abogado
+- [ ] Logos y 2 o 3 casos reales de clientes (la sección se agrega cuando existan)

@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro';
+import { SOLUTIONS } from '../data/site.mjs';
+interface Props { exclude?: string; heading?: 'h2' | 'h3' }
+const { exclude, heading = 'h3' } = Astro.props;
+const H = heading;
+const items = SOLUTIONS.filter((s) => s.key !== exclude);
+---
+<div class="sol-grid">
+  {items.map((s) => (
+    <a class="sol" href={s.path}>
+      <span class="ico"><Icon name={s.icon} /></span>
+      <H class="h-3">{s.name}</H>
+      <p>{s.short}</p>
+      <span class="meta"><span>Plazo típico: {s.plazo}</span><span class="go">Ver más →</span></span>
+    </a>
+  ))}
+</div>

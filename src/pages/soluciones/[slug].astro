@@ -1,0 +1,13 @@
+---
+import SolutionPage from '../../components/SolutionPage.astro';
+import { SOLUTIONS } from '../../data/site.mjs';
+
+export function getStaticPaths() {
+  return SOLUTIONS.filter((s) => s.path.startsWith('/soluciones/')).map((s) => ({
+    params: { slug: s.path.replace('/soluciones/', '') },
+    props: { solKey: s.key },
+  }));
+}
+const { solKey } = Astro.props;
+---
+<SolutionPage solKey={solKey} />
