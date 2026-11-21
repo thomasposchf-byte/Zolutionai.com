@@ -5,10 +5,11 @@
 <!-- Netlify detecta este formulario al publicar. El chat de Zoe envía aquí cada lead. -->
 <form name="lead" data-netlify="true" netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="lead">
-  <input name="bot-field">
-  <input name="nombre"><input name="empresa"><input name="contacto"><input name="rubro">
+  <input type="hidden" name="subject" value="Nuevo lead desde el chat de la web">
+  <input name="nombre"><input name="empresa"><input name="contacto"><input type="email" name="email"><input name="rubro">
   <input name="necesidad"><input name="servicio"><input name="interes"><input name="origen"><input name="pagina">
   <textarea name="resumen"></textarea><textarea name="conversacion"></textarea>
+  <input name="bot-field">
 </form>
 </body>
 </html>

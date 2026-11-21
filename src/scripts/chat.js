@@ -197,7 +197,9 @@ function init(root) {
     state.lead = lead; save();
     renderHandoff(lead);
     const ok = await submitForm({
+      subject: `Nuevo lead (${lead.interes || 'medio'}): ${lead.nombre || ''}${lead.empresa ? ` · ${lead.empresa}` : ''}`,
       nombre: lead.nombre || '', empresa: lead.empresa || '', contacto: lead.contacto || '', rubro: lead.rubro || '',
+      email: (String(lead.contacto || '').match(/[^\s@]+@[^\s@]+\.[^\s@]+/) || [''])[0],
       necesidad: lead.necesidad || '', servicio: lead.servicio || '', interes: lead.interes || '', resumen: lead.resumen || '',
       origen: lead.origen, pagina: PAGE, conversacion: transcript(),
     });
