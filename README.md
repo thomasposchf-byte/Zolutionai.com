@@ -33,17 +33,13 @@ Cada página tiene su propio title, meta description, H1 y datos estructurados. 
 
 ## Oferta publicada
 
-- **Agente Conversacional:** desde US$500 al mes, 100 conversaciones mensuales, omnicanal (WhatsApp, web, Instagram, Facebook Messenger).
+- **Agente Conversacional:** desde US$500 al mes + IVA, 100 conversaciones mensuales, omnicanal (WhatsApp, web, Instagram, Facebook Messenger). Implementación sin costo. Plan mensual sin permanencia: se cancela cuando se quiera.
 - **Vendedor IA** y **Empresa:** a medida, se cotizan después de la evaluación gratuita.
+- Más de 100 conversaciones: no se publica; se cotiza solo si el cliente pregunta.
 
 ## Decisiones pendientes
 
-- [ ] US$500: ¿mensual? (la demo lo muestra así)
-- [ ] Definición de conversación: la demo usa "un mismo cliente dentro de 24 horas"
-- [ ] Qué pasa al superar las 100 conversaciones (precio por paquete adicional)
-- [ ] Implementación: ¿incluida o con costo aparte?
-- [ ] Impuestos (IVA) y moneda de facturación en Chile
-- [ ] Permanencia mínima del contrato
+- [ ] Cómo se cuenta una conversación (la demo usa "un mismo cliente dentro de 24 horas")
 - [ ] Logos y 2 o 3 casos reales de clientes
 - [ ] Crear el correo `contacto@zolutionsai.com`
 - [ ] Completar y revisar con un abogado la política de privacidad (razón social, RUT, plazo de conservación)
