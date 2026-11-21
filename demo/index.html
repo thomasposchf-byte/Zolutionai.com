@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Zolutions AI Web</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" id="metaDesc" content="Creamos agentes de IA que responden, califican y venden por tu empresa 24/7 en WhatsApp y web. Implementación en unos 7 días. Agenda una evaluación gratis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: "embudo" — bandas a todo el ancho que avanzan como etapas de una venta (atraer → conversar → seguir → cerrar); contenido en columna de 1200px; el agente Zoe flota fijo abajo a la derecha en todas las páginas. Tema oscuro único, deliberado: marca navy + ámbar. */
+:root{
+  --ink:#0A0F1E; --surface:#10172C; --raised:#172040; --line:#26325A; --line-soft:#1A2446;
+  --text:#EAEEF7; --muted:#9AA5C0; --dim:#6F7B9A;
+  --amber:#F4B557; --amber-hi:#F8C676; --amber-ink:#8A5200; --on-amber:#1B1304;
+  --ok:#43D39E; --hot:#FF8A5C;
+  --paper:#EEF1F7; --paper-2:#E3E8F2; --paper-text:#10172C; --paper-muted:#55607B; --paper-line:#D3D9E6;
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --r-s:10px; --r-m:14px; --r-l:22px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--ink)}
+a{color:inherit}
+p{margin:0}
+ul{margin:0;padding:0}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (min-width:760px){.wrap{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.06;letter-spacing:-.022em;text-wrap:balance;margin:0;font-weight:700}
+.h-hero{font-size:clamp(2.5rem,5.8vw,4.6rem);font-weight:800}
+.h-1{font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:800}
+.h-2{font-size:clamp(1.65rem,3.1vw,2.4rem)}
+.h-3{font-size:1.22rem;letter-spacing:-.012em;line-height:1.2}
+.lead{font-size:clamp(1.05rem,1.55vw,1.2rem);color:var(--muted);max-width:62ch}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--f-mono);font-size:.76rem;letter-spacing:.09em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.mono{font-family:var(--f-mono)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55rem;font:600 .98rem/1 var(--f-body);padding:.95rem 1.3rem;border-radius:999px;border:1px solid transparent;cursor:pointer;text-decoration:none;transition:transform .15s ease,background .15s ease,border-color .15s ease,color .15s ease;white-space:nowrap}
+.btn-primary{background:var(--amber);color:var(--on-amber)}
+.btn-primary:hover{background:var(--amber-hi);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.btn-ghost:hover{border-color:var(--amber);color:var(--amber)}
+.btn-dark{background:var(--ink);color:var(--text)}
+.btn-dark:hover{background:var(--surface)}
+.btn-sm{padding:.7rem 1rem;font-size:.9rem}
+.btn svg{width:18px;height:18px;flex:none}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- Cinta de demo + panel SEO ---------- */
+.ribbon{background:var(--surface);border-bottom:1px solid var(--line-soft);font-size:.82rem;color:var(--muted)}
+.ribbon .wrap{display:flex;gap:.5rem 1.1rem;align-items:center;flex-wrap:wrap;padding-block:.55rem}
+.ribbon b{color:var(--text);font-weight:600}
+.tag{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;padding:.22rem .55rem;border-radius:999px;border:1px solid var(--line);color:var(--amber);white-space:nowrap}
+.linkbtn{background:none;border:0;color:var(--amber);font:inherit;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:3px}
+.ribbon .spacer{flex:1}
+.seo{background:var(--ink);border-bottom:1px solid var(--line-soft)}
+.seo .wrap{padding-block:1rem 1.2rem}
+.seo dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:.9rem 1.5rem;margin:0}
+.seo dt{font:500 .68rem/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.seo dd{margin:.2rem 0 0;font-size:.9rem;min-width:0;overflow-wrap:anywhere}
+.seo .len{font-family:var(--f-mono);font-size:.72rem;margin-left:.4rem}
+.len.ok{color:var(--ok)} .len.bad{color:var(--hot)}
+.seo .serp{grid-column:1/-1;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-m);padding:.9rem 1rem}
+.serp .u{font-size:.8rem;color:var(--muted)} .serp .t{color:#9DB8FF;font-size:1.08rem;margin:.1rem 0} .serp .d{font-size:.86rem;color:var(--muted)}
+
+/* ---------- Header ---------- */
+.site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--ink) 88%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line-soft)}
+.nav{display:flex;align-items:center;gap:1rem;height:68px}
+.brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;font:800 1.22rem/1 var(--f-display);letter-spacing:-.025em;white-space:nowrap}
+.brand .ai{color:var(--amber)}
+.mark{width:30px;height:30px;flex:none}
+.mark .bg{fill:var(--amber)} .mark .z{stroke:var(--on-amber);fill:none} .mark .dot{fill:var(--on-amber)}
+.menu{display:flex;gap:.15rem;margin:0 0 0 auto;align-items:center;list-style:none;padding:0}
+.menu > li > a,.menu-trigger{display:flex;align-items:center;gap:.3rem;padding:.55rem .8rem;border-radius:999px;text-decoration:none;color:var(--muted);font:500 .95rem var(--f-body);background:none;border:0;cursor:pointer}
+.menu > li > a:hover,.menu-trigger:hover,.menu a[aria-current="page"],.menu-trigger[aria-current="page"]{color:var(--text);background:var(--raised)}
+.has-mega{position:relative}
+.mega{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);width:min(660px,92vw);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);padding:.6rem;display:grid;grid-template-columns:1fr 1fr;gap:.15rem;opacity:0;visibility:hidden;transition:opacity .15s ease,visibility .15s;box-shadow:0 30px 70px -25px #000}
+.mega::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.has-mega:hover .mega,.has-mega:focus-within .mega{opacity:1;visibility:visible}
+.mega a{display:block;padding:.75rem .9rem;border-radius:var(--r-m);text-decoration:none;color:var(--text);font-weight:600;font-size:.95rem}
+.mega a small{display:block;color:var(--muted);font-size:.83rem;font-weight:400;line-height:1.4;margin-top:.15rem}
+.mega a:hover{background:var(--raised)}
+.mega .featured{grid-column:1/-1;background:color-mix(in srgb,var(--amber) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 28%,transparent)}
+.nav-cta{margin-left:.4rem}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);color:var(--text);border-radius:999px;width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer}
+.burger svg{width:20px;height:20px}
+.mobile-menu{border-top:1px solid var(--line-soft);background:var(--ink)}
+.mobile-menu .wrap{display:grid;gap:.2rem;padding-block:.8rem 1.2rem}
+.mobile-menu a{padding:.7rem .2rem;text-decoration:none;font-weight:600;border-bottom:1px solid var(--line-soft)}
+.mobile-menu a.sub{font-weight:500;color:var(--muted);padding-left:1rem}
+.mobile-menu .btn{margin-top:.8rem}
+@media (max-width:1080px){.menu,.nav-cta{display:none}.burger{display:inline-flex}}
+
+/* ---------- Secciones genéricas ---------- */
+.section{padding-block:clamp(4rem,8vw,6.5rem)}
+.section-tight{padding-block:clamp(3rem,6vw,4.5rem)}
+.section-head{display:grid;gap:1rem;max-width:780px;margin-bottom:clamp(2rem,4vw,3.25rem)}
+.band-surface{background:var(--surface);border-block:1px solid var(--line-soft)}
+.band-paper{background:var(--paper);color:var(--paper-text)}
+.band-paper .lead,.band-paper .muted{color:var(--paper-muted)}
+.band-paper .eyebrow{color:var(--amber-ink)}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,4vw,3.5rem)}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+@media (max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+/* ---------- Hero ---------- */
+.hero{padding-block:clamp(3rem,6.5vw,5.5rem) clamp(3rem,6vw,5rem);background:radial-gradient(55% 65% at 82% 32%,color-mix(in srgb,var(--amber) 15%,transparent),transparent 70%),radial-gradient(1px 1px at 1px 1px,var(--line-soft) 1px,transparent 0) 0 0/26px 26px,var(--ink)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(2.2rem,5vw,4.5rem);align-items:center}
+@media (max-width:1000px){.hero-grid{grid-template-columns:minmax(0,1fr)}}
+.hero h1 em{font-style:normal;color:var(--amber)}
+.hero .lead{margin-top:1.4rem}
+.actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-top:2.6rem;padding-top:1.5rem;border-top:1px solid var(--line-soft);max-width:560px}
+.fact b{display:block;font:700 1.45rem/1.1 var(--f-display);letter-spacing:-.02em}
+.fact span{color:var(--muted);font-size:.86rem;line-height:1.35;display:block;margin-top:.3rem}
+
+/* Tarjeta de demo: conversación real de un Vendedor IA */
+.demo{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);overflow:hidden;box-shadow:0 50px 90px -45px #000}
+.demo-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--line-soft)}
+.demo-head .who{line-height:1.25;min-width:0}
+.demo-head .who b{display:block;font-size:.95rem}
+.avatar{width:36px;height:36px;border-radius:50%;background:var(--amber);color:var(--on-amber);display:grid;place-items:center;font:800 .9rem var(--f-display);flex:none}
+.online{font-size:.78rem;color:var(--ok);display:inline-flex;align-items:center;gap:.35rem}
+.online::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 25%,transparent)}
+.demo-head .tag{margin-left:auto}
+.convo{padding:1.1rem;display:flex;flex-direction:column;gap:.55rem;font-size:.92rem}
+.msg{max-width:84%;padding:.6rem .85rem;border-radius:16px;line-height:1.45}
+.msg.in{background:var(--raised);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.out{background:color-mix(in srgb,var(--amber) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);align-self:flex-end;border-bottom-right-radius:5px}
+.msg time{display:block;font:400 .66rem var(--f-mono);color:var(--dim);margin-top:.25rem;text-align:right}
+.msg .flag{display:inline-block;font:500 .64rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:.2rem}
+.typing{align-self:flex-end;display:flex;gap:4px;padding:.6rem .8rem;border-radius:14px;background:color-mix(in srgb,var(--amber) 10%,var(--surface))}
+.typing i{width:6px;height:6px;border-radius:50%;background:var(--amber);opacity:.5;animation:blink 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:1}}
+.ficha{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;padding:1rem 1.1rem;border-top:1px dashed var(--line);background:var(--ink);margin:0}
+.ficha div{min-width:0}
+.ficha dt{font:500 .64rem/1.3 var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+.ficha dd{margin:.2rem 0 0;font-weight:600;font-size:.88rem;line-height:1.3}
+.ficha .hot{color:var(--hot)} .ficha .okc{color:var(--ok)}
+@media (max-width:520px){.ficha{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* ---------- Prueba social (pendiente) ---------- */
+.logos{display:flex;align-items:center;gap:1rem 2rem;flex-wrap:wrap;padding-block:1.6rem}
+.logos p{color:var(--dim);font-size:.85rem}
+.logo-slot{flex:1 1 120px;height:44px;border:1px dashed var(--line);border-radius:var(--r-s);display:grid;place-items:center;color:var(--dim);font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- Fugas de venta ---------- */
+.leak{display:grid;gap:.9rem;padding:1.6rem 0 0;border-top:2px solid var(--line)}
+.leak .now{font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--hot)}
+.leak .fix{font-size:.95rem;color:var(--text);padding:.9rem 1rem;background:var(--surface);border-radius:var(--r-m);border:1px solid var(--line-soft)}
+.leak .fix b{color:var(--amber);font-weight:600}
+
+/* ---------- Comparación chatbot vs Vendedor IA ---------- */
+.compare{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,4rem);align-items:start}
+@media (max-width:900px){.compare{grid-template-columns:minmax(0,1fr)}}
+.table-scroll{overflow-x:auto;border-radius:var(--r-l);border:1px solid var(--paper-line);background:#fff}
+table.vs{width:100%;border-collapse:collapse;min-width:520px;font-size:.93rem}
+.vs th,.vs td{text-align:left;padding:.95rem 1.1rem;border-bottom:1px solid var(--paper-line);vertical-align:top}
+.vs thead th{font:500 .7rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--paper-muted);background:var(--paper-2)}
+.vs thead th.us{color:var(--paper-text);background:color-mix(in srgb,var(--amber) 40%,#fff)}
+.vs tbody th{font-weight:600;color:var(--paper-text);width:26%}
+.vs td{color:var(--paper-muted)}
+.vs td.us{color:var(--paper-text);font-weight:600;background:color-mix(in srgb,var(--amber) 9%,#fff)}
+.vs tr:last-child th,.vs tr:last-child td{border-bottom:0}
+
+/* ---------- Soluciones ---------- */
+.sol-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+@media (max-width:1000px){.sol-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.sol-grid{grid-template-columns:minmax(0,1fr)}}
+.sol{display:flex;flex-direction:column;gap:.7rem;padding:1.6rem 1.4rem 1.5rem;border-bottom:1px solid var(--line);text-decoration:none;transition:background .15s ease;min-width:0}
+.sol:hover{background:var(--surface)}
+.sol .ico{width:40px;height:40px;border-radius:12px;background:var(--raised);display:grid;place-items:center;color:var(--amber)}
+.sol .ico svg{width:20px;height:20px}
+.sol p{color:var(--muted);font-size:.95rem}
+.sol .meta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding-top:.6rem;font:500 .72rem var(--f-mono);letter-spacing:.05em;color:var(--dim);text-transform:uppercase}
+.sol .meta .go{color:var(--amber);font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:.9rem;font-weight:600}
+@media (min-width:1001px){.sol-grid .sol:not(:nth-child(3n)){border-right:1px solid var(--line)}}
+@media (min-width:641px) and (max-width:1000px){.sol-grid .sol:nth-child(odd){border-right:1px solid var(--line)}}
+
+.feature-banner{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:1.2rem;align-items:center;padding:1.5rem 1.6rem;margin-bottom:2rem;border-radius:var(--r-l);text-decoration:none;background:color-mix(in srgb,var(--amber) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 30%,transparent)}
+.feature-banner .ico{width:48px;height:48px;border-radius:14px;background:var(--amber);color:var(--on-amber);display:grid;place-items:center}
+.feature-banner .ico svg{width:22px;height:22px}
+.feature-banner p{color:var(--muted);margin-top:.3rem}
+.feature-banner .go{color:var(--amber);font-weight:600;white-space:nowrap}
+@media (max-width:640px){.feature-banner{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- Embudo ---------- */
+.funnel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;counter-reset:st;position:relative}
+.stage{position:relative;padding:1.4rem 1.3rem 1.5rem;border-left:1px solid var(--line);min-width:0}
+.stage:first-child{border-left:0}
+.stage .n{font:500 .72rem var(--f-mono);color:var(--dim);letter-spacing:.08em}
+.stage h3{margin:.5rem 0 .5rem}
+.stage p{color:var(--muted);font-size:.93rem}
+.stage .svc{display:inline-block;margin-top:.9rem;font-size:.8rem;font-weight:600;color:var(--amber);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--amber) 40%,transparent)}
+.funnel-bar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));height:10px;border-radius:999px;overflow:hidden;margin-bottom:.5rem}
+.funnel-bar i:nth-child(1){background:color-mix(in srgb,var(--amber) 30%,var(--raised))}
+.funnel-bar i:nth-child(2){background:color-mix(in srgb,var(--amber) 55%,var(--raised))}
+.funnel-bar i:nth-child(3){background:color-mix(in srgb,var(--amber) 78%,var(--raised))}
+.funnel-bar i:nth-child(4){background:var(--amber)}
+@media (max-width:900px){.funnel,.funnel-bar{grid-template-columns:minmax(0,1fr)}.funnel-bar{display:none}.stage{border-left:3px solid var(--amber);border-top:0;margin-bottom:.5rem}.stage:first-child{border-left:3px solid var(--amber)}}
+
+/* ---------- Proceso ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;list-style:none}
+@media (max-width:900px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{padding:1.5rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line-soft);display:grid;gap:.6rem;align-content:start}
+.step .k{display:flex;justify-content:space-between;align-items:baseline;font:500 .74rem var(--f-mono);color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+.step .k b{font:800 2.2rem/1 var(--f-display);color:var(--amber);letter-spacing:-.03em}
+.step p{color:var(--muted);font-size:.95rem}
+
+.pillars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r-l);overflow:hidden;margin-top:2.5rem}
+@media (max-width:900px){.pillars{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pillar{background:var(--ink);padding:1.2rem 1.25rem;display:grid;gap:.3rem}
+.pillar b{font-size:.98rem}
+.pillar span{color:var(--muted);font-size:.86rem;line-height:1.45}
+
+/* ---------- Industrias ---------- */
+.inds{display:flex;flex-wrap:wrap;gap:.6rem}
+.ind-chip{padding:.7rem 1.05rem;border-radius:999px;border:1px solid var(--paper-line);background:#fff;color:var(--paper-text);text-decoration:none;font-weight:600;font-size:.93rem}
+.ind-chip:hover{border-color:var(--amber-ink)}
+.ind-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}
+@media (max-width:800px){.ind-list{grid-template-columns:minmax(0,1fr)}}
+.ind{padding:1.5rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line-soft);display:grid;gap:.8rem;align-content:start}
+.ind ul{list-style:none;display:grid;gap:.45rem}
+.ind li{position:relative;padding-left:1.3rem;color:var(--muted);font-size:.95rem}
+.ind li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:2px;background:var(--amber)}
+.ind .ask{justify-self:start;margin-top:.3rem}
+
+/* ---------- FAQ ---------- */
+.faq{display:grid;gap:0;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;padding:1.2rem 2.5rem 1.2rem 0;font-weight:600;font-size:1.05rem;position:relative}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:.3rem;top:50%;transform:translateY(-50%);font:400 1.5rem var(--f-display);color:var(--amber);transition:transform .2s}
+.faq details[open] summary::after{transform:translateY(-50%) rotate(45deg)}
+.faq details p{padding:0 0 1.3rem;color:var(--muted);max-width:70ch}
+
+/* ---------- CTA final ---------- */
+.cta{background:var(--amber);color:var(--on-amber)}
+.cta .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:2rem;align-items:center;padding-block:clamp(3.5rem,7vw,5.5rem)}
+@media (max-width:900px){.cta .wrap{grid-template-columns:minmax(0,1fr)}}
+.cta p{font-size:1.1rem;margin-top:1rem;max-width:52ch;color:color-mix(in srgb,var(--on-amber) 78%,var(--amber))}
+.cta .actions{margin-top:0;justify-content:flex-end}
+@media (max-width:900px){.cta .actions{justify-content:flex-start}}
+.cta .btn-ghost{border-color:color-mix(in srgb,var(--on-amber) 35%,transparent);color:var(--on-amber)}
+.cta .btn-ghost:hover{border-color:var(--on-amber);color:var(--on-amber)}
+
+/* ---------- Footer ---------- */
+.footer{background:var(--ink);border-top:1px solid var(--line-soft);padding-block:3.5rem 2.5rem;padding-bottom:calc(2.5rem + env(safe-area-inset-bottom,0px))}
+.foot-grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:2rem}
+@media (max-width:900px){.foot-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.foot-grid{grid-template-columns:minmax(0,1fr)}}
+.footer h4{font:500 .72rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:.8rem}
+.footer ul{list-style:none;display:grid;gap:.45rem}
+.footer a{color:var(--muted);text-decoration:none;font-size:.94rem}
+.footer a:hover{color:var(--amber)}
+.foot-legal{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--line-soft);color:var(--dim);font-size:.84rem}
+
+/* ---------- Páginas internas ---------- */
+.page-hero{padding-block:clamp(3rem,6vw,5rem) clamp(2.5rem,5vw,4rem);background:radial-gradient(50% 80% at 90% 0%,color-mix(in srgb,var(--amber) 12%,transparent),transparent 70%),var(--ink);border-bottom:1px solid var(--line-soft)}
+.crumbs{display:flex;gap:.5rem;flex-wrap:wrap;font:500 .74rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);margin-bottom:1.3rem}
+.crumbs a{text-decoration:none;color:var(--muted)} .crumbs a:hover{color:var(--amber)}
+.page-hero .lead{margin-top:1.2rem}
+.chips-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.6rem}
+.info-chip{font-size:.86rem;padding:.45rem .8rem;border-radius:999px;background:var(--surface);border:1px solid var(--line-soft);color:var(--muted)}
+.info-chip b{color:var(--text);font-weight:600}
+.checklist{list-style:none;display:grid;gap:.7rem}
+.checklist li{position:relative;padding-left:2rem;font-size:1rem}
+.checklist li::before{content:"";position:absolute;left:0;top:.2em;width:1.25rem;height:1.25rem;border-radius:6px;background:color-mix(in srgb,var(--amber) 18%,transparent);border:1px solid color-mix(in srgb,var(--amber) 50%,transparent)}
+.checklist li::after{content:"";position:absolute;left:.42rem;top:.42em;width:.38rem;height:.62rem;border:solid var(--amber);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.painlist{list-style:none;display:grid;gap:.7rem}
+.painlist li{padding:.9rem 1rem;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line-soft);border-left:3px solid var(--hot);color:var(--muted);font-size:.97rem}
+.block-title{margin-bottom:1.2rem}
+.note-box{padding:1.2rem 1.3rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line-soft)}
+.note-box p{color:var(--muted)}
+.related{display:flex;gap:.6rem;flex-wrap:wrap}
+.related a{padding:.65rem 1rem;border-radius:999px;border:1px solid var(--line);text-decoration:none;font-weight:500;font-size:.92rem;color:var(--muted)}
+.related a:hover{border-color:var(--amber);color:var(--amber)}
+
+/* Vendedor IA */
+.caps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-radius:var(--r-l);overflow:hidden}
+@media (max-width:900px){.caps{grid-template-columns:minmax(0,1fr)}}
+.cap{background:var(--ink);padding:1.5rem;display:grid;gap:.5rem;align-content:start}
+.cap p{color:var(--muted);font-size:.95rem}
+.anno{display:grid;gap:.8rem;max-width:760px}
+.anno-row{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:1rem;align-items:center}
+@media (max-width:640px){.anno-row{grid-template-columns:minmax(0,1fr)}}
+.anno-row .msg{max-width:100%}
+.anno-row .why{font-size:.84rem;color:var(--muted);border-left:2px solid var(--amber);padding-left:.8rem}
+.anno-row .why b{display:block;color:var(--amber);font:500 .68rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase}
+.timeline{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem}
+@media (max-width:900px){.timeline{grid-template-columns:minmax(0,1fr)}}
+.timeline li{padding-top:1rem;border-top:3px solid var(--amber);display:grid;gap:.4rem}
+.timeline .d{font:500 .74rem var(--f-mono);color:var(--amber);letter-spacing:.06em;text-transform:uppercase}
+.timeline p{color:var(--muted);font-size:.95rem}
+.integr{display:flex;gap:.5rem;flex-wrap:wrap}
+.integr span{padding:.55rem .9rem;border-radius:var(--r-s);background:var(--surface);border:1px solid var(--line-soft);font-size:.9rem}
+
+/* Precios */
+.hero-note{margin-top:1rem;font-size:.92rem;color:var(--muted)}
+.hero-note b{color:var(--text);font-weight:600}
+.home-price{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:clamp(2rem,5vw,4rem);align-items:center}
+@media (max-width:900px){.home-price{grid-template-columns:minmax(0,1fr)}}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:stretch;padding-top:.8rem}
+@media (max-width:1000px){.plans{grid-template-columns:minmax(0,1fr)}}
+.price-card{position:relative;padding:1.8rem 1.6rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:.9rem;min-width:0}
+.price-card.featured{border-color:color-mix(in srgb,var(--amber) 60%,transparent);box-shadow:0 30px 70px -45px color-mix(in srgb,var(--amber) 70%,transparent)}
+.price-card .badge{position:absolute;top:-12px;left:1.4rem;background:var(--amber);color:var(--on-amber);font:600 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:.3rem .65rem;border-radius:999px}
+.price{display:flex;align-items:baseline;gap:.45rem;flex-wrap:wrap}
+.price .from{font-size:.86rem;color:var(--muted)}
+.price b{font:800 clamp(2.3rem,4vw,3rem)/1 var(--f-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.price b.quote{font-size:clamp(1.8rem,3vw,2.2rem)}
+.price .per{color:var(--muted)}
+.price-sub{font-weight:600;color:var(--amber);font-size:.95rem}
+.channels{display:flex;gap:.4rem;flex-wrap:wrap}
+.channels span{font-size:.8rem;padding:.3rem .65rem;border-radius:999px;border:1px solid var(--line);color:var(--text)}
+.checklist.small{gap:.55rem}
+.checklist.small li{font-size:.93rem;color:var(--muted)}
+.price-card .btn{margin-top:auto}
+.price-card .fine-note{font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-align:center}
+.billing{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem}
+@media (max-width:800px){.billing{grid-template-columns:minmax(0,1fr)}}
+.bill{padding:1.4rem;border-radius:var(--r-l);background:var(--ink);border:1px solid var(--line-soft);display:grid;gap:.5rem;align-content:start}
+.bill p{color:var(--muted);font-size:.95rem}
+/* Legal */
+.legal{max-width:72ch;display:grid;gap:.8rem}
+.legal h2{font:700 1.15rem/1.3 var(--f-display);margin-top:.9rem}
+.legal p,.legal li{color:var(--muted)}
+.legal ul{padding-left:1.2rem;display:grid;gap:.35rem}
+.legal .draft{padding:.8rem 1rem;border:1px dashed var(--hot);border-radius:var(--r-m);color:var(--hot);font-size:.9rem}
+.zoe-foot a,.mini-form a,.form .fine a{color:var(--muted)}
+
+/* Casos */
+.case{border:1px dashed var(--line);border-radius:var(--r-l);padding:1.5rem;display:grid;gap:1rem;align-content:start}
+.case .slot{font:500 .7rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--hot)}
+.case dl{display:grid;gap:.7rem;margin:0}
+.case dt{font:500 .68rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.case dd{margin:.15rem 0 0;color:var(--muted);font-size:.94rem}
+.case .metric{font:800 2rem/1 var(--f-display);color:var(--dim)}
+
+/* Contacto */
+.contact-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(2rem,5vw,4rem);align-items:start}
+@media (max-width:900px){.contact-grid{grid-template-columns:minmax(0,1fr)}}
+.contact-card{display:grid;gap:1.1rem}
+.cline{display:flex;align-items:center;gap:1rem;padding:1rem 1.1rem;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line-soft);min-width:0}
+.cline .lbl{font:500 .68rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.cline .val{font-weight:600;user-select:all;overflow-wrap:anywhere}
+.cline .grow{flex:1;min-width:0}
+.copy{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:.45rem .8rem;font:500 .8rem var(--f-body);cursor:pointer;flex:none}
+.copy:hover{color:var(--amber);border-color:var(--amber)}
+.form{display:grid;gap:1rem;padding:1.6rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line-soft)}
+.field{display:grid;gap:.4rem}
+.field label{font-size:.88rem;font-weight:600}
+.field input,.field textarea,.field select{width:100%;background:var(--ink);border:1px solid var(--line);border-radius:var(--r-s);color:var(--text);padding:.8rem .9rem;font:inherit;font-size:16px}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--amber)}
+.row-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+@media (max-width:560px){.row-2{grid-template-columns:minmax(0,1fr)}}
+.form .fine{font-size:.8rem;color:var(--dim)}
+.success{padding:1.2rem;border-radius:var(--r-m);border:1px solid color-mix(in srgb,var(--ok) 45%,transparent);background:color-mix(in srgb,var(--ok) 8%,var(--surface))}
+
+/* Panel de leads */
+.panel-top{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin-bottom:1.5rem}
+@media (max-width:640px){.kpis{grid-template-columns:minmax(0,1fr)}}
+.kpi{padding:1.1rem 1.2rem;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line-soft)}
+.kpi span{font:500 .68rem var(--f-mono);letter-spacing:.07em;text-transform:uppercase;color:var(--dim)}
+.kpi b{display:block;font:800 2rem/1.1 var(--f-display);font-variant-numeric:tabular-nums;margin-top:.25rem}
+.filters{display:flex;gap:.4rem}
+.filters button{padding:.5rem .9rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font:500 .86rem var(--f-body);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--amber);color:var(--on-amber);border-color:var(--amber)}
+.panel-cols{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+@media (max-width:1000px){.panel-cols{grid-template-columns:minmax(0,1fr)}}
+.leads{display:grid;gap:.9rem}
+.lead-item{position:relative;padding:1.2rem 1.3rem 1.2rem 1.5rem;border-radius:var(--r-m);background:var(--surface);border:1px solid var(--line-soft);display:grid;gap:.55rem;overflow:hidden;min-width:0}
+.lead-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--dim)}
+.lead-item.alto::before{background:var(--hot)} .lead-item.medio::before{background:var(--amber)}
+.lead-item .top{display:flex;justify-content:space-between;gap:.6rem;align-items:start;flex-wrap:wrap}
+.lead-item .nm{font-weight:700;font-size:1.05rem}
+.lead-item .co{color:var(--muted);font-size:.9rem}
+.lvl{font:500 .68rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:.25rem .55rem;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.lvl.alto{color:var(--hot);border-color:color-mix(in srgb,var(--hot) 45%,transparent)}
+.lvl.medio{color:var(--amber);border-color:color-mix(in srgb,var(--amber) 45%,transparent)}
+.lead-item .sum{font-size:.95rem;overflow-wrap:anywhere}
+.lead-item .kv{display:flex;gap:.4rem 1.1rem;flex-wrap:wrap;font-size:.84rem;color:var(--muted)}
+.lead-item .kv b{color:var(--text);font-weight:600}
+.lead-item .acts{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.2rem}
+.lead-item details summary{cursor:pointer;font-size:.86rem;color:var(--amber)}
+.tx{display:grid;gap:.35rem;margin-top:.6rem;font-size:.86rem}
+.tx p{padding:.45rem .65rem;border-radius:10px;background:var(--ink);overflow-wrap:anywhere}
+.tx p.v{background:var(--raised)}
+.tx p b{font:500 .64rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--dim);display:block}
+.notify{padding:1.2rem;border-radius:var(--r-l);background:var(--surface);border:1px solid var(--line-soft);display:grid;gap:.8rem;position:sticky;top:90px}
+.wa{background:#0B141A;border-radius:var(--r-m);padding:1rem;display:grid;gap:.5rem}
+.wa .bubble{background:#1F2C33;color:#E9EDEF;border-radius:10px;border-top-left-radius:3px;padding:.65rem .8rem;font-size:.88rem;line-height:1.45;overflow-wrap:anywhere;white-space:pre-line}
+.wa .from{font-size:.76rem;color:#8696A0}
+.empty{padding:2rem;border:1px dashed var(--line);border-radius:var(--r-l);color:var(--muted);display:grid;gap:.6rem}
+
+/* ---------- Agente Zoe ---------- */
+.zoe-launch{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:70;display:flex;align-items:center;gap:.65rem;background:var(--amber);color:var(--on-amber);border:0;border-radius:999px;padding:.45rem 1.15rem .45rem .45rem;font:700 .95rem var(--f-body);cursor:pointer;box-shadow:0 18px 40px -14px #000}
+.zoe-launch .avatar{background:var(--ink);color:var(--amber);position:relative}
+.zoe-launch .avatar::after{content:"";position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:var(--ok);border:2px solid var(--amber)}
+.zoe-launch small{display:block;font-weight:500;font-size:.75rem;opacity:.8}
+.zoe-launch span{text-align:left;line-height:1.2}
+.zoe-launch:hover{background:var(--amber-hi)}
+.zoe-nudge{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:70;width:min(300px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:16px 16px 4px 16px;padding:.9rem 2.2rem .9rem 1rem;font-size:.9rem;box-shadow:0 20px 50px -20px #000;cursor:pointer}
+.zoe-nudge b{color:var(--amber)}
+.zoe-nudge .x{position:absolute;top:.35rem;right:.35rem;background:none;border:0;color:var(--dim);cursor:pointer;width:28px;height:28px;font-size:1.1rem;line-height:1}
+.zoe{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(410px,calc(100vw - 32px));height:min(660px,calc(100dvh - 100px));z-index:80;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 90px -25px #000}
+.zoe[hidden]{display:none!important}
+@media (max-width:560px){.zoe{inset:0;width:auto;height:auto;border-radius:0;border:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}}
+.zoe-head{display:flex;align-items:center;gap:.7rem;padding:.8rem .9rem;border-bottom:1px solid var(--line-soft);background:var(--ink)}
+.zoe-head .who{flex:1;min-width:0;line-height:1.25}
+.zoe-head .who b{display:block;font-size:.95rem}
+.zoe-head .status{font-size:.76rem;color:var(--muted)}
+.zoe-head .status.on{color:var(--ok)}
+.icon-btn{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;height:34px;padding:0 .7rem;display:inline-flex;align-items:center;gap:.35rem;cursor:pointer;font:500 .78rem var(--f-body);white-space:nowrap}
+.icon-btn:hover{color:var(--text);border-color:var(--amber)}
+.icon-btn.sq{width:34px;padding:0;justify-content:center}
+.icon-btn svg{width:16px;height:16px}
+.zoe-log{flex:1;overflow-y:auto;padding:1rem .9rem;display:flex;flex-direction:column;gap:.6rem;overscroll-behavior:contain}
+.b{max-width:88%;padding:.65rem .85rem;border-radius:16px;font-size:.93rem;line-height:1.5;overflow-wrap:anywhere}
+.b.bot{align-self:flex-start;background:var(--raised);border-bottom-left-radius:5px}
+.b.me{align-self:flex-end;background:color-mix(in srgb,var(--amber) 16%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);border-bottom-right-radius:5px}
+.b p+p{margin-top:.45rem}
+.b ul{margin:.35rem 0 0 1.1rem;display:grid;gap:.2rem}
+.b strong{color:var(--amber-hi);font-weight:600}
+.b.thinking{color:var(--muted);font-style:italic}
+.b.err{background:transparent;border:1px solid color-mix(in srgb,var(--hot) 45%,transparent);color:var(--muted)}
+.sys{align-self:center;font:500 .7rem var(--f-mono);letter-spacing:.05em;color:var(--dim);text-transform:uppercase;text-align:center}
+.handoff{align-self:stretch;background:var(--ink);border:1px solid color-mix(in srgb,var(--ok) 45%,transparent);border-radius:16px;padding:1rem;display:grid;gap:.7rem}
+.handoff .hd{display:flex;gap:.55rem;align-items:center;font-weight:700}
+.handoff .hd i{width:22px;height:22px;border-radius:50%;background:var(--ok);display:grid;place-items:center;flex:none}
+.handoff .hd i::after{content:"";width:5px;height:9px;border:solid var(--ink);border-width:0 2px 2px 0;transform:translateY(-1px) rotate(45deg)}
+.handoff p{font-size:.88rem;color:var(--muted)}
+.handoff .acts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.handoff .btn{font-size:.86rem;padding:.75rem .6rem;white-space:normal;text-align:center;line-height:1.2}
+.handoff .fine{font:500 .66rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.mini-form{align-self:stretch;background:var(--ink);border:1px solid var(--line);border-radius:16px;padding:1rem;display:grid;gap:.6rem}
+.mini-form b{font-size:.95rem}
+.mini-form input,.mini-form textarea{width:100%;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--text);padding:.65rem .75rem;font:inherit;font-size:16px}
+.mini-form textarea{min-height:70px;resize:vertical}
+.mini-form .r{display:flex;gap:.5rem;justify-content:flex-end}
+.zoe-chips{display:flex;gap:.4rem;flex-wrap:wrap;padding:0 .9rem .7rem}
+.chip{font:500 .82rem var(--f-body);padding:.45rem .75rem;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;text-align:left}
+.chip:hover{border-color:var(--amber);color:var(--amber)}
+.zoe-input{display:flex;gap:.5rem;align-items:flex-end;padding:.7rem;border-top:1px solid var(--line-soft);background:var(--ink)}
+.zoe-input textarea{flex:1;min-width:0;resize:none;background:var(--surface);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:.7rem .85rem;font:inherit;font-size:16px;line-height:1.35;max-height:120px;min-height:46px}
+.zoe-input textarea:focus{outline:none;border-color:var(--amber)}
+.send{width:46px;height:46px;border-radius:50%;border:0;background:var(--amber);color:var(--on-amber);display:grid;place-items:center;cursor:pointer;flex:none}
+.send svg{width:20px;height:20px}
+.send.stop{background:var(--raised);color:var(--text)}
+.icon-btn .short{display:none}
+@media (max-width:560px){.icon-btn .long{display:none}.icon-btn .short{display:inline}}
+.zoe-head .who b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.zoe-foot{padding:0 .9rem .6rem;background:var(--ink);font-size:.7rem;color:var(--dim);text-align:center}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+
+<!-- ======= Cinta de demo ======= -->
+<div class="ribbon" role="note">
+  <div class="wrap">
+    <span class="tag">Demo v0.1</span>
+    <span><b>Nueva web de Zolutions AI.</b> Navega como un visitante y conversa con Zoe, el agente IA.</span>
+    <span class="spacer"></span>
+    <button class="linkbtn" id="seoToggle" aria-expanded="false" aria-controls="seoPanel">Ver SEO de esta página</button>
+    <a class="linkbtn" href="#leads" data-team hidden>Panel de leads</a>
+  </div>
+</div>
+<div class="seo" id="seoPanel" hidden>
+  <div class="wrap">
+    <dl>
+      <div class="serp"><dt>Así se vería en Google</dt><dd><div class="u" id="seoUrl"></div><div class="t" id="seoSerpT"></div><div class="d" id="seoSerpD"></div></dd></div>
+      <div><dt>URL definitiva</dt><dd id="seoPath"></dd></div>
+      <div><dt>Etiqueta title <span class="len" id="seoTLen"></span></dt><dd id="seoTitle"></dd></div>
+      <div><dt>Meta description <span class="len" id="seoDLen"></span></dt><dd id="seoDesc"></dd></div>
+      <div><dt>H1 (único por página)</dt><dd id="seoH1"></dd></div>
+      <div><dt>Palabra clave objetivo</dt><dd id="seoKw"></dd></div>
+      <div><dt>Datos estructurados</dt><dd id="seoSchema"></dd></div>
+    </dl>
+  </div>
+</div>
+
+<!-- ======= Header ======= -->
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="#inicio" aria-label="Zolutions AI, inicio">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="bg" width="32" height="32" rx="9"/><path class="z" d="M10 10.5h12L10 21.5h12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Zolutions <span class="ai">AI</span></span>
+    </a>
+    <ul class="menu">
+      <li><a href="#vendedor-ia" data-nav="vendedor-ia">Vendedor IA</a></li>
+      <li class="has-mega">
+        <a class="menu-trigger" href="#soluciones" data-nav="soluciones" aria-haspopup="true">Soluciones <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></a>
+        <div class="mega" id="megaMenu"></div>
+      </li>
+      <li><a href="#industrias" data-nav="industrias">Industrias</a></li>
+      <li><a href="#precios" data-nav="precios">Precios</a></li>
+      <li><a href="#casos" data-nav="casos">Casos</a></li>
+      <li><a href="#contacto" data-nav="contacto">Contacto</a></li>
+    </ul>
+    <a class="btn btn-primary btn-sm nav-cta" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Evaluación gratis</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" hidden aria-label="Menú">
+    <div class="wrap" id="mobileLinks"></div>
+  </nav>
+</header>
+
+<main id="main">
+
+<!-- ============ INICIO ============ -->
+<div data-view="inicio">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Agentes de IA para empresas · Santiago, Chile</p>
+        <h1 class="h-hero" style="margin-top:1rem">Agentes de IA que <em>venden</em> por tu empresa, 24/7</h1>
+        <p class="lead">Creamos Vendedor IA y automatizaciones que responden en segundos, califican a cada prospecto y le entregan a tu equipo reuniones agendadas. Sin ampliar tu equipo comercial.</p>
+        <div class="actions">
+          <button class="btn btn-primary" data-open-chat="Hola, quiero ver cómo funcionaría un agente IA en mi empresa">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4h12v9H8l-4 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            Habla con nuestro agente ahora</button>
+          <a class="btn btn-ghost" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Agendar evaluación gratis</a>
+        </div>
+        <p class="hero-note">Planes desde <b>US$500 al mes</b> · WhatsApp, web, Instagram y Facebook</p>
+        <div class="facts">
+          <div class="fact"><b>Segundos</b><span>Tiempo de primera respuesta</span></div>
+          <div class="fact"><b>24/7</b><span>Atención todos los días del año</span></div>
+          <div class="fact"><b>~7 días</b><span>Para tener tu agente funcionando</span></div>
+        </div>
+      </div>
+
+      <figure class="demo" style="margin:0" aria-label="Ejemplo de conversación de Vendedor IA con un cliente de una inmobiliaria">
+        <div class="demo-head">
+          <span class="avatar">IA</span>
+          <span class="who"><b>Vendedor IA · Inmobiliaria</b><span class="online">Respondiendo ahora</span></span>
+          <span class="tag">Ejemplo</span>
+        </div>
+        <div class="convo">
+          <div class="msg in">Hola, vi el depto de 2 dormitorios en Ñuñoa. ¿Sigue disponible?<time>23:47</time></div>
+          <div class="msg out"><span class="flag">Respondió en 4 s</span><br>¡Hola! Sí, sigue disponible: 2D/2B, 68 m² y estacionamiento incluido. ¿Lo buscas para vivir o para invertir?<time>23:47</time></div>
+          <div class="msg in">Para vivir. Tengo crédito preaprobado.<time>23:48</time></div>
+          <div class="msg out">Perfecto. Te puedo agendar una visita: ¿te acomoda el sábado a las 11:00 o a las 16:00?<time>23:48</time></div>
+          <div class="msg in">Sábado 11.<time>23:49</time></div>
+          <div class="msg out">Listo, visita confirmada para el sábado a las 11:00. Te envié la ubicación; Camila, del equipo, te recibirá.<time>23:49</time></div>
+        </div>
+        <dl class="ficha">
+          <div><dt>Interés</dt><dd class="hot">Alto</dd></div>
+          <div><dt>Financiamiento</dt><dd>Preaprobado</dd></div>
+          <div><dt>Siguiente paso</dt><dd class="okc">Visita sáb 11:00</dd></div>
+          <div><dt>Derivado a</dt><dd>Camila (ventas)</dd></div>
+        </dl>
+      </figure>
+    </div>
+  </section>
+
+  <div class="band-surface">
+    <div class="wrap logos">
+      <p>Empresas que ya venden con IA</p>
+      <div class="logo-slot">Logo cliente</div><div class="logo-slot">Logo cliente</div><div class="logo-slot">Logo cliente</div><div class="logo-slot">Logo cliente</div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">El problema</p>
+        <h2 class="h-1">¿En qué momento se pierden tus ventas?</h2>
+        <p class="lead">Casi nunca es el producto. Las ventas se escapan entre que el cliente escribe y alguien le responde, o cuando nadie le hace seguimiento.</p>
+      </div>
+      <div class="grid-3">
+        <div class="leak">
+          <span class="now">Hoy</span>
+          <h3 class="h-3">Respuestas que llegan tarde</h3>
+          <p class="muted">El cliente escribe a las 23:00, le respondes al otro día y ya le compró a quien contestó primero.</p>
+          <p class="fix"><b>Con IA:</b> respuesta en segundos, a cualquier hora, con tu información y tu tono.</p>
+        </div>
+        <div class="leak">
+          <span class="now">Hoy</span>
+          <h3 class="h-3">Seguimiento que nadie hace</h3>
+          <p class="muted">Cotizaciones enviadas que quedan esperando una respuesta que nunca llega.</p>
+          <p class="fix"><b>Con IA:</b> seguimiento automático por WhatsApp y email en el momento justo.</p>
+        </div>
+        <div class="leak">
+          <span class="now">Hoy</span>
+          <h3 class="h-3">Tu equipo atrapado en tareas repetitivas</h3>
+          <p class="muted">Las mismas preguntas, la misma información copiada de una planilla a otra todos los días.</p>
+          <p class="fix"><b>Con IA:</b> tu equipo solo atiende a prospectos calificados y listos para cerrar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-paper">
+    <div class="wrap compare">
+      <div class="section-head" style="margin-bottom:0">
+        <p class="eyebrow">Producto estrella</p>
+        <h2 class="h-1">Vendedor IA no es un chatbot. Es un vendedor.</h2>
+        <p class="lead">Un agente comercial digital entrenado con tu catálogo, tus precios y tu forma de vender. Su único objetivo es llevar a cada cliente al siguiente paso de la compra.</p>
+        <div class="actions" style="margin-top:.6rem">
+          <a class="btn btn-dark" href="#vendedor-ia">Conocer Vendedor IA</a>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="vs">
+          <thead><tr><th scope="col"></th><th scope="col">Chatbot tradicional</th><th scope="col" class="us">Vendedor IA</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Objetivo</th><td>Responder preguntas</td><td class="us">Llevar al cliente a comprar</td></tr>
+            <tr><th scope="row">Conversación</th><td>Menús y palabras clave</td><td class="us">Lenguaje natural, recuerda el contexto</td></tr>
+            <tr><th scope="row">Calificación</th><td>No califica</td><td class="us">Detecta necesidad, presupuesto y urgencia</td></tr>
+            <tr><th scope="row">Seguimiento</th><td>Espera a que el cliente vuelva</td><td class="us">Retoma la conversación sola</td></tr>
+            <tr><th scope="row">Si no sabe algo</th><td>“No entendí tu pregunta”</td><td class="us">Deriva a tu equipo con un resumen</td></tr>
+            <tr><th scope="row">Resultado</th><td>Consultas atendidas</td><td class="us">Reuniones y ventas</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Soluciones</p>
+        <h2 class="h-1">Todo lo que necesitas para vender con IA</h2>
+        <p class="lead">Partimos por donde más retorno tiene tu empresa y conectamos el resto cuando lo necesites.</p>
+      </div>
+      <div class="sol-grid" id="homeSolutions"></div>
+    </div>
+  </section>
+
+  <section class="section band-surface">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Nuestra diferencia</p>
+        <h2 class="h-1">Conectamos el embudo completo, del anuncio a la reunión</h2>
+        <p class="lead">La mayoría de los proveedores resuelve una sola parte. Nosotros unimos tus campañas, tus conversaciones y tu seguimiento para que cada peso invertido en anuncios termine en una venta medible.</p>
+      </div>
+      <div class="funnel-bar" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <ol class="funnel" style="list-style:none;padding:0;margin:0">
+        <li class="stage"><span class="n">Etapa 1</span><h3 class="h-3">Atraer</h3><p>Campañas de Ads optimizadas con IA según qué anuncios generan ventas, no clics.</p><a class="svc" href="#optimizacion-ads-ia">Optimización de Ads con IA</a></li>
+        <li class="stage"><span class="n">Etapa 2</span><h3 class="h-3">Conversar</h3><p>Vendedor IA responde en segundos por WhatsApp, web, Instagram o Facebook y califica a cada prospecto.</p><a class="svc" href="#vendedor-ia">Vendedor IA</a></li>
+        <li class="stage"><span class="n">Etapa 3</span><h3 class="h-3">Seguir</h3><p>Seguimientos automáticos y registro en tu CRM. Ningún prospecto queda sin su siguiente paso.</p><a class="svc" href="#automatizacion-comercial">Automatización comercial</a></li>
+        <li class="stage"><span class="n">Etapa 4</span><h3 class="h-3">Cerrar</h3><p>Tu equipo recibe reuniones agendadas con prospectos calificados y el resumen de cada conversación.</p><a class="svc" href="#integraciones-ia">Integraciones con tu equipo</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2 class="h-1">De la primera conversación a tu IA funcionando</h2>
+      </div>
+      <ol class="steps" id="homeSteps"></ol>
+      <div class="pillars">
+        <div class="pillar"><b>Implementación rápida</b><span>Un agente conversacional en unos 7 días.</span></div>
+        <div class="pillar"><b>Resultados medibles</b><span>Panel con conversaciones, prospectos y reuniones.</span></div>
+        <div class="pillar"><b>Datos protegidos</b><span>Accesos controlados a tu información.</span></div>
+        <div class="pillar"><b>Soporte experto 24/7</b><span>Incluido en todas nuestras soluciones.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-surface">
+    <div class="wrap home-price">
+      <div class="section-head" style="margin-bottom:0">
+        <p class="eyebrow">Precios</p>
+        <h2 class="h-1">Tu agente de IA desde US$500 al mes</h2>
+        <p class="lead">Un agente conversacional omnicanal con 100 conversaciones al mes incluidas. Para más volumen, o para vender con Vendedor IA, armamos un plan a tu medida.</p>
+        <div class="actions" style="margin-top:.4rem">
+          <a class="btn btn-primary" href="#precios">Ver planes y qué incluyen</a>
+          <button class="btn btn-ghost" data-open-chat="¿Qué plan me conviene para mi empresa?">¿Cuál me conviene?</button>
+        </div>
+      </div>
+      <div class="price-card featured">
+        <span class="badge">Para empezar</span>
+        <h3 class="h-3">Agente Conversacional</h3>
+        <div class="price"><span class="from">Desde</span><b>US$500</b><span class="per">/ mes</span></div>
+        <p class="price-sub">100 conversaciones al mes incluidas</p>
+        <div class="channels"><span>WhatsApp</span><span>Web</span><span>Instagram</span><span>Facebook</span></div>
+        <ul class="checklist small">
+          <li>Entrenado con la información de tu empresa</li>
+          <li>Agenda en tu calendario y deriva a tu equipo</li>
+          <li>Panel de conversaciones y leads</li>
+          <li>Soporte técnico 24/7</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-paper">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Industrias</p>
+        <h2 class="h-1">Funciona en casi cualquier industria</h2>
+        <p class="lead">Si tus clientes hacen preguntas antes de comprar, un agente IA puede responderlas y vender.</p>
+      </div>
+      <div class="inds" id="homeInds"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="section-head" style="margin-bottom:0;align-content:start">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2 class="h-1">Lo que nos preguntan antes de partir</h2>
+        <p class="lead">¿Tienes otra duda? Zoe, nuestro agente, te responde al instante.</p>
+        <div><button class="btn btn-ghost" data-open-chat="">Preguntarle a Zoe</button></div>
+      </div>
+      <div class="faq" id="homeFaq"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ VENDEDOR IA ============ -->
+<div data-view="vendedor-ia" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Vendedor IA</span></nav>
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Producto estrella</p>
+          <h1 class="h-1" style="margin-top:.8rem">Vendedor IA: tu agente comercial que trabaja 24/7</h1>
+          <p class="lead">Responde en segundos, entiende lo que el cliente necesita, recomienda, agenda y hace seguimiento. Cuando el cliente está listo, se lo entrega a tu equipo con todo el contexto.</p>
+          <div class="actions">
+            <button class="btn btn-primary" data-open-chat="Quiero ver cómo vendería Vendedor IA en mi rubro">Pruébalo: habla con Zoe</button>
+            <a class="btn btn-ghost" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Agendar demo con un especialista</a>
+          </div>
+          <div class="chips-row">
+            <span class="info-chip"><b>~7 días</b> de implementación</span>
+            <span class="info-chip"><b>Omnicanal:</b> WhatsApp, web, Instagram y Facebook</span>
+            <span class="info-chip"><b>Soporte</b> 24/7</span>
+          </div>
+        </div>
+        <div class="note-box">
+          <p class="eyebrow" style="margin-bottom:.6rem">Así funciona esta web</p>
+          <p style="color:var(--text);font-size:1.05rem;line-height:1.5">Zoe, el agente que ves abajo a la derecha, es un Vendedor IA entrenado para Zolutions. Pregúntale lo que quieras: responde, te recomienda una solución y, si te interesa, te conecta con nuestro equipo.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Qué hace</p><h2 class="h-2">Seis tareas de un vendedor, sin pausas</h2></div>
+      <div class="caps">
+        <div class="cap"><h3 class="h-3">Responde en segundos</h3><p>En WhatsApp, chat web, Instagram y Facebook, de día o de noche, con la información real de tu empresa.</p></div>
+        <div class="cap"><h3 class="h-3">Califica a cada prospecto</h3><p>Detecta necesidad, presupuesto, urgencia y poder de decisión durante la conversación.</p></div>
+        <div class="cap"><h3 class="h-3">Recomienda y cotiza</h3><p>Sugiere el producto o plan adecuado según tu catálogo, tus precios y tus reglas comerciales.</p></div>
+        <div class="cap"><h3 class="h-3">Agenda reuniones</h3><p>Ofrece horarios disponibles y confirma directamente en el calendario de tu equipo.</p></div>
+        <div class="cap"><h3 class="h-3">Hace seguimiento</h3><p>Retoma conversaciones que quedaron abiertas y recuerda citas para reducir inasistencias.</p></div>
+        <div class="cap"><h3 class="h-3">Deriva a tu equipo</h3><p>Cuando el cliente está listo o pide una persona, avisa a tu vendedor con el resumen del caso.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-surface">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Una conversación real, explicada</p><h2 class="h-2">Cómo convierte una consulta en una reunión</h2><p class="lead">Ejemplo de una clínica dental. Cada respuesta tiene un objetivo comercial.</p></div>
+      <div class="anno">
+        <div class="anno-row"><div class="msg in">Hola, ¿cuánto cuesta un blanqueamiento?</div><div class="why"><b>Consulta de precio</b>Señal de intención de compra.</div></div>
+        <div class="anno-row"><div class="msg out">¡Hola! El blanqueamiento parte en $150.000 e incluye evaluación. ¿Es para ti? ¿Te has hecho uno antes?</div><div class="why"><b>Responde y califica</b>Da el dato y avanza con una pregunta.</div></div>
+        <div class="anno-row"><div class="msg in">Para mí, nunca me he hecho uno. Me caso en marzo.</div><div class="why"><b>Detecta urgencia</b>Hay una fecha límite.</div></div>
+        <div class="anno-row"><div class="msg out">¡Felicitaciones! Con tiempo antes de marzo podemos hacerlo en dos sesiones. ¿Te agendo la evaluación este jueves a las 18:30?</div><div class="why"><b>Propone el siguiente paso</b>Un horario concreto, no un “avísame”.</div></div>
+        <div class="anno-row"><div class="msg in">Sí, el jueves me sirve.</div><div class="why"><b>Cierra y deriva</b>Agenda en el calendario y avisa al equipo.</div></div>
+      </div>
+      <p class="muted" style="margin-top:1rem;font-size:.85rem">Precios y horarios del ejemplo son ilustrativos.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid-2">
+      <div>
+        <div class="section-head"><p class="eyebrow">Implementación</p><h2 class="h-2">Tu Vendedor IA funcionando en unos 7 días</h2></div>
+        <ol class="timeline">
+          <li><span class="d">Días 1 y 2</span><h3 class="h-3">Entrenamiento</h3><p>Cargamos tu catálogo, precios, políticas y preguntas frecuentes, y definimos su forma de vender.</p></li>
+          <li><span class="d">Días 3 a 5</span><h3 class="h-3">Conexión y pruebas</h3><p>Lo conectamos a tus canales y calendario y probamos conversaciones reales con tu equipo.</p></li>
+          <li><span class="d">Días 6 y 7</span><h3 class="h-3">Lanzamiento</h3><p>Sale a conversar con clientes y lo ajustamos cada semana según los resultados.</p></li>
+        </ol>
+      </div>
+      <div>
+        <div class="section-head"><p class="eyebrow">Se conecta con tus herramientas</p><h2 class="h-2">Trabaja donde ya trabaja tu equipo</h2></div>
+        <div class="integr"><span>WhatsApp Business</span><span>Chat web</span><span>Instagram</span><span>Facebook Messenger</span><span>Google Calendar</span><span>Tu CRM</span><span>Planillas</span><span>E-commerce</span><span>Email</span></div>
+        <p class="muted" style="margin-top:1rem">¿Usas otro sistema? Lo integramos a medida.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-surface">
+    <div class="wrap grid-2">
+      <div class="section-head" style="margin-bottom:0"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre Vendedor IA</h2></div>
+      <div class="faq" id="vfaq"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ SOLUCIONES (índice) ============ -->
+<div data-view="soluciones" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Soluciones</span></nav>
+      <p class="eyebrow">Soluciones</p>
+      <h1 class="h-1" style="margin-top:.8rem">Soluciones de inteligencia artificial para empresas</h1>
+      <p class="lead">Agentes, automatización, marketing e integraciones. Cada solución funciona sola y todas se conectan entre sí.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap"><a class="feature-banner" href="#vendedor-ia" id="featVend"></a><div class="sol-grid" id="allSolutions"></div></div>
+  </section>
+</div>
+
+<!-- ============ SOLUCIÓN (plantilla) ============ -->
+<div data-view="solucion" hidden id="solView"></div>
+
+<!-- ============ INDUSTRIAS ============ -->
+<div data-view="industrias" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Industrias</span></nav>
+      <p class="eyebrow">Industrias</p>
+      <h1 class="h-1" style="margin-top:.8rem">Soluciones de IA para tu industria</h1>
+      <p class="lead">Cada rubro vende distinto. Entrenamos a tu agente con el lenguaje, los procesos y las preguntas de tus clientes.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap ind-list" id="indList"></div>
+  </section>
+</div>
+
+<!-- ============ PRECIOS ============ -->
+<div data-view="precios" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Precios</span></nav>
+      <p class="eyebrow">Precios</p>
+      <h1 class="h-1" style="margin-top:.8rem">Precios de agentes de IA para empresas</h1>
+      <p class="lead">Parte con un agente conversacional omnicanal a precio conocido y crece a Vendedor IA o a una solución a medida cuando lo necesites.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap plans">
+      <article class="price-card featured">
+        <span class="badge">Para empezar</span>
+        <h2 class="h-3">Agente Conversacional</h2>
+        <p class="muted">Responde al instante en todos tus canales.</p>
+        <div class="price"><span class="from">Desde</span><b>US$500</b><span class="per">/ mes</span></div>
+        <p class="price-sub">100 conversaciones al mes incluidas</p>
+        <div class="channels"><span>WhatsApp</span><span>Web</span><span>Instagram</span><span>Facebook</span></div>
+        <ul class="checklist small">
+          <li>Agente entrenado con la información de tu empresa</li>
+          <li>Atención 24/7 en WhatsApp, chat web, Instagram y Facebook Messenger</li>
+          <li>Agendamiento en tu calendario</li>
+          <li>Derivación a tu equipo con el resumen de cada conversación</li>
+          <li>Panel de conversaciones y leads</li>
+          <li>Ajustes mensuales y soporte técnico 24/7</li>
+        </ul>
+        <a class="btn btn-primary" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Empezar con este plan</a>
+        <p class="fine-note">Funcionando en unos 7 días</p>
+      </article>
+      <article class="price-card">
+        <h2 class="h-3">Vendedor IA</h2>
+        <p class="muted">Para vender, no solo responder.</p>
+        <div class="price"><b class="quote">A medida</b></div>
+        <p class="price-sub">Según canales y volumen</p>
+        <ul class="checklist small">
+          <li>Todo lo del Agente Conversacional</li>
+          <li>Calificación de prospectos: necesidad, presupuesto y urgencia</li>
+          <li>Recomendación y cotización con tu catálogo</li>
+          <li>Seguimiento automático por WhatsApp y email</li>
+          <li>Registro en tu CRM</li>
+          <li>Volumen de conversaciones según tu operación</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Cotizar Vendedor IA</a>
+      </article>
+      <article class="price-card">
+        <h2 class="h-3">Empresa</h2>
+        <p class="muted">IA en todo tu proceso comercial.</p>
+        <div class="price"><b class="quote">A medida</b></div>
+        <p class="price-sub">Proyecto según alcance</p>
+        <ul class="checklist small">
+          <li>Automatización comercial completa</li>
+          <li>Integraciones con CRM, ERP y e-commerce</li>
+          <li>Optimización de Ads con IA</li>
+          <li>Desarrollo de soluciones a medida</li>
+          <li>Asesoría y hoja de ruta de IA</li>
+          <li>Alto volumen de conversaciones</li>
+        </ul>
+        <a class="btn btn-ghost" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Agendar evaluación gratis</a>
+      </article>
+    </div>
+  </section>
+  <section class="section band-surface">
+    <div class="wrap">
+      <div class="section-head"><p class="eyebrow">Cómo se cobra</p><h2 class="h-2">Reglas claras desde el primer día</h2></div>
+      <div class="billing">
+        <div class="bill"><h3 class="h-3">¿Qué cuenta como una conversación?</h3><p>Todo el intercambio con un mismo cliente dentro de 24 horas, en cualquier canal. Si te escribe diez veces ese día, cuenta como una.</p></div>
+        <div class="bill"><h3 class="h-3">¿Qué pasa si paso de 100 conversaciones?</h3><p>Te avisamos cuando te acerques al límite y ajustamos tu plan a tu volumen real, para que tu agente siga atendiendo.</p></div>
+        <div class="bill"><h3 class="h-3">Tarifas de WhatsApp (Meta)</h3><p>Responder a clientes que te escriben no tiene costo de Meta. Los mensajes que inicia tu empresa, como recordatorios o campañas, tienen una tarifa de Meta que se paga aparte.</p></div>
+        <div class="bill"><h3 class="h-3">¿Cuánto demora en estar listo?</h3><p>Unos 7 días desde que recibimos la información de tu empresa: entrenamiento, conexión de canales, pruebas y lanzamiento.</p></div>
+      </div>
+      <p class="muted" style="margin-top:1.5rem;font-size:.9rem">Valores en dólares estadounidenses (USD).</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap grid-2">
+      <div class="section-head" style="margin-bottom:0;align-content:start"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre precios y planes</h2><p class="lead">¿No sabes qué plan te conviene? Cuéntale a Zoe cuántas consultas recibes al mes y te orienta.</p><div><button class="btn btn-ghost" data-open-chat="¿Qué plan me conviene? Recibimos unas ___ consultas al mes">Preguntarle a Zoe</button></div></div>
+      <div class="faq" id="pfaq"></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ CASOS ============ -->
+<div data-view="casos" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Casos</span></nav>
+      <p class="eyebrow">Casos de clientes</p>
+      <h1 class="h-1" style="margin-top:.8rem">Resultados de empresas que venden con IA</h1>
+      <p class="lead">Esta sección mostrará 2 o 3 casos reales con su problema, la solución implementada y el resultado medido.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap grid-3">
+      <article class="case"><span class="slot">Espacio para caso real 1</span><div class="metric">—%</div><dl><div><dt>Cliente e industria</dt><dd>Nombre o rubro del cliente</dd></div><div><dt>Problema</dt><dd>Qué estaba perdiendo antes de la IA</dd></div><div><dt>Solución</dt><dd>Qué implementamos y en cuánto tiempo</dd></div><div><dt>Resultado</dt><dd>Métrica medida, por ejemplo tiempo de respuesta, reuniones o ventas</dd></div></dl></article>
+      <article class="case"><span class="slot">Espacio para caso real 2</span><div class="metric">— reuniones</div><dl><div><dt>Cliente e industria</dt><dd>Nombre o rubro del cliente</dd></div><div><dt>Problema</dt><dd>Qué estaba perdiendo antes de la IA</dd></div><div><dt>Solución</dt><dd>Qué implementamos y en cuánto tiempo</dd></div><div><dt>Resultado</dt><dd>Métrica medida</dd></div></dl></article>
+      <article class="case"><span class="slot">Espacio para caso real 3</span><div class="metric">— s</div><dl><div><dt>Cliente e industria</dt><dd>Nombre o rubro del cliente</dd></div><div><dt>Problema</dt><dd>Qué estaba perdiendo antes de la IA</dd></div><div><dt>Solución</dt><dd>Qué implementamos y en cuánto tiempo</dd></div><div><dt>Resultado</dt><dd>Métrica medida</dd></div></dl></article>
+    </div>
+  </section>
+</div>
+
+<!-- ============ CONTACTO ============ -->
+<div data-view="contacto" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Contacto</span></nav>
+      <p class="eyebrow">Contacto</p>
+      <h1 class="h-1" style="margin-top:.8rem">Conversemos sobre tu proceso comercial</h1>
+      <p class="lead">Agenda una evaluación gratis: revisamos cómo vendes hoy y te decimos dónde la IA tendría más impacto. Sin compromiso.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap contact-grid">
+      <div class="contact-card">
+        <a class="btn btn-primary" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener" style="justify-self:start">Agendar evaluación gratis</a>
+        <div class="cline"><div class="grow"><div class="lbl">WhatsApp</div><div class="val" id="waVal">+56 9 3412 5500</div></div><a class="copy" href="https://api.whatsapp.com/send?phone=56934125500" target="_blank" rel="noopener">Abrir</a><button class="copy" data-copy="+56934125500">Copiar</button></div>
+        <div class="cline"><div class="grow"><div class="lbl">Email</div><div class="val">contacto@zolutionsai.com</div></div><button class="copy" data-copy="contacto@zolutionsai.com">Copiar</button></div>
+        <div class="cline"><div class="grow"><div class="lbl">Oficina</div><div class="val">Ñuñoa, Santiago, Chile</div><div class="muted" style="font-size:.86rem">Atendemos empresas de cualquier país</div></div></div>
+      </div>
+      <form class="form" id="contactForm" novalidate>
+        <h2 class="h-3">Cuéntanos qué quieres resolver</h2>
+        <div class="row-2">
+          <div class="field"><label for="cfName">Nombre</label><input id="cfName" name="nombre" autocomplete="name" required></div>
+          <div class="field"><label for="cfCompany">Empresa</label><input id="cfCompany" name="empresa" autocomplete="organization"></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label for="cfContact">WhatsApp o email</label><input id="cfContact" name="contacto" autocomplete="email" required></div>
+          <div class="field"><label for="cfService">Me interesa</label><select id="cfService" name="servicio"></select></div>
+        </div>
+        <div class="field"><label for="cfMsg">¿Qué te gustaría mejorar?</label><textarea id="cfMsg" name="mensaje" placeholder="Ej.: recibimos 200 consultas diarias por WhatsApp y respondemos tarde"></textarea></div>
+        <p class="fine">Usaremos tus datos solo para responder esta consulta. Al enviar aceptas nuestra <a href="#privacidad">política de privacidad</a>.</p>
+        <p class="muted" id="cfError" hidden style="color:var(--hot)"></p>
+        <button class="btn btn-primary" type="submit" style="justify-self:start">Enviar consulta</button>
+      </form>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PRIVACIDAD ============ -->
+<div data-view="privacidad" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Privacidad</span></nav>
+      <p class="eyebrow">Legal</p>
+      <h1 class="h-1" style="margin-top:.8rem">Política de privacidad</h1>
+      <p class="lead">Cómo tratamos los datos de quienes visitan este sitio y conversan con nuestro agente de IA.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap">
+      <div class="legal">
+        <p class="draft">Borrador para revisión legal. Completa los campos entre corchetes antes de publicar.</p>
+        <h2>1. Responsable</h2>
+        <p>Zolutions AI, [razón social y RUT], con domicilio en Ñuñoa, Santiago, Chile. Contacto: contacto@zolutionsai.com.</p>
+        <h2>2. Qué datos recopilamos</h2>
+        <ul><li>Los que nos entregas en formularios o en el chat: nombre, empresa, email o WhatsApp y tu mensaje.</li><li>El contenido de tus conversaciones con nuestro agente de IA.</li><li>Datos de navegación mediante cookies analíticas, solo si las aceptas.</li></ul>
+        <h2>3. Para qué los usamos</h2>
+        <ul><li>Responder tus consultas y contactarte.</li><li>Preparar las propuestas comerciales que nos pidas.</li><li>Mejorar el sitio y las respuestas del agente.</li></ul>
+        <p>No vendemos tus datos ni los usamos para fines distintos a los indicados.</p>
+        <h2>4. Agente de IA</h2>
+        <p>Las conversaciones con Zoe se procesan con un proveedor de inteligencia artificial para generar las respuestas. Zoe es una IA y puede equivocarse; un especialista confirma cualquier propuesta. No compartas datos sensibles en el chat.</p>
+        <h2>5. Con quién los compartimos</h2>
+        <p>Solo con proveedores que nos prestan servicios para operar el sitio (alojamiento, inteligencia artificial, mensajería y correo), bajo obligación de confidencialidad.</p>
+        <h2>6. Cuánto tiempo los guardamos</h2>
+        <p>Mientras gestionamos tu consulta y hasta [plazo] después del último contacto, salvo que la ley exija otro plazo.</p>
+        <h2>7. Tus derechos</h2>
+        <p>Según la Ley 21.719 sobre protección de datos personales, puedes pedir acceso, rectificación, supresión, oposición, portabilidad y bloqueo de tus datos escribiendo a contacto@zolutionsai.com.</p>
+        <h2>8. Cambios</h2>
+        <p>Publicaremos aquí cualquier cambio a esta política. Última actualización: [fecha].</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PANEL DE LEADS ============ -->
+<div data-view="leads" hidden>
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><span>Panel de leads</span></nav>
+      <p class="eyebrow">Solo para el equipo</p>
+      <h1 class="h-1" style="margin-top:.8rem">Leads que derivó el agente</h1>
+      <p class="lead">Cada vez que Zoe detecta interés y obtiene los datos del visitante, el lead aparece aquí con el resumen y la conversación completa.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap" id="panelBody">
+      <div class="empty"><b>Conectando con la base de leads…</b></div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<section class="cta" id="ctaBand">
+  <div class="wrap">
+    <div>
+      <h2 class="h-1">¿Cuántas ventas se te escapan cada noche?</h2>
+      <p>Agenda una evaluación gratis y te mostramos cómo se vería un Vendedor IA en tu empresa.</p>
+    </div>
+    <div class="actions">
+      <a class="btn btn-dark" href="https://calendar.app.google/zPvVhY4AAgs5jgYY7" target="_blank" rel="noopener">Agendar evaluación gratis</a>
+      <a class="btn btn-ghost" href="https://api.whatsapp.com/send?phone=56934125500&amp;text=Hola%2C%20vengo%20de%20la%20web%20de%20Zolutions%20AI" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#inicio"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="bg" width="32" height="32" rx="9"/><path class="z" d="M10 10.5h12L10 21.5h12" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Zolutions <span class="ai">AI</span></span></a>
+        <p class="muted" style="margin-top:1rem;max-width:34ch;font-size:.94rem">Agentes de IA y automatización comercial para empresas. Desde Santiago de Chile para cualquier país.</p>
+      </div>
+      <div><h4>Soluciones</h4><ul id="footSol"></ul></div>
+      <div><h4>Empresa</h4><ul>
+        <li><a href="#industrias">Industrias</a></li><li><a href="#precios">Precios</a></li><li><a href="#casos">Casos</a></li><li><a href="#contacto">Contacto</a></li>
+        <li><a href="https://www.linkedin.com/company/106159308/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li data-team hidden><a href="#leads">Panel de leads</a></li>
+      </ul></div>
+      <div><h4>Contacto</h4><ul>
+        <li><a href="https://api.whatsapp.com/send?phone=56934125500" target="_blank" rel="noopener">+56 9 3412 5500</a></li>
+        <li><span class="muted" style="font-size:.94rem">contacto@zolutionsai.com</span></li>
+        <li><span class="muted" style="font-size:.94rem">Ñuñoa, Santiago, Chile</span></li>
+      </ul></div>
+    </div>
+    <div class="foot-legal"><span>© 2026 Zolutions AI</span><span><a href="#privacidad">Política de privacidad</a></span></div>
+  </div>
+</footer>
+
+<!-- ======= Agente Zoe ======= -->
+<div class="zoe-nudge" id="zoeNudge" hidden role="button" tabindex="0">
+  <button class="x" id="nudgeX" aria-label="Cerrar">×</button>
+  <span id="nudgeText"></span>
+</div>
+<button class="zoe-launch" id="zoeLaunch" aria-controls="zoe" aria-expanded="false">
+  <span class="avatar">Z</span>
+  <span>¿Hablamos?<small>Respondo al instante</small></span>
+</button>
+<section class="zoe" id="zoe" hidden aria-label="Chat con Zoe, agente IA de Zolutions">
+  <div class="zoe-head">
+    <span class="avatar">Z</span>
+    <div class="who"><b>Zoe · Agente IA</b><span class="status" id="zoeStatus">Conectando…</span></div>
+    <button class="icon-btn" id="humanBtn" title="Dejar mis datos para que me contacte una persona">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5.5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M3 14c.6-2.6 2.6-4 5-4s4.4 1.4 5 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <span class="long">Hablar con una persona</span><span class="short">Persona</span></button>
+    <button class="icon-btn sq" id="zoeClose" aria-label="Cerrar chat"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  </div>
+  <div class="zoe-log" id="zoeLog" aria-live="polite"></div>
+  <div class="zoe-chips" id="zoeChips"></div>
+  <form class="zoe-input" id="zoeForm">
+    <label class="sr" for="zoeText">Escribe tu mensaje</label>
+    <textarea id="zoeText" rows="1" placeholder="Escribe tu pregunta…"></textarea>
+    <button class="send" id="zoeSend" type="submit" aria-label="Enviar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </form>
+  <div class="zoe-foot">Zoe es una IA y puede equivocarse. Un especialista confirma cada propuesta. <a href="#privacidad">Privacidad</a></div>
+</section>
+
+<script>
+(function(){
+"use strict";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+/* ================= Datos del negocio ================= */
+const BRAND = {
+  wa: "56934125500",
+  waShown: "+56 9 3412 5500",
+  cal: "https://calendar.app.google/zPvVhY4AAgs5jgYY7",
+  email: "contacto@zolutionsai.com",
+  place: "Ñuñoa, Santiago, Chile"
+};
+
+const ICONS = {
+  chat:'<svg viewBox="0 0 20 20"><path d="M4 4h12v9H8l-4 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  flow:'<svg viewBox="0 0 20 20"><circle cx="5" cy="5" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="15" cy="15" r="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 5h4a3 3 0 0 1 3 3v5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+  ads:'<svg viewBox="0 0 20 20"><path d="M3 16V9M8 16V5M13 16v-5M18 16V3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  plug:'<svg viewBox="0 0 20 20"><path d="M7 3v4M13 3v4M5 7h10v3a5 5 0 0 1-10 0zM10 15v3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  build:'<svg viewBox="0 0 20 20"><path d="M4 16l6-6M11 3l6 6-3 3-6-6z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  compass:'<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M13 7l-2 4-4 2 2-4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>',
+  star:'<svg viewBox="0 0 20 20"><path d="M10 3l2.1 4.4 4.9.6-3.6 3.3.9 4.8L10 13.8 5.7 16.1l.9-4.8L3 8l4.9-.6z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>'
+};
+
+const SOLUTIONS = {
+  "agentes-ia-whatsapp": {
+    name:"Agentes IA conversacionales", icon:"chat", short:"Agentes que conversan como una persona en WhatsApp, web, Instagram y Facebook y responden 24/7.",
+    h1:"Agentes de IA omnicanal: WhatsApp, web, Instagram y Facebook",
+    lead:"Un agente entrenado con la información de tu empresa que conversa con naturalidad, responde en segundos y resuelve qué pasa después: agenda, cotiza o deriva a tu equipo.",
+    plazo:"~7 días", canal:"WhatsApp, web, Instagram, Facebook", precio:"Desde US$500/mes · 100 conversaciones",
+    pains:["Consultas de noche o fin de semana que se responden al día siguiente","Ejecutivos repitiendo las mismas respuestas todo el día","Prospectos que se enfrían mientras esperan una respuesta"],
+    incluye:["Entrenamiento con tus productos, precios, políticas y preguntas frecuentes","Atención omnicanal: WhatsApp Business, chat web, Instagram y Facebook Messenger","Agendamiento directo en tu calendario","Derivación a una persona con el resumen de la conversación","Panel con conversaciones y métricas","Ajustes continuos y soporte 24/7"],
+    ideal:"Empresas que reciben muchas consultas repetitivas por WhatsApp o redes sociales y quieren responder al instante sin sumar personal.",
+    faq:[["¿Es un chatbot?","No. Usa IA generativa: entiende preguntas abiertas, recuerda el contexto de la conversación y responde con tu información, sin menús de botones."],["¿Qué pasa si no sabe responder algo?","Lo reconoce y deriva la conversación a tu equipo con el resumen, en vez de inventar una respuesta."]]
+  },
+  "automatizacion-comercial": {
+    name:"Automatización comercial", icon:"flow", short:"Captación, calificación, seguimiento y CRM conectados en un solo flujo automático.",
+    h1:"Automatización comercial con IA, del primer mensaje al cierre",
+    lead:"Conectamos captación, calificación, seguimiento y CRM para que ningún prospecto quede sin respuesta ni sin un siguiente paso.",
+    plazo:"2 a 6 semanas", canal:"WhatsApp, email, CRM",
+    pains:["Leads que llegan por varios canales y terminan en planillas distintas","Seguimientos que dependen de la memoria de cada ejecutivo","Reportes comerciales armados a mano cada semana"],
+    incluye:["Captura automática de leads desde formularios, WhatsApp y anuncios","Calificación y asignación al ejecutivo correcto","Secuencias de seguimiento por WhatsApp y email","Registro automático en tu CRM","Alertas cuando un prospecto muestra intención de compra","Reporte comercial automático"],
+    ideal:"Equipos comerciales que pierden oportunidades por falta de seguimiento o por trabajo manual entre sistemas.",
+    faq:[["¿Necesito tener un CRM?","No es obligatorio. Si no tienes uno, te recomendamos el más simple para tu operación y lo configuramos."],["¿Mis vendedores tienen que cambiar su forma de trabajar?","Lo mínimo. La automatización se adapta a tu proceso actual y elimina las tareas repetitivas."]]
+  },
+  "optimizacion-ads-ia": {
+    name:"Optimización de Ads con IA", icon:"ads", short:"Tracking e inteligencia de datos para invertir en los anuncios que generan ventas.",
+    h1:"Campañas de Ads optimizadas con IA y datos reales de venta",
+    lead:"Medimos qué campañas traen ventas, no solo clics. Nuestro modelo de IA analiza, gestiona y optimiza tus campañas en tiempo real.",
+    plazo:"2 a 4 semanas", canal:"Meta Ads, Google Ads",
+    pains:["Presupuesto en anuncios sin saber cuáles generan ventas","Tracking incompleto entre el anuncio, la conversación y la venta","Optimizaciones manuales que llegan tarde"],
+    incluye:["Auditoría y configuración de tracking: píxeles, conversiones y eventos","Conexión entre anuncios, conversaciones y ventas cerradas","Análisis y optimización continua con IA","Alertas de gasto y rendimiento","Panel de costo por lead y costo por venta"],
+    ideal:"Empresas que invierten en Meta o Google Ads y quieren saber exactamente qué anuncios generan ventas.",
+    faq:[["¿Reemplaza a mi agencia de marketing?","No necesariamente. Podemos trabajar con tu agencia aportando el tracking y la optimización con IA."],["¿Desde qué inversión conviene?","Depende de tu rubro. Lo revisamos en la evaluación gratuita."]]
+  },
+  "integraciones-ia": {
+    name:"Integraciones personalizadas", icon:"plug", short:"Conectamos la IA con tu CRM, ERP, e-commerce y las herramientas que ya usas.",
+    h1:"Integraciones de IA con tu CRM, ERP y herramientas",
+    lead:"Hacemos que la IA trabaje con los sistemas que ya usas: lee y registra datos donde tu equipo los necesita.",
+    plazo:"1 a 6 semanas", canal:"API, webhooks",
+    pains:["Información repartida entre sistemas que no se comunican","Doble digitación entre CRM, planillas y facturación","Herramientas de IA aisladas que nadie usa"],
+    incluye:["Conexión con CRM, ERP, e-commerce, calendarios y planillas","APIs y webhooks a medida","Flujos automáticos entre sistemas","Control de accesos y seguridad","Documentación y monitoreo"],
+    ideal:"Empresas con varios sistemas que necesitan que la IA consulte y registre información automáticamente.",
+    faq:[["¿Con qué sistemas pueden integrar?","Con la mayoría de los que tienen API o exportación de datos. Lo confirmamos en la evaluación."],["¿Es seguro conectar mis sistemas?","Trabajamos con accesos mínimos y controlados para cada integración."]]
+  },
+  "desarrollo-a-medida": {
+    name:"Soluciones a medida", icon:"build", short:"Diseñamos y construimos la solución de IA que tu desafío necesita.",
+    h1:"Desarrollo de soluciones de IA a medida",
+    lead:"Cuando tu desafío no calza con un producto estándar, lo diseñamos y construimos contigo, desde el prototipo hasta la operación.",
+    plazo:"1 a 6 meses", canal:"Según el proyecto",
+    pains:["Procesos internos únicos que ningún software resuelve","Documentos o datos que se procesan a mano","Ideas de IA sin un equipo técnico para ejecutarlas"],
+    incluye:["Levantamiento del proceso y caso de negocio","Prototipo funcional para validar","Desarrollo, pruebas e implementación","Capacitación de tu equipo","Mejora continua y soporte 24/7"],
+    ideal:"Empresas con un proceso específico que quieren automatizar o mejorar con IA.",
+    faq:[["¿Cuánto demora un proyecto a medida?","Entre 1 y 6 meses según el alcance. Partimos con un prototipo para validar rápido."],["¿El desarrollo queda para mi empresa?","Lo definimos en la propuesta según el tipo de proyecto."]]
+  },
+  "asesoria-ia": {
+    name:"Asesorías IA", icon:"compass", short:"Especialistas que te acompañan a decidir dónde y cómo usar IA, desde el día 1.",
+    h1:"Asesoría en inteligencia artificial para empresas",
+    lead:"Te ayudamos a decidir dónde la IA genera retorno en tu empresa y en qué orden implementarla.",
+    plazo:"Desde el día 1", canal:"Reuniones y talleres",
+    pains:["No saber por dónde empezar con IA","Pilotos que nunca pasan de prueba","Invertir en herramientas que el equipo no adopta"],
+    incluye:["Diagnóstico de procesos y oportunidades","Hoja de ruta priorizada por impacto y esfuerzo","Selección de herramientas y proveedores","Acompañamiento en la implementación","Capacitación a equipos"],
+    ideal:"Gerencias que quieren una estrategia de IA clara antes de invertir.",
+    faq:[["¿La primera evaluación tiene costo?","No. La evaluación inicial es gratuita."],["¿Trabajan con empresas fuera de Chile?","Sí, operamos desde Santiago para empresas de cualquier país."]]
+  }
+};
+const SOL_PATH = {"agentes-ia-whatsapp":"/soluciones/agentes-ia-whatsapp","automatizacion-comercial":"/soluciones/automatizacion-comercial","optimizacion-ads-ia":"/soluciones/optimizacion-ads-ia","integraciones-ia":"/soluciones/integraciones-ia","desarrollo-a-medida":"/soluciones/desarrollo-ia-a-medida","asesoria-ia":"/asesoria-ia"};
+
+const STEPS = [
+  ["Evaluación","Gratis","Revisamos tu proceso comercial actual y detectamos dónde la IA tendría más impacto."],
+  ["Diseño y desarrollo","Días o semanas","Construimos y entrenamos la solución con la información y el tono de tu empresa."],
+  ["Optimización","Continua","Medimos resultados, ajustamos y mejoramos cada semana."]
+];
+
+const INDUSTRIES = [
+  ["Inmobiliarias",["Responde consultas por propiedad las 24 horas","Califica por presupuesto, comuna y financiamiento","Agenda visitas en el calendario de cada corredor"]],
+  ["Retail y e-commerce",["Recomienda productos según lo que busca el cliente","Informa stock, despachos y cambios","Recupera carritos abandonados por WhatsApp"]],
+  ["Salud y clínicas",["Agenda, confirma y recuerda horas","Responde sobre prestaciones, convenios y preparación","Reduce inasistencias con recordatorios automáticos"]],
+  ["Educación",["Informa programas, aranceles y fechas","Califica postulantes y agenda entrevistas","Hace seguimiento hasta la matrícula"]],
+  ["Automotriz",["Cotiza modelos y versiones","Agenda test drives y servicio técnico","Deriva al vendedor con el perfil del cliente"]],
+  ["Servicios profesionales y B2B",["Califica solicitudes según tamaño y necesidad","Prepara la información para la propuesta","Agenda reuniones con el área comercial"]],
+  ["Turismo y hotelería",["Responde disponibilidad y tarifas en varios idiomas","Gestiona reservas y cambios","Ofrece servicios adicionales durante la estadía"]]
+];
+
+const FAQ = [
+  ["¿Sus agentes conversacionales son un chatbot?","No. Usan inteligencia artificial generativa: entienden lenguaje natural, recuerdan el contexto de la conversación y responden con la información de tu empresa, sin menús de botones."],
+  ["¿Cuánto demora implementar una solución de IA?","Un agente conversacional toma alrededor de 7 días. Las soluciones a medida pueden tomar hasta 6 meses, según su alcance."],
+  ["¿Cuánto cuesta?","Un agente conversacional parte desde US$500 al mes e incluye 100 conversaciones mensuales en WhatsApp, web, Instagram y Facebook. Vendedor IA y las soluciones a medida se cotizan después de una evaluación gratuita."],
+  ["¿En qué canales funcionan los agentes?","En WhatsApp, chat web, Instagram y Facebook Messenger, todos conectados al mismo agente."],
+  ["¿En qué industrias trabajan?","En casi todas: inmobiliarias, retail, salud, educación, automotriz, servicios profesionales y turismo, entre otras."],
+  ["¿Trabajan con empresas fuera de Chile?","Sí. Operamos desde Santiago para empresas de cualquier país."],
+  ["¿Tienen soporte técnico?","Sí. Todas nuestras soluciones incluyen soporte técnico 24/7."]
+];
+const VFAQ = [
+  ["¿En qué se diferencia de un chatbot?","Un chatbot responde preguntas. Vendedor IA tiene un objetivo comercial: califica, recomienda, agenda y hace seguimiento hasta que el cliente avanza en la compra."],
+  ["¿Puede equivocarse?","Puede pasar. Por eso lo entrenamos solo con tu información, le definimos qué no debe responder y deriva a tu equipo cuando no está seguro."],
+  ["¿Qué pasa cuando el cliente quiere hablar con una persona?","Lo deriva de inmediato a tu equipo con el resumen de la conversación, para que nadie tenga que volver a preguntar lo mismo."],
+  ["¿Cuánto cuesta?","Vendedor IA se cotiza según canales, volumen e integraciones. Como referencia, un agente conversacional omnicanal parte desde US$500 al mes con 100 conversaciones."]
+];
+
+const PFAQ = [
+  ["¿El precio incluye la implementación?","Lo confirmamos en la evaluación gratuita, según los canales y las integraciones que necesites."],
+  ["¿Qué necesito para partir?","Acceso a tus canales (WhatsApp Business, Instagram, Facebook y tu sitio web) y la información de tu negocio: productos, precios, políticas y preguntas frecuentes."],
+  ["¿Puedo pasar de un plan a otro?","Sí. Puedes partir con el Agente Conversacional y pasar a Vendedor IA cuando quieras calificar, cotizar y hacer seguimiento automático."],
+  ["¿Por qué Vendedor IA no tiene precio publicado?","Porque depende de cuántos canales, conversaciones e integraciones necesitas. Lo cotizamos en la evaluación gratuita, sin compromiso."]
+];
+
+/* ================= Rutas y SEO ================= */
+const ROUTES = {
+  "inicio":{name:"Inicio",view:"inicio",path:"/",title:"Agentes de IA para empresas en Chile | Zolutions AI",desc:"Creamos agentes de IA que responden, califican y venden por tu empresa 24/7 en WhatsApp y web. Implementación en unos 7 días. Agenda una evaluación gratis.",kw:"agentes de IA para empresas",schema:"Organization · LocalBusiness · WebSite · FAQPage"},
+  "vendedor-ia":{name:"Vendedor IA",view:"vendedor-ia",path:"/vendedor-ia",title:"Vendedor IA: agente comercial con IA 24/7 | Zolutions AI",desc:"Vendedor IA responde en segundos, califica prospectos, agenda reuniones y hace seguimiento en WhatsApp y web. Tu agente comercial con IA, activo 24/7.",kw:"vendedor IA",schema:"Product · FAQPage · BreadcrumbList"},
+  "soluciones":{name:"Soluciones",view:"soluciones",path:"/soluciones",title:"Soluciones de IA para empresas | Zolutions AI",desc:"Agentes conversacionales, automatización comercial, optimización de Ads con IA, integraciones y desarrollo a medida para empresas en Chile y LATAM.",kw:"soluciones de IA para empresas",schema:"ItemList · BreadcrumbList"},
+  "agentes-ia-whatsapp":{name:"Agentes IA conversacionales",view:"solucion",title:"Agentes IA para WhatsApp, web y redes | Zolutions AI",desc:"Agentes de IA que responden 24/7 en WhatsApp, web, Instagram y Facebook, agendan y derivan a tu equipo. Desde US$500 al mes, listos en unos 7 días.",kw:"agente IA WhatsApp",schema:"Service · FAQPage · BreadcrumbList"},
+  "automatizacion-comercial":{name:"Automatización comercial",view:"solucion",title:"Automatización comercial con IA | Zolutions AI",desc:"Automatiza captación, calificación, seguimiento y registro en CRM con IA. Ningún prospecto sin respuesta ni sin siguiente paso. Evaluación gratis.",kw:"automatización comercial",schema:"Service · FAQPage · BreadcrumbList"},
+  "optimizacion-ads-ia":{name:"Optimización de Ads con IA",view:"solucion",title:"Optimización de campañas Ads con IA | Zolutions AI",desc:"Tracking completo e IA que analiza y optimiza tus campañas de Meta y Google Ads en tiempo real según las ventas que generan, no solo los clics.",kw:"optimización de campañas con IA",schema:"Service · FAQPage · BreadcrumbList"},
+  "integraciones-ia":{name:"Integraciones personalizadas",view:"solucion",title:"Integraciones de IA con tu CRM y sistemas | Zolutions AI",desc:"Conectamos la IA con tu CRM, ERP, e-commerce, calendario y planillas para que lea y registre datos automáticamente. Integraciones a medida y seguras.",kw:"integración IA CRM",schema:"Service · FAQPage · BreadcrumbList"},
+  "desarrollo-a-medida":{name:"Soluciones a medida",view:"solucion",title:"Desarrollo de IA a medida para empresas | Zolutions AI",desc:"Diseñamos y desarrollamos soluciones de inteligencia artificial a medida: del prototipo a la operación, con capacitación y soporte 24/7.",kw:"desarrollo de IA a medida",schema:"Service · FAQPage · BreadcrumbList"},
+  "asesoria-ia":{name:"Asesorías IA",view:"solucion",title:"Asesoría en IA para empresas | Zolutions AI",desc:"Diagnóstico, hoja de ruta y acompañamiento para implementar inteligencia artificial donde genera retorno en tu empresa. Primera evaluación gratis.",kw:"asesoría en IA para empresas",schema:"Service · FAQPage · BreadcrumbList"},
+  "industrias":{name:"Industrias",view:"industrias",path:"/industrias",title:"Soluciones de IA por industria | Zolutions AI",desc:"Agentes de IA para inmobiliarias, retail, salud, educación, automotriz, servicios B2B y turismo, entrenados con el lenguaje de tus clientes.",kw:"IA para inmobiliarias, retail, salud",schema:"ItemList · BreadcrumbList"},
+  "precios":{name:"Precios",view:"precios",path:"/precios",title:"Precios de agentes de IA para empresas | Zolutions AI",desc:"Agentes de IA omnicanal desde US$500 al mes con 100 conversaciones en WhatsApp, web, Instagram y Facebook. Vendedor IA y planes a medida.",kw:"precio agente IA WhatsApp",schema:"Product · Offer · FAQPage · BreadcrumbList"},
+  "casos":{name:"Casos",view:"casos",path:"/casos",title:"Casos de clientes con IA | Zolutions AI",desc:"Conoce cómo empresas de distintas industrias responden más rápido, califican mejor y venden más con los agentes de IA de Zolutions AI.",kw:"casos de éxito IA",schema:"Article · BreadcrumbList"},
+  "contacto":{name:"Contacto",view:"contacto",path:"/contacto",title:"Contacto y evaluación gratis | Zolutions AI",desc:"Agenda una evaluación gratis de tu proceso comercial o escríbenos por WhatsApp. Atendemos empresas desde Santiago de Chile para cualquier país.",kw:"agencia IA Chile contacto",schema:"ContactPage · LocalBusiness"},
+  "privacidad":{name:"Privacidad",view:"privacidad",path:"/privacidad",title:"Política de privacidad | Zolutions AI",desc:"Cómo Zolutions AI recopila, usa y protege los datos de quienes visitan su sitio y conversan con su agente de IA, conforme a la Ley 21.719 de Chile.",kw:"— (página legal)",schema:"WebPage"},
+  "leads":{name:"Panel de leads",view:"leads",path:"/panel",title:"Panel de leads | Zolutions AI",desc:"Panel privado del equipo comercial (no indexado).",kw:"— (privado, noindex)",schema:"— (noindex)"}
+};
+for (const k in SOL_PATH) ROUTES[k].path = SOL_PATH[k];
+
+/* ================= Render de contenido estático ================= */
+function solCard(key){
+  const s = SOLUTIONS[key];
+  return `<a class="sol" href="#${key}"><span class="ico" aria-hidden="true">${ICONS[s.icon]}</span><h3 class="h-3">${s.name}</h3><p>${s.short}</p><span class="meta"><span>Plazo típico: ${s.plazo}</span><span class="go">Ver más →</span></span></a>`;
+}
+
+const solKeys = Object.keys(SOLUTIONS);
+$("#homeSolutions").innerHTML = solKeys.map(solCard).join("");
+$("#allSolutions").innerHTML = solKeys.map(solCard).join("");
+$("#featVend").innerHTML = `<span class="ico" aria-hidden="true">${ICONS.star}</span><span><span class="eyebrow">Producto estrella</span><h2 class="h-3" style="margin-top:.3rem">Vendedor IA</h2><p>Nuestro agente comercial: califica, recomienda, agenda y hace seguimiento hasta la venta. Listo en unos 7 días.</p></span><span class="go">Ver Vendedor IA →</span>`;
+$("#megaMenu").innerHTML = `<a class="featured" href="#vendedor-ia">Vendedor IA <small>Nuestro agente comercial que vende 24/7</small></a>` + solKeys.map(k => `<a href="#${k}">${SOLUTIONS[k].name}<small>${SOLUTIONS[k].short}</small></a>`).join("");
+$("#footSol").innerHTML = `<li><a href="#vendedor-ia">Vendedor IA</a></li>` + solKeys.map(k => `<li><a href="#${k}">${SOLUTIONS[k].name}</a></li>`).join("");
+$("#mobileLinks").innerHTML = `<a href="#inicio">Inicio</a><a href="#vendedor-ia">Vendedor IA</a><a href="#soluciones">Soluciones</a>` + solKeys.map(k => `<a class="sub" href="#${k}">${SOLUTIONS[k].name}</a>`).join("") + `<a href="#industrias">Industrias</a><a href="#precios">Precios</a><a href="#casos">Casos</a><a href="#contacto">Contacto</a><a class="btn btn-primary" href="${BRAND.cal}" target="_blank" rel="noopener">Agendar evaluación gratis</a>`;
+const stepsHTML = STEPS.map((s,i) => `<li class="step"><span class="k"><b>${i+1}</b><span>${s[1]}</span></span><h3 class="h-3">${s[0]}</h3><p>${s[2]}</p></li>`).join("");
+$("#homeSteps").innerHTML = stepsHTML;
+const faqHTML = list => list.map(f => `<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join("");
+$("#homeFaq").innerHTML = faqHTML(FAQ);
+$("#vfaq").innerHTML = faqHTML(VFAQ);
+$("#pfaq").innerHTML = faqHTML(PFAQ);
+$("#homeInds").innerHTML = INDUSTRIES.map(i => `<a class="ind-chip" href="#industrias">${i[0]}</a>`).join("");
+$("#indList").innerHTML = INDUSTRIES.map(i => `<article class="ind"><h2 class="h-3">${i[0]}</h2><ul>${i[1].map(x=>`<li>${x}</li>`).join("")}</ul><button class="btn btn-ghost btn-sm ask" data-open-chat="Tengo una empresa del rubro ${i[0].toLowerCase()}. ¿Cómo me ayudaría un agente IA?">Preguntar por mi caso</button></article>`).join("");
+$("#cfService").innerHTML = ["Vendedor IA", ...solKeys.map(k=>SOLUTIONS[k].name), "Aún no lo sé"].map(n=>`<option>${n}</option>`).join("");
+
+function renderSolution(key){
+  const s = SOLUTIONS[key];
+  const others = solKeys.filter(k => k !== key);
+  $("#solView").innerHTML = `
+  <section class="page-hero"><div class="wrap">
+    <nav class="crumbs" aria-label="Ruta"><a href="#inicio">Inicio</a><span>/</span><a href="#soluciones">Soluciones</a><span>/</span><span>${s.name}</span></nav>
+    <p class="eyebrow">${s.name}</p>
+    <h1 class="h-1" style="margin-top:.8rem;max-width:20ch">${s.h1}</h1>
+    <p class="lead">${s.lead}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="${BRAND.cal}" target="_blank" rel="noopener">Agendar evaluación gratis</a>
+      ${s.precio ? '<a class="btn btn-ghost" href="#precios">Ver precios</a>' : ''}
+      <button class="btn btn-ghost" data-open-chat="Quiero saber más sobre ${s.name.toLowerCase()} para mi empresa">Preguntarle a Zoe</button>
+    </div>
+    <div class="chips-row">${s.precio ? `<span class="info-chip">Precio: <b>${s.precio}</b></span>` : ""}<span class="info-chip">Plazo típico: <b>${s.plazo}</b></span><span class="info-chip">Canales: <b>${s.canal}</b></span><span class="info-chip"><b>Soporte</b> 24/7</span></div>
+  </div></section>
+  <section class="section"><div class="wrap grid-2">
+    <div><h2 class="h-2 block-title">Lo que resuelve</h2><ul class="painlist">${s.pains.map(p=>`<li>${p}</li>`).join("")}</ul></div>
+    <div><h2 class="h-2 block-title">Qué incluye</h2><ul class="checklist">${s.incluye.map(p=>`<li>${p}</li>`).join("")}</ul></div>
+  </div></section>
+  <section class="section band-surface"><div class="wrap">
+    <div class="section-head"><p class="eyebrow">Ideal para</p><h2 class="h-2">${s.ideal}</h2></div>
+    <ol class="steps">${stepsHTML}</ol>
+  </div></section>
+  <section class="section"><div class="wrap grid-2">
+    <div class="section-head" style="margin-bottom:0"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre ${s.name.toLowerCase()}</h2></div>
+    <div class="faq">${faqHTML(s.faq)}</div>
+  </div></section>
+  <section class="section-tight band-surface"><div class="wrap"><p class="eyebrow" style="margin-bottom:1rem">Otras soluciones</p><div class="related"><a href="#vendedor-ia">Vendedor IA</a>${others.map(k=>`<a href="#${k}">${SOLUTIONS[k].name}</a>`).join("")}</div></div></section>`;
+}
+
+/* ================= Navegación ================= */
+let current = "inicio";
+const metaDesc = $("#metaDesc");
+function route(scroll){
+  let key = (location.hash || "").slice(1);
+  if (!ROUTES[key]) key = "inicio";
+  const changed = key !== current;
+  current = key;
+  const r = ROUTES[key];
+  if (r.view === "solucion") renderSolution(key);
+  $$("[data-view]").forEach(s => { s.hidden = s.dataset.view !== r.view; });
+  $("#ctaBand").hidden = (key === "contacto" || key === "leads" || key === "privacidad");
+  document.title = r.title;
+  metaDesc.setAttribute("content", r.desc);
+  $$("[data-nav]").forEach(a => {
+    const on = a.dataset.nav === key || (a.dataset.nav === "soluciones" && r.view === "solucion");
+    if (on) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  closeMobile();
+  if (scroll && changed) { try { window.scrollTo({top:0, behavior:"instant"}); } catch(_) { window.scrollTo(0,0); } }
+  updateSeo();
+  if (key === "leads") initPanel();
+  refreshChips();
+  scheduleNudge();
+}
+window.addEventListener("hashchange", () => route(true));
+
+/* Menú móvil */
+const burger = $("#burger"), mobileMenu = $("#mobileMenu");
+burger.addEventListener("click", () => { const open = mobileMenu.hidden; mobileMenu.hidden = !open; burger.setAttribute("aria-expanded", String(open)); });
+function closeMobile(){ mobileMenu.hidden = true; burger.setAttribute("aria-expanded","false"); }
+
+/* Panel SEO */
+const seoToggle = $("#seoToggle"), seoPanel = $("#seoPanel");
+seoToggle.addEventListener("click", () => { seoPanel.hidden = !seoPanel.hidden; seoToggle.setAttribute("aria-expanded", String(!seoPanel.hidden)); seoToggle.textContent = seoPanel.hidden ? "Ver SEO de esta página" : "Ocultar SEO"; updateSeo(); });
+function lenTag(el, n, lo, hi){ el.textContent = n + " caracteres"; el.className = "len " + (n >= lo && n <= hi ? "ok" : "bad"); }
+function updateSeo(){
+  if (seoPanel.hidden) return;
+  const r = ROUTES[current];
+  const view = $(`[data-view="${r.view}"]`);
+  const h1 = view ? view.querySelector("h1") : null;
+  $("#seoPath").textContent = "zolutionsai.com" + r.path;
+  $("#seoUrl").textContent = "zolutionsai.com › " + r.path.replace(/^\//,"").split("/").filter(Boolean).join(" › ");
+  $("#seoSerpT").textContent = r.title;
+  $("#seoSerpD").textContent = r.desc;
+  $("#seoTitle").textContent = r.title; lenTag($("#seoTLen"), r.title.length, 30, 60);
+  $("#seoDesc").textContent = r.desc; lenTag($("#seoDLen"), r.desc.length, 120, 160);
+  $("#seoH1").textContent = h1 ? h1.textContent.trim() : "—";
+  $("#seoKw").textContent = r.kw;
+  $("#seoSchema").textContent = r.schema;
+}
+
+/* Copiar */
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (!b) return;
+  const txt = b.dataset.copy;
+  const done = () => { const o = b.textContent; b.textContent = "Copiado"; setTimeout(() => b.textContent = o, 1400); };
+  try {
+    navigator.clipboard.writeText(txt).then(done, () => selectNear(b));
+  } catch(_) { selectNear(b); }
+});
+function selectNear(b){ const v = b.parentElement.querySelector(".val"); if (!v) return; const r = document.createRange(); r.selectNodeContents(v); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+/* ================= Capacidades (IA, base de datos, usuario) ================= */
+let sample = null, toolsOK = false, db = null, user = null, uid = null, isTeam = false, capsDone = false;
+const capsReady = (async () => {
+  const C = window.claude;
+  if (C && typeof C.use === "function") {
+    const [s, d, u] = await Promise.all([
+      C.use("sample").catch(() => null),
+      C.use("db").catch(() => null),
+      C.use("user").catch(() => null)
+    ]);
+    sample = s; db = d; user = u;
+    if (sample) { try { const lim = await sample.limits(); toolsOK = !!(lim && lim.tools); } catch(_) { toolsOK = false; } }
+    if (user) {
+      try { uid = await user.id(); } catch(_) {}
+      try { isTeam = (await user.isOwner()) || (await user.canEdit()); } catch(_) {}
+    }
+  }
+  capsDone = true;
+  setStatus();
+  if (isTeam) $$("[data-team]").forEach(e => e.hidden = false);
+})();
+
+/* ================= Agente Zoe ================= */
+const zoe = $("#zoe"), launch = $("#zoeLaunch"), log = $("#zoeLog"), txt = $("#zoeText"), sendBtn = $("#zoeSend"), chips = $("#zoeChips");
+const GREETING = "Hola, soy Zoe, la agente de IA de Zolutions. Te respondo al instante sobre nuestros agentes, automatizaciones, plazos y cómo partir. ¿Qué te gustaría mejorar en tu empresa?";
+let turns = [];          // conversación para el modelo
+let shown = [];          // conversación visible {r:'v'|'a', t}
+let busy = false, ctl = null, sessionLead = null, chatOpened = false, nudgeTimer = null, nudgeDone = false;
+
+function setStatus(){
+  const st = $("#zoeStatus");
+  if (!capsDone) { st.textContent = "Conectando…"; st.className = "status"; return; }
+  if (sample) { st.textContent = "En línea · responde en segundos"; st.className = "status on"; }
+  else { st.textContent = "Modo vista previa"; st.className = "status"; }
+}
+
+function openChat(prefill){
+  zoe.hidden = false; launch.hidden = true; $("#zoeNudge").hidden = true; nudgeDone = true;
+  launch.setAttribute("aria-expanded","true");
+  if (!chatOpened) { chatOpened = true; addBubble("bot", GREETING); refreshChips(); }
+  if (typeof prefill === "string" && prefill) { txt.value = prefill; autoGrow(); }
+  setTimeout(() => txt.focus(), 30);
+}
+function closeChat(){ zoe.hidden = true; launch.hidden = false; launch.setAttribute("aria-expanded","false"); }
+launch.addEventListener("click", () => openChat());
+$("#zoeClose").addEventListener("click", closeChat);
+document.addEventListener("click", e => { const b = e.target.closest("[data-open-chat]"); if (b) { e.preventDefault(); openChat(b.dataset.openChat); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !zoe.hidden) closeChat(); });
+
+/* Sugerencias según la página */
+function chipSet(){
+  const r = ROUTES[current];
+  if (r.view === "solucion") return [`¿Cómo funciona ${SOLUTIONS[current].name.toLowerCase()}?`, "¿Cuánto demora?", "¿Cuánto cuesta?", "Quiero una evaluación"];
+  if (current === "vendedor-ia") return ["¿En qué se diferencia de un chatbot?", "¿Sirve para mi rubro?", "¿Cuánto cuesta?", "Quiero una demo"];
+  if (current === "precios") return ["¿Qué cuenta como una conversación?", "¿Qué pasa si paso de 100?", "¿Qué plan me conviene?", "Quiero una evaluación"];
+  if (current === "contacto") return ["¿Qué pasa en la evaluación gratis?", "¿Trabajan fuera de Chile?", "Quiero que me contacten"];
+  return ["¿Qué es Vendedor IA?", "¿Cuánto demora implementarlo?", "¿Cuánto cuesta?", "Quiero una evaluación"];
+}
+function refreshChips(){
+  if (shown.some(m => m.r === "v")) { chips.innerHTML = ""; chips.hidden = true; return; }
+  chips.hidden = false;
+  chips.innerHTML = "";
+  chipSet().forEach(c => { const b = document.createElement("button"); b.type = "button"; b.className = "chip"; b.textContent = c; b.addEventListener("click", () => send(c)); chips.appendChild(b); });
+}
+
+/* Burbuja proactiva (texto fijo, no consume IA) */
+const NUDGES = {
+  "inicio":"<b>¿Tus clientes escriben de noche?</b> Pregúntame cómo un agente IA les respondería al instante.",
+  "vendedor-ia":"<b>¿Quieres ver cómo vendería en tu rubro?</b> Cuéntame a qué se dedica tu empresa.",
+  "contacto":"<b>¿Prefieres resolverlo ahora?</b> Te respondo al instante y agendamos si te sirve.",
+  "industrias":"<b>¿No ves tu industria?</b> Cuéntame tu rubro y te digo cómo aplicaría.",
+  "precios":"<b>¿No sabes qué plan te conviene?</b> Cuéntame cuántas consultas recibes al mes."
+};
+function scheduleNudge(){
+  clearTimeout(nudgeTimer);
+  $("#zoeNudge").hidden = true;
+  if (nudgeDone || current === "leads") return;
+  const msg = NUDGES[current] || (ROUTES[current].view === "solucion" ? `<b>¿Dudas sobre ${SOLUTIONS[current].name.toLowerCase()}?</b> Pregúntame y te respondo al instante.` : null);
+  if (!msg) return;
+  nudgeTimer = setTimeout(() => { if (!zoe.hidden || nudgeDone) return; $("#nudgeText").innerHTML = msg; $("#zoeNudge").hidden = false; }, 9000);
+}
+$("#zoeNudge").addEventListener("click", e => { if (e.target.closest("#nudgeX")) { nudgeDone = true; $("#zoeNudge").hidden = true; return; } openChat(); });
+$("#zoeNudge").addEventListener("keydown", e => { if (e.key === "Enter") openChat(); });
+
+/* Texto enriquecido seguro */
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const inline = s => s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+function rich(text){
+  const lines = esc(String(text).trim()).split("\n");
+  let html = "", inList = false;
+  for (const ln of lines) {
+    const m = ln.match(/^\s*(?:[-•*]|\d+[.)])\s+(.*)/);
+    if (m) { if (!inList) { html += "<ul>"; inList = true; } html += "<li>" + inline(m[1]) + "</li>"; }
+    else { if (inList) { html += "</ul>"; inList = false; } if (ln.trim()) html += "<p>" + inline(ln) + "</p>"; }
+  }
+  if (inList) html += "</ul>";
+  return html;
+}
+const visible = t => String(t).split("##LEAD")[0].trimEnd();
+
+function scrollLog(){ log.scrollTop = log.scrollHeight; }
+function addBubble(who, text, cls){
+  const el = document.createElement("div");
+  el.className = "b " + (who === "me" ? "me" : "bot") + (cls ? " " + cls : "");
+  if (who === "me") el.textContent = text; else el.innerHTML = rich(text);
+  log.appendChild(el); scrollLog();
+  if (text && !cls) shown.push({ r: who === "me" ? "v" : "a", t: text.slice(0, 800) });
+  return el;
+}
+function addSys(text){ const el = document.createElement("div"); el.className = "sys"; el.textContent = text; log.appendChild(el); scrollLog(); }
+
+/* Conocimiento del agente */
+function knowledge(){
+  const sols = solKeys.map(k => { const s = SOLUTIONS[k]; return `- ${s.name} (página: ${k}). ${s.lead} Incluye: ${s.incluye.join("; ")}. Plazo típico: ${s.plazo}. Ideal para: ${s.ideal}`; }).join("\n");
+  const inds = INDUSTRIES.map(i => `- ${i[0]}: ${i[1].join("; ")}`).join("\n");
+  const faqs = FAQ.concat(VFAQ, PFAQ).map(f => `P: ${f[0]} R: ${f[1]}`).join("\n");
+  return `EMPRESA
+Zolutions AI es una empresa chilena (Ñuñoa, Santiago) que crea soluciones de inteligencia artificial para empresas, enfocadas en vender más: agentes de IA, automatización comercial y marketing con IA. Atiende empresas de cualquier país. Soporte técnico 24/7 en todas las soluciones.
+Diferencial: conecta el embudo completo (anuncios optimizados con IA → Vendedor IA conversa y califica → automatización y CRM hacen seguimiento → el equipo del cliente recibe reuniones calificadas).
+
+PRODUCTO ESTRELLA: VENDEDOR IA (página: vendedor-ia)
+Agente comercial digital, no un chatbot de atención. Objetivo: vender. Responde en segundos 24/7 en WhatsApp, web, Instagram y Facebook Messenger; califica necesidad, presupuesto y urgencia; recomienda y cotiza con el catálogo y precios del cliente; agenda reuniones en su calendario; hace seguimiento; deriva al equipo con un resumen. Implementación en unos 7 días: días 1-2 entrenamiento, 3-5 conexión y pruebas, 6-7 lanzamiento y ajustes semanales.
+
+PRECIOS (página: precios)
+- Agente Conversacional: desde US$500 al mes. Incluye 100 conversaciones mensuales y atención omnicanal en WhatsApp, chat web, Instagram y Facebook Messenger; entrenamiento con la información de la empresa, agendamiento, derivación al equipo con resumen, panel de conversaciones y leads, ajustes mensuales y soporte 24/7. Funciona en unos 7 días.
+- Una conversación = todo el intercambio con un mismo cliente dentro de 24 horas, en cualquier canal.
+- Si se acerca a las 100 conversaciones, se le avisa y se ajusta el plan a su volumen real.
+- Tarifas de Meta: responder a clientes que escriben no tiene costo de Meta; los mensajes que inicia la empresa (recordatorios, campañas) tienen tarifa de Meta aparte.
+- Vendedor IA y plan Empresa: a medida, se cotizan después de la evaluación gratuita.
+- Valores en dólares (USD). Si preguntan si incluye implementación, impuestos o permanencia: se confirma en la evaluación gratuita.
+
+OTRAS SOLUCIONES
+${sols}
+
+INDUSTRIAS
+${inds}
+
+PROCESO
+1) Evaluación gratuita del proceso comercial. 2) Diseño y desarrollo con la información y el tono del cliente. 3) Optimización continua.
+
+PREGUNTAS FRECUENTES
+${faqs}
+
+CONTACTO
+Evaluación gratis: botón "Agendar evaluación gratis". WhatsApp: ${BRAND.waShown}. Email: ${BRAND.email}.
+
+PÁGINAS DEL SITIO (claves para mostrar_pagina): ${Object.keys(ROUTES).filter(k => k !== "leads").map(k => `${k} (${ROUTES[k].name})`).join(", ")}.`;
+}
+function rules(){
+  const leadInstr = toolsOK
+    ? "Cuando ya tengas nombre y un contacto (WhatsApp, teléfono o email), llama de inmediato a la herramienta registrar_lead, sin pedir confirmación. Si después obtienes más datos, vuelve a llamarla para actualizar."
+    : 'Cuando ya tengas nombre y un contacto (WhatsApp, teléfono o email), agrega al final de tu respuesta, en una línea aparte, exactamente: ##LEAD {"nombre":"...","empresa":"...","contacto":"...","rubro":"...","necesidad":"...","servicio":"...","interes":"alto|medio","resumen":"..."} (JSON válido en una sola línea). Esa línea no la ve el visitante.';
+  return `Eres Zoe, la agente comercial de IA del sitio web de Zolutions AI. Conversas en tiempo real con visitantes del sitio.
+
+OBJETIVO
+1. Entender el negocio del visitante y lo que quiere resolver.
+2. Recomendar la solución de Zolutions que corresponde y explicar en concreto cómo le ayudaría en su caso.
+3. Cuando detectes interés real, conseguir sus datos y derivarlo al equipo comercial.
+
+SEÑALES DE INTERÉS: pregunta por precio, plazos o cómo partir; describe un problema concreto de su empresa; pide demo, reunión, propuesta o hablar con alguien; menciona volumen, urgencia o presupuesto.
+Cuando aparezca una señal: primero responde lo que preguntó. Luego ofrece que un especialista revise su caso sin costo y pide los datos de a uno por mensaje: nombre, empresa y WhatsApp o email.
+${leadInstr}
+Después de registrar, confirma en una frase que un especialista lo contactará pronto y que también puede agendar ahora con el botón o escribir por WhatsApp. No repitas sus datos.
+Si el visitante pide hablar con una persona, pide nombre y contacto y regístralo con interés "alto".
+Interés "alto": pide reunión, demo, propuesta o precio para su caso, o tiene urgencia. "medio": explora con un problema concreto.
+
+ESTILO
+- Español de Chile, tuteo, cálido, directo y profesional. Máximo 3 frases cortas o 3 viñetas por respuesta.
+- Termina casi siempre con una pregunta que haga avanzar la conversación.
+- Sin emojis. Puedes usar **negrita** para un dato clave.
+
+LÍMITES
+- Usa SOLO la información de abajo. No inventes precios, clientes, casos, cifras ni integraciones específicas. Si no sabes algo, dilo y ofrece que un especialista lo responda.
+- Precios: el único monto que puedes dar es el del plan Agente Conversacional (desde US$500 al mes, 100 conversaciones mensuales, omnicanal). Vendedor IA, plan Empresa y volúmenes mayores se cotizan después de la evaluación gratuita. No des otros montos, rangos ni descuentos. Cuando hablen de precios, ofrece mostrar la página de precios.
+- No pidas datos sensibles (RUT, tarjetas, contraseñas).
+- Si preguntan algo ajeno a Zolutions, responde breve y vuelve al tema.
+${toolsOK ? "- Puedes usar mostrar_pagina para llevar al visitante a la página que amplía lo que pregunta (máximo una vez por respuesta, y dilo en tu respuesta)." : ""}
+
+${knowledge()}`;
+}
+
+/* Herramientas que el agente puede usar en la página */
+const SERVICE_NAMES = ["Vendedor IA", ...solKeys.map(k => SOLUTIONS[k].name), "Por definir"];
+function tools(){
+  return [
+    {
+      name: "registrar_lead",
+      description: "Registra al visitante como prospecto interesado y avisa al equipo comercial de Zolutions para que lo contacte. Úsala solo cuando ya tengas su nombre y un contacto (WhatsApp, teléfono o email). Devuelve la confirmación.",
+      inputSchema: { type:"object", properties: {
+        nombre:{type:"string"}, empresa:{type:"string"}, contacto:{type:"string", description:"WhatsApp, teléfono o email"},
+        rubro:{type:"string"}, necesidad:{type:"string", description:"Qué quiere resolver, en pocas palabras"},
+        servicio:{type:"string", enum:SERVICE_NAMES}, interes:{type:"string", enum:["alto","medio"]},
+        resumen:{type:"string", description:"2 o 3 frases para el especialista: situación, problema, urgencia y siguiente paso sugerido"}
+      }, required:["nombre","contacto","necesidad","interes","resumen"] },
+      execute: async (input) => {
+        const lead = normLead(input);
+        if (!lead.nombre || !lead.contacto) throw new Error("Faltan nombre o contacto: pídeselos al visitante antes de registrar.");
+        const res = await handleLead(lead, "Agente IA");
+        return { ok:true, guardado: res.saved, instruccion: "Botones de agendar y WhatsApp ya visibles para el visitante. Confirma en una frase." };
+      }
+    },
+    {
+      name: "mostrar_pagina",
+      description: "Lleva al visitante a una página del sitio mientras el chat sigue abierto. Úsala cuando ver esa página le ayude con lo que preguntó.",
+      inputSchema: { type:"object", properties: { pagina:{ type:"string", enum: Object.keys(ROUTES).filter(k => k !== "leads") } }, required:["pagina"] },
+      execute: (input) => {
+        const p = String(input.pagina || "");
+        if (!ROUTES[p] || p === "leads") throw new Error("Esa página no existe.");
+        if (p !== current) location.hash = p;
+        return "ok: el visitante ahora ve la página " + ROUTES[p].name;
+      }
+    }
+  ];
+}
+function normLead(x){
+  const s = v => (v == null ? "" : String(v)).trim().slice(0, 400);
+  const interes = s(x.interes).toLowerCase() === "alto" ? "alto" : "medio";
+  return { nombre:s(x.nombre), empresa:s(x.empresa), contacto:s(x.contacto), rubro:s(x.rubro), necesidad:s(x.necesidad), servicio:s(x.servicio) || "Por definir", interes, resumen:s(x.resumen) || s(x.necesidad) };
+}
+
+/* Enviar mensaje */
+txt.addEventListener("input", autoGrow);
+function autoGrow(){ txt.style.height = "auto"; txt.style.height = Math.min(txt.scrollHeight, 120) + "px"; }
+txt.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("#zoeForm").requestSubmit(); } });
+$("#zoeForm").addEventListener("submit", e => {
+  e.preventDefault();
+  if (busy) { if (ctl) ctl.abort(); return; }
+  const v = txt.value; txt.value = ""; autoGrow();
+  send(v);
+});
+function setBusy(on){
+  busy = on;
+  sendBtn.classList.toggle("stop", on);
+  sendBtn.setAttribute("aria-label", on ? "Detener" : "Enviar");
+  sendBtn.innerHTML = on ? '<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="6" y="6" width="8" height="8" rx="1.5" fill="currentColor"/></svg>' : '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+async function send(raw){
+  const text = String(raw || "").trim();
+  if (!text || busy) return;
+  if (zoe.hidden) openChat();
+  addBubble("me", text);
+  refreshChips();
+  turns.push({ role:"user", content: `[El visitante está en la página: ${ROUTES[current].name}]\n${text}` });
+  setBusy(true);
+  const bubble = addBubble("bot", "Pensando…", "thinking");
+  await capsReady;
+  if (!sample) {
+    bubble.classList.remove("thinking");
+    bubble.innerHTML = rich(`En esta vista no puedo conectarme con la IA. Escríbenos por WhatsApp al **${BRAND.waShown}** o usa **Hablar con una persona** arriba y te contactamos.`);
+    setBusy(false); return;
+  }
+  ctl = new AbortController();
+  const recent = turns.slice(-16);
+  if (recent[0] && recent[0].role === "assistant") recent.shift();
+  const input = [{ role:"user", content: rules() }, { role:"assistant", content: GREETING }, ...recent];
+  const opts = { modelTier:"quick", cache:false, signal: ctl.signal, onText: ({ text: t }) => { const v = visible(t); if (v) { bubble.classList.remove("thinking"); bubble.innerHTML = rich(v); scrollLog(); } } };
+  if (toolsOK) opts.tools = tools();
+  try {
+    const res = await sample(input, opts);
+    let full = res.text || "";
+    if (!toolsOK) await parseMarker(full);
+    const v = visible(full);
+    bubble.classList.remove("thinking");
+    if (v) { bubble.innerHTML = rich(v); shown.push({ r:"a", t:v.slice(0,800) }); }
+    else bubble.remove();
+    turns.push({ role:"assistant", content: full || "(respuesta vacía)" });
+  } catch (e) {
+    const code = e && e.code;
+    bubble.classList.remove("thinking");
+    if (code === "cancelled") {
+      if (e.text && visible(e.text)) { bubble.innerHTML = rich(visible(e.text)); turns.push({ role:"assistant", content:e.text }); } else bubble.remove();
+    } else if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(code)) {
+      sample = null; setStatus();
+      bubble.className = "b bot err";
+      bubble.innerHTML = rich(`No tengo permiso para responder con IA en esta vista. Escríbenos por WhatsApp al **${BRAND.waShown}** o usa **Hablar con una persona** y te contactamos.`);
+    } else if (code === "rate_limited") {
+      bubble.className = "b bot err";
+      bubble.innerHTML = rich("Estoy recibiendo muchas consultas en este momento. Intenta de nuevo en un minuto o usa **Hablar con una persona**.");
+    } else if (code === "refused") {
+      bubble.className = "b bot err";
+      bubble.textContent = "Prefiero no responder eso. ¿Te puedo ayudar con algo sobre las soluciones de Zolutions?";
+    } else {
+      bubble.className = "b bot err";
+      const part = e && e.text ? visible(e.text) : "";
+      bubble.innerHTML = (part ? rich(part) : "") + "<p>Se cortó la conexión. Envía tu mensaje de nuevo.</p>";
+    }
+  } finally {
+    setBusy(false); ctl = null; scrollLog();
+  }
+}
+async function parseMarker(full){
+  const i = full.indexOf("##LEAD");
+  if (i < 0) return;
+  const raw = full.slice(i + 6).trim();
+  const a = raw.indexOf("{"), b = raw.lastIndexOf("}");
+  if (a < 0 || b <= a) return;
+  try { const data = JSON.parse(raw.slice(a, b + 1)); const lead = normLead(data); if (lead.nombre && lead.contacto) await handleLead(lead, "Agente IA"); } catch(_) {}
+}
+
+/* ================= Leads: guardar y derivar ================= */
+let myLeads = null, localLeads = [], saveChain = Promise.resolve();
+function transcript(){ return shown.slice(-20).map(m => ({ r:m.r, t:m.t })); }
+function handleLead(lead, origen, opt){
+  opt = opt || {};
+  const now = new Date().toISOString();
+  const rec = (sessionLead && !opt.standalone)
+    ? Object.assign({}, sessionLead, Object.fromEntries(Object.entries(lead).filter(([,v]) => v)), { updatedAt: now, transcript: transcript() })
+    : Object.assign({ id: "L" + Date.now().toString(36) + Math.random().toString(36).slice(2,6), createdAt: now, updatedAt: now, origen, pagina: ROUTES[current].name }, lead, { transcript: opt.standalone ? [] : transcript() });
+  if (!opt.standalone) sessionLead = rec;
+  const p = saveChain.then(() => saveLead(rec));
+  saveChain = p.catch(() => {});
+  return p.then(res => { if (!opt.standalone) renderHandoff(rec, res.saved); return res; });
+}
+async function saveLead(rec){
+  localLeads = [rec, ...localLeads.filter(x => x.id !== rec.id)];
+  if (current === "leads" && !panelUnsub) renderPanel(localLeads, "local");
+  if (!db || !uid) return { saved:false };
+  try {
+    const ref = db.doc("leads/" + uid);
+    if (myLeads === null) {
+      const snap = await ref.get();
+      const d = snap.exists ? snap.data() : null;
+      myLeads = d && Array.isArray(d.items) ? d.items.slice() : [];
+    }
+    myLeads = [rec, ...myLeads.filter(x => x.id !== rec.id)].slice(0, 25);
+    await ref.set({ updatedAt: rec.updatedAt, items: myLeads });
+    return { saved:true };
+  } catch(e) { return { saved:false, code: e && e.code }; }
+}
+function waLink(rec){
+  const t = `Hola, soy ${rec.nombre}${rec.empresa ? " de " + rec.empresa : ""}. Vengo del chat de la web de Zolutions. ${rec.resumen || rec.necesidad}`;
+  return `https://api.whatsapp.com/send?phone=${BRAND.wa}&text=${encodeURIComponent(t.slice(0, 600))}`;
+}
+let handoffEl = null;
+function renderHandoff(rec, saved){
+  const el = handoffEl && handoffEl.isConnected ? handoffEl : document.createElement("div");
+  el.className = "handoff";
+  el.innerHTML = "";
+  const hd = document.createElement("div"); hd.className = "hd"; hd.innerHTML = "<i></i>"; const ht = document.createElement("span"); ht.textContent = `Listo, ${rec.nombre.split(" ")[0]}. Tu caso ya está con nuestro equipo.`; hd.appendChild(ht);
+  const p = document.createElement("p"); p.textContent = `Un especialista te contactará por ${rec.contacto}. Si prefieres no esperar:`;
+  const acts = document.createElement("div"); acts.className = "acts";
+  const a1 = document.createElement("a"); a1.className = "btn btn-primary"; a1.href = BRAND.cal; a1.target = "_blank"; a1.rel = "noopener"; a1.textContent = "Agendar reunión ahora";
+  const a2 = document.createElement("a"); a2.className = "btn btn-ghost"; a2.href = waLink(rec); a2.target = "_blank"; a2.rel = "noopener"; a2.textContent = "Seguir por WhatsApp";
+  acts.append(a1, a2);
+  const fine = document.createElement("span"); fine.className = "fine"; fine.textContent = saved ? "Registrado en el panel del equipo" : "Demo: registrado solo en esta vista";
+  el.append(hd, p, acts, fine);
+  if (!handoffEl || !handoffEl.isConnected) { log.appendChild(el); handoffEl = el; }
+  scrollLog();
+}
+
+/* Formulario rápido dentro del chat */
+$("#humanBtn").addEventListener("click", () => {
+  if (zoe.hidden) openChat();
+  if ($(".mini-form", log)) { $(".mini-form input", log).focus(); return; }
+  const f = document.createElement("form"); f.className = "mini-form"; f.noValidate = true;
+  f.innerHTML = `<b>Te contacta una persona del equipo</b>
+    <label class="sr" for="mfName">Nombre</label><input id="mfName" placeholder="Tu nombre" autocomplete="name">
+    <label class="sr" for="mfCompany">Empresa</label><input id="mfCompany" placeholder="Empresa" autocomplete="organization">
+    <label class="sr" for="mfContact">WhatsApp o email</label><input id="mfContact" placeholder="WhatsApp o email">
+    <label class="sr" for="mfMsg">¿Qué necesitas?</label><textarea id="mfMsg" placeholder="¿Qué necesitas resolver?"></textarea>
+    <span class="muted" style="font-size:.76rem">Al enviar aceptas la <a href="#privacidad">política de privacidad</a>.</span>
+    <span class="fine muted" id="mfErr" style="font-size:.8rem"></span>
+    <div class="r"><button type="button" class="btn btn-ghost btn-sm" id="mfCancel">Cancelar</button><button class="btn btn-primary btn-sm">Enviar</button></div>`;
+  log.appendChild(f); scrollLog(); $("#mfName").focus();
+  $("#mfCancel").addEventListener("click", () => f.remove());
+  f.addEventListener("submit", async ev => {
+    ev.preventDefault();
+    const nombre = $("#mfName").value.trim(), contacto = $("#mfContact").value.trim(), msg = $("#mfMsg").value.trim();
+    if (!nombre || !contacto) { $("#mfErr").textContent = "Escribe tu nombre y un WhatsApp o email para contactarte."; return; }
+    f.remove();
+    addBubble("me", `Quiero hablar con una persona. Soy ${nombre}${$("#mfCompany").value.trim() ? " de " + $("#mfCompany").value.trim() : ""}.`);
+    turns.push({ role:"user", content:`[El visitante dejó sus datos en el formulario para hablar con una persona: ${nombre}, ${contacto}. Necesidad: ${msg || "no indicada"}. Ya fue derivado al equipo.]` });
+    await handleLead(normLead({ nombre, empresa:$("#mfCompany").value, contacto, necesidad: msg || "Pidió hablar con una persona", interes:"alto", servicio:"Por definir", resumen: msg || "Pidió hablar con una persona desde el chat." }), "Formulario del chat");
+  });
+});
+
+/* Formulario de contacto */
+$("#contactForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.currentTarget, err = $("#cfError");
+  const nombre = $("#cfName").value.trim(), contacto = $("#cfContact").value.trim();
+  if (!nombre || !contacto) { err.hidden = false; err.textContent = "Escribe tu nombre y un WhatsApp o email para poder contactarte."; return; }
+  err.hidden = true;
+  const msg = $("#cfMsg").value.trim();
+  const lead = normLead({ nombre, empresa:$("#cfCompany").value, contacto, servicio:$("#cfService").value, necesidad: msg || "Consulta desde contacto", interes:"alto", resumen: msg || "Dejó sus datos en el formulario de contacto." });
+  const res = await handleLead(lead, "Formulario de contacto", { standalone:true });
+  const ok = document.createElement("div"); ok.className = "success";
+  const h = document.createElement("h2"); h.className = "h-3"; h.textContent = `Gracias, ${nombre.split(" ")[0]}. Recibimos tu consulta.`;
+  const p = document.createElement("p"); p.className = "muted"; p.style.marginTop = ".5rem"; p.textContent = `Te contactaremos por ${contacto}. Si quieres avanzar ahora, agenda tu evaluación gratis.`;
+  const a = document.createElement("a"); a.className = "btn btn-primary"; a.style.marginTop = "1rem"; a.href = BRAND.cal; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Agendar evaluación gratis";
+  const fine = document.createElement("p"); fine.className = "fine"; fine.style.marginTop = ".8rem"; fine.style.fontSize = ".8rem"; fine.style.color = "var(--dim)"; fine.textContent = res.saved ? "Registrado en el panel del equipo." : "Demo: registrado solo en esta vista.";
+  ok.append(h, p, a, fine);
+  f.replaceWith(ok);
+});
+
+/* ================= Panel de leads ================= */
+let panelUnsub = null, panelFilter = "todos", panelData = [], panelMode = "db";
+async function initPanel(){
+  const box = $("#panelBody");
+  if (panelUnsub) { renderPanel(panelData, panelMode); return; }
+  if (!capsDone) { await capsReady; if (current !== "leads") return; }
+  if (!db) { renderPanel(localLeads, "local"); return; }
+  if (!isTeam) {
+    box.innerHTML = '<div class="empty"><b>Este panel es privado.</b><span>Solo lo ve el equipo de Zolutions.</span></div>';
+    return;
+  }
+  const timer = setTimeout(() => { const n = $("#panelNote"); if (n) n.textContent = "La base de leads está tardando en responder. Los datos pueden no estar al día."; }, 10000);
+  panelUnsub = db.collection("leads").onSnapshot(snap => {
+    if (!snap.metadata.fromCache) clearTimeout(timer);
+    const all = [];
+    snap.docs.forEach(d => { const v = d.data(); if (v && Array.isArray(v.items)) v.items.forEach(x => { if (x && typeof x === "object") all.push(x); }); });
+    renderPanel(all, "db");
+  }, err => {
+    clearTimeout(timer);
+    box.innerHTML = "";
+    const e = document.createElement("div"); e.className = "empty"; e.textContent = "No se pudo leer la base de leads (" + (err && err.code || "error") + ")."; box.appendChild(e);
+  });
+}
+function fmtDate(iso){ try { return new Date(iso).toLocaleString("es-CL", { day:"2-digit", month:"short", hour:"2-digit", minute:"2-digit" }); } catch(_) { return ""; } }
+function digits(s){ return String(s || "").replace(/\D/g, ""); }
+function renderPanel(list, mode){
+  panelData = list; panelMode = mode;
+  if (current !== "leads") return;
+  const box = $("#panelBody");
+  box.innerHTML = "";
+  const items = list.slice().sort((a,b) => String(b.updatedAt || b.createdAt).localeCompare(String(a.updatedAt || a.createdAt)));
+  const day = Date.now() - 864e5;
+  const kpis = document.createElement("div"); kpis.className = "kpis";
+  [["Leads totales", items.length], ["Interés alto", items.filter(x => x.interes === "alto").length], ["Últimas 24 h", items.filter(x => Date.parse(x.createdAt) > day).length]].forEach(([l,v]) => { const k = document.createElement("div"); k.className = "kpi"; const s = document.createElement("span"); s.textContent = l; const b = document.createElement("b"); b.textContent = v; k.append(s,b); kpis.appendChild(k); });
+  const top = document.createElement("div"); top.className = "panel-top";
+  const note = document.createElement("p"); note.className = "muted"; note.id = "panelNote"; note.style.fontSize = ".9rem";
+  note.textContent = mode === "db" ? "Se actualiza en vivo cuando el agente deriva a alguien." : "Vista previa: aquí aparecen los leads que generes en esta sesión.";
+  const filters = document.createElement("div"); filters.className = "filters"; filters.setAttribute("role","group"); filters.setAttribute("aria-label","Filtrar por interés");
+  ["todos","alto","medio"].forEach(f => { const b = document.createElement("button"); b.type = "button"; b.textContent = f === "todos" ? "Todos" : "Interés " + f; b.setAttribute("aria-pressed", String(panelFilter === f)); b.addEventListener("click", () => { panelFilter = f; renderPanel(panelData, panelMode); }); filters.appendChild(b); });
+  top.append(note, filters);
+  box.append(kpis, top);
+
+  const cols = document.createElement("div"); cols.className = "panel-cols";
+  const listEl = document.createElement("div"); listEl.className = "leads";
+  const shownItems = items.filter(x => panelFilter === "todos" || x.interes === panelFilter);
+  if (!shownItems.length) {
+    const em = document.createElement("div"); em.className = "empty";
+    const b = document.createElement("b"); b.textContent = items.length ? "No hay leads con este filtro." : "Aún no hay leads.";
+    const s = document.createElement("span"); s.textContent = "Prueba: abre el chat, cuéntale a Zoe sobre una empresa ficticia y pide una reunión. El lead aparecerá aquí en segundos.";
+    const btn = document.createElement("button"); btn.className = "btn btn-ghost btn-sm"; btn.style.justifySelf = "start"; btn.textContent = "Abrir el chat"; btn.addEventListener("click", () => openChat("Hola, tengo una inmobiliaria y respondemos tarde los WhatsApp. ¿Me pueden ayudar?"));
+    em.append(b, s, btn); listEl.appendChild(em);
+  }
+  shownItems.forEach(x => listEl.appendChild(leadCard(x)));
+  const side = document.createElement("aside"); side.className = "notify";
+  const sh = document.createElement("p"); sh.className = "eyebrow"; sh.textContent = "Así te llegará el aviso";
+  const sp = document.createElement("p"); sp.className = "muted"; sp.style.fontSize = ".88rem"; sp.textContent = "Con la web publicada, cada lead te llega al instante por WhatsApp y email.";
+  const wa = document.createElement("div"); wa.className = "wa";
+  const from = document.createElement("span"); from.className = "from"; from.textContent = "Zolutions · Alertas";
+  const bub = document.createElement("div"); bub.className = "bubble";
+  const L = items[0];
+  bub.textContent = L ? `Nuevo lead · interés ${L.interes}\n${L.nombre}${L.empresa ? " · " + L.empresa : ""}\nContacto: ${L.contacto}\nNecesita: ${L.necesidad}\n\n${L.resumen}` : "Nuevo lead · interés alto\nNombre · Empresa\nContacto: +56 9 …\nNecesita: …\n\nResumen de la conversación para que llegues preparado.";
+  wa.append(from, bub);
+  side.append(sh, sp, wa);
+  cols.append(listEl, side);
+  box.appendChild(cols);
+}
+function leadCard(x){
+  const c = document.createElement("article"); c.className = "lead-item " + (x.interes === "alto" ? "alto" : "medio");
+  const top = document.createElement("div"); top.className = "top";
+  const who = document.createElement("div");
+  const nm = document.createElement("div"); nm.className = "nm"; nm.textContent = x.nombre || "Sin nombre";
+  const co = document.createElement("div"); co.className = "co"; co.textContent = [x.empresa, x.rubro].filter(Boolean).join(" · ") || "Empresa no indicada";
+  who.append(nm, co);
+  const lvl = document.createElement("span"); lvl.className = "lvl " + (x.interes === "alto" ? "alto" : "medio"); lvl.textContent = "Interés " + (x.interes || "medio");
+  top.append(who, lvl);
+  const sum = document.createElement("p"); sum.className = "sum"; sum.textContent = x.resumen || x.necesidad || "";
+  const kv = document.createElement("div"); kv.className = "kv";
+  [["Contacto", x.contacto], ["Servicio", x.servicio], ["Origen", x.origen], ["Página", x.pagina], ["Fecha", fmtDate(x.updatedAt || x.createdAt)]].forEach(([k,v]) => { if (!v) return; const s = document.createElement("span"); const b = document.createElement("b"); b.textContent = k + ": "; s.append(b, document.createTextNode(String(v))); kv.appendChild(s); });
+  const acts = document.createElement("div"); acts.className = "acts";
+  const d = digits(x.contacto);
+  if (d.length >= 8) { const a = document.createElement("a"); a.className = "btn btn-primary btn-sm"; a.href = "https://api.whatsapp.com/send?phone=" + d + "&text=" + encodeURIComponent(`Hola ${String(x.nombre || "").split(" ")[0]}, te escribo de Zolutions AI por tu consulta en nuestra web.`); a.target = "_blank"; a.rel = "noopener"; a.textContent = "Responder por WhatsApp"; acts.appendChild(a); }
+  const cp = document.createElement("button"); cp.className = "copy"; cp.type = "button"; cp.textContent = "Copiar contacto"; cp.addEventListener("click", () => { try { navigator.clipboard.writeText(String(x.contacto || "")).then(() => { cp.textContent = "Copiado"; setTimeout(() => cp.textContent = "Copiar contacto", 1400); }, () => {}); } catch(_) {} });
+  acts.appendChild(cp);
+  c.append(top, sum, kv, acts);
+  if (Array.isArray(x.transcript) && x.transcript.length) {
+    const det = document.createElement("details"); const s = document.createElement("summary"); s.textContent = "Ver conversación (" + x.transcript.length + " mensajes)";
+    const tx = document.createElement("div"); tx.className = "tx";
+    x.transcript.forEach(m => { const p = document.createElement("p"); if (m && m.r === "v") p.className = "v"; const b = document.createElement("b"); b.textContent = m && m.r === "v" ? "Visitante" : "Zoe"; p.append(b, document.createTextNode(String(m && m.t || ""))); tx.appendChild(p); });
+    det.append(s, tx); c.appendChild(det);
+  }
+  return c;
+}
+
+/* Inicio */
+setStatus();
+route(false);
+})();
+</script>
+
+</body>
+</html>
