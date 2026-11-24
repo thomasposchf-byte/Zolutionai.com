@@ -1,0 +1,31 @@
+---
+import Logo from './Logo.astro';
+import { SITE, SOLUTIONS, waLink } from '../data/site.mjs';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <Logo />
+        <p class="muted" style="margin-top:1rem;max-width:34ch;font-size:.94rem">Agentes de IA y automatización comercial para empresas. Desde Santiago de Chile para cualquier país.</p>
+      </div>
+      <div><h2 class="foot-h">Soluciones</h2><ul>
+        <li><a href="/vendedor-ia">Vendedor IA</a></li>
+        {SOLUTIONS.map((s) => <li><a href={s.path}>{s.name}</a></li>)}
+      </ul></div>
+      <div><h2 class="foot-h">Empresa</h2><ul>
+        <li><a href="/industrias">Industrias</a></li>
+        <li><a href="/precios">Precios</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+        <li><a href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul></div>
+      <div><h2 class="foot-h">Contacto</h2><ul>
+        <li><a href={waLink()} target="_blank" rel="noopener" data-track="whatsapp">{SITE.whatsappDisplay}</a></li>
+        <li><span class="muted" style="font-size:.94rem">{SITE.email}</span></li>
+        <li><span class="muted" style="font-size:.94rem">{SITE.locality}, {SITE.city}, Chile</span></li>
+      </ul></div>
+    </div>
+    <div class="foot-legal"><span>© {year} Zolutions AI</span><span><a href="/privacidad">Política de privacidad</a> · <button class="linkbtn" type="button" data-cookie-settings>Cookies</button></span></div>
+  </div>
+</footer>

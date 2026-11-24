@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /__forms.html
+Disallow: /gracias
+
+Sitemap: https://zolutionsai.com/sitemap-index.xml

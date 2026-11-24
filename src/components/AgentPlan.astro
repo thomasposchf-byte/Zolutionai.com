@@ -1,0 +1,38 @@
+---
+// Tarjeta del plan Agente Conversacional (inicio y precios).
+import { SITE, CHANNELS } from '../data/site.mjs';
+interface Props { full?: boolean; titleTag?: 'h2' | 'h3' }
+const { full = false, titleTag = 'h3' } = Astro.props;
+const T = titleTag;
+const items = full
+  ? [
+      'Agente entrenado con la información de tu empresa',
+      'Atención 24/7 en WhatsApp, chat web, Instagram y Facebook Messenger',
+      'Agendamiento en tu calendario',
+      'Derivación a tu equipo con el resumen de cada conversación',
+      'Panel de conversaciones y leads',
+      'Ajustes mensuales y soporte técnico 24/7',
+    ]
+  : [
+      'Entrenado con la información de tu empresa',
+      'Agenda en tu calendario y deriva a tu equipo',
+      'Panel de conversaciones y leads',
+      'Soporte técnico 24/7',
+    ];
+---
+<article class="price-card featured">
+  <span class="badge">Para empezar</span>
+  <T class="h-3">Agente Conversacional</T>
+  {full && <p class="muted">Responde al instante en todos tus canales.</p>}
+  <div class="price"><span class="from">Desde</span><b>US${SITE.price.amount}</b><span class="per">/ mes + IVA</span></div>
+  <p class="price-sub">{SITE.price.conversations} conversaciones al mes incluidas</p>
+  <div class="perks"><span>Implementación sin costo</span><span>Sin permanencia</span></div>
+  <div class="channels">{CHANNELS.map((c) => <span>{c}</span>)}</div>
+  <ul class="checklist small">{items.map((i) => <li>{i}</li>)}</ul>
+  {full && (
+    <>
+      <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Empezar con este plan</a>
+      <p class="fine-note">Funcionando en unos 7 días · Cancela cuando quieras</p>
+    </>
+  )}
+</article>

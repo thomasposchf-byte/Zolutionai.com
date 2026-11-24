@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, waLink } from '../data/site.mjs';
+---
+<Base
+  title="Recibimos tu consulta | Zolutions AI"
+  description="Gracias por escribirnos. Te contactaremos pronto."
+  path="/gracias"
+  pageName="Gracias"
+  noindex
+  cta={false}
+>
+  <section class="page-hero">
+    <div class="wrap thanks">
+      <p class="eyebrow">Consulta enviada</p>
+      <h1 class="h-1">Gracias. Recibimos tu consulta.</h1>
+      <p class="lead">Un especialista te contactará pronto. Si quieres avanzar ahora, agenda tu evaluación gratis o escríbenos por WhatsApp.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar evaluación gratis</a>
+        <a class="btn btn-ghost" href={waLink('Hola, acabo de dejar una consulta en la web de Zolutions AI')} target="_blank" rel="noopener" data-track="whatsapp">Escribir por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Base>

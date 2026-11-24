@@ -1,0 +1,34 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { INDUSTRIES } from '../data/site.mjs';
+import { breadcrumb } from '../lib/schema.mjs';
+---
+<Base
+  title="Soluciones de IA por industria | Zolutions AI"
+  description="Agentes de IA para inmobiliarias, retail, salud, educación, automotriz, servicios B2B y turismo, entrenados con el lenguaje de tus clientes."
+  path="/industrias"
+  pageName="Industrias"
+  schema={[breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Industrias', path: '/industrias' }])]}
+  nudge={['¿No ves tu industria?', 'Cuéntame tu rubro y te digo cómo aplicaría.']}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Industrias' }]} />
+      <p class="eyebrow">Industrias</p>
+      <h1 class="h-1" style="margin-top:.8rem">Soluciones de IA para tu industria</h1>
+      <p class="lead">Cada rubro vende distinto. Entrenamos a tu agente con el lenguaje, los procesos y las preguntas de tus clientes.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap ind-list">
+      {INDUSTRIES.map(([name, items]) => (
+        <article class="ind">
+          <h2 class="h-3">{name}</h2>
+          <ul>{items.map((x) => <li>{x}</li>)}</ul>
+          <button class="btn btn-ghost btn-sm ask" type="button" data-open-chat={`Tengo una empresa del rubro ${name.toLowerCase()}. ¿Cómo me ayudaría un agente IA?`}>Preguntar por mi caso</button>
+        </article>
+      ))}
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { SITE, SOLUTIONS, waLink } from '../data/site.mjs';
+import { breadcrumb } from '../lib/schema.mjs';
+
+const services = ['Agente Conversacional', 'Vendedor IA', ...SOLUTIONS.map((s) => s.name), 'Aún no lo sé'];
+---
+<Base
+  title="Contacto y evaluación gratis | Zolutions AI"
+  description="Agenda una evaluación gratis de tu proceso comercial o escríbenos por WhatsApp. Atendemos empresas desde Santiago de Chile para cualquier país."
+  path="/contacto"
+  pageName="Contacto"
+  cta={false}
+  schema={[breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Contacto', path: '/contacto' }]), { '@type': 'ContactPage', url: `${SITE.url}/contacto` }]}
+  chips={['¿Qué pasa en la evaluación gratis?', '¿Trabajan fuera de Chile?', 'Quiero que me contacten']}
+  nudge={['¿Prefieres resolverlo ahora?', 'Te respondo al instante y agendamos si te sirve.']}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Contacto' }]} />
+      <p class="eyebrow">Contacto</p>
+      <h1 class="h-1" style="margin-top:.8rem">Conversemos sobre tu proceso comercial</h1>
+      <p class="lead">Agenda una evaluación gratis: revisamos cómo vendes hoy y te decimos dónde la IA tendría más impacto. Sin compromiso.</p>
+    </div>
+  </section>
+  <section class="section-tight">
+    <div class="wrap contact-grid">
+      <div class="contact-card">
+        <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar" style="justify-self:start">Agendar evaluación gratis</a>
+        <div class="cline"><div class="grow"><div class="lbl">WhatsApp</div><div class="val">{SITE.whatsappDisplay}</div></div><a class="copy" href={waLink('Hola, vengo de la web de Zolutions AI')} target="_blank" rel="noopener" data-track="whatsapp">Abrir</a><button class="copy" type="button" data-copy={SITE.phone}>Copiar</button></div>
+        <div class="cline"><div class="grow"><div class="lbl">Email</div><div class="val">{SITE.email}</div></div><a class="copy" href={`mailto:${SITE.email}`}>Escribir</a><button class="copy" type="button" data-copy={SITE.email}>Copiar</button></div>
+        <div class="cline"><div class="grow"><div class="lbl">Oficina</div><div class="val">{SITE.locality}, {SITE.city}, Chile</div><div class="muted" style="font-size:.86rem">Atendemos empresas de cualquier país</div></div></div>
+      </div>
+
+      <form class="form" name="contacto" method="POST" action="/gracias" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contacto">
+        <input type="hidden" name="subject" value="Nueva consulta desde el formulario de contacto">
+        <h2 class="h-3">Cuéntanos qué quieres resolver</h2>
+        <div class="row-2">
+          <div class="field"><label for="cfName">Nombre</label><input id="cfName" name="nombre" autocomplete="name" required maxlength="120"></div>
+          <div class="field"><label for="cfCompany">Empresa</label><input id="cfCompany" name="empresa" autocomplete="organization" maxlength="160"></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label for="cfContact">WhatsApp o email</label><input id="cfContact" name="contacto" autocomplete="email" required maxlength="160"></div>
+          <div class="field"><label for="cfService">Me interesa</label><select id="cfService" name="servicio">{services.map((n) => <option>{n}</option>)}</select></div>
+        </div>
+        <div class="field"><label for="cfMsg">¿Qué te gustaría mejorar?</label><textarea id="cfMsg" name="mensaje" maxlength="2000" placeholder="Ej.: recibimos 200 consultas diarias por WhatsApp y respondemos tarde"></textarea></div>
+        <p class="fine">Usaremos tus datos solo para responder esta consulta. Al enviar aceptas nuestra <a href="/privacidad">política de privacidad</a>.</p>
+        <p hidden><label>No completar: <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <button class="btn btn-primary" type="submit" style="justify-self:start">Enviar consulta</button>
+      </form>
+    </div>
+  </section>
+</Base>
