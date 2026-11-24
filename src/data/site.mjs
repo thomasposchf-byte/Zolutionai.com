@@ -223,8 +223,8 @@ export const INDUSTRIES = [
 
 export const FAQ = [
   ['¿Es un chatbot?', 'No. Usa IA generativa: entiende lo que te escriben, recuerda el contexto y responde con tu información.'],
-  ['¿Cuánto demora?', 'Vendedor IA queda funcionando en unos 7 días. Un proyecto a medida toma entre 1 y 6 meses.'],
-  ['¿Cuánto cuesta?', `Vendedor IA Básico cuesta ${PRICE_LINE}, sin costo de implementación y sin permanencia. Los proyectos a medida se cotizan tras una evaluación gratis.`],
+  ['¿Cuánto demora?', 'Un agente queda funcionando en unos 7 días. Un proyecto a medida toma entre 1 y 6 meses.'],
+  ['¿Cuánto cuesta?', `El plan Básico cuesta ${PRICE_LINE}, sin costo de implementación y sin permanencia. Los proyectos a medida se cotizan tras una evaluación gratis.`],
   ['¿Trabajan fuera de Chile?', 'Sí. Trabajamos desde Santiago con empresas de cualquier país.'],
 ];
 

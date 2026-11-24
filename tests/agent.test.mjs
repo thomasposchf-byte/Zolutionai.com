@@ -5,8 +5,25 @@ import { runChat, sanitizeRequest, validateToolInput, SYSTEM_PROMPT, TOOLS } fro
 // Cliente falso de Anthropic: devuelve mensajes predefinidos, ronda por ronda.
 function fakeClient(rounds) {
   const calls = [];
+  const messages = {
+    stream(params) {
+      calls.push({ ...params, viaStable: true });
+      return streamFor(rounds[calls.length - 1]);
+    },
+  };
+  const streamFor = (msg) => {
+    const handlers = {};
+    return {
+      on(ev, fn) { handlers[ev] = fn; return this; },
+      async finalMessage() {
+        for (const b of msg.content) if (b.type === 'text') handlers.text?.(b.text);
+        return msg;
+      },
+    };
+  };
   return {
     calls,
+    messages,
     beta: {
       messages: {
         stream(params) {
@@ -101,4 +118,13 @@ test('runChat: una negativa del modelo se informa y termina', async () => {
   const events = [];
   await runChat({ client, messages: [{ role: 'user', content: 'x' }], send: (e) => events.push(e) });
   assert.deepEqual(events, [{ t: 'refusal' }]);
+});
+
+test('runChat con Netlify AI Gateway: usa la API estable, sin cabeceras beta', async () => {
+  const client = fakeClient([{ stop_reason: 'end_turn', content: [{ type: 'text', text: 'Hola' }] }]);
+  await runChat({ client, messages: [{ role: 'user', content: 'hola' }], send: () => {}, direct: false });
+  assert.equal(client.calls[0].viaStable, true);
+  assert.equal(client.calls[0].betas, undefined);
+  assert.equal(client.calls[0].fallbacks, undefined);
+  assert.equal(client.calls[0].output_config.effort, 'low');
 });

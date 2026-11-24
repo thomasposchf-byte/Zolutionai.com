@@ -393,3 +393,14 @@ table.vs{width:100%;border-collapse:collapse;min-width:520px;font-size:.95rem}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
 @media (max-width:480px){.ficha{grid-template-columns:repeat(2,minmax(0,1fr))}.ficha div:last-child{grid-column:1/-1}.brand img{height:26px;width:auto}}
+/* Bloque Vendedor IA del inicio */
+.split{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(2rem,5vw,4rem);align-items:center}
+@media (max-width:900px){.split{grid-template-columns:minmax(0,1fr)}}
+.mini{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem 1.4rem}
+@media (max-width:560px){.mini{grid-template-columns:minmax(0,1fr)}}
+.mini li{display:flex;gap:.8rem;align-items:flex-start;min-width:0}
+.mini .ico{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--purple-soft);color:var(--purple);flex:none}
+.mini .ico svg{width:20px;height:20px}
+.mini b{display:block;font-family:var(--f-display);font-size:1.02rem;margin-bottom:.1rem}
+.mini span span,.mini li > span:last-child{color:var(--muted);font-size:.95rem}
+.mini li > span:last-child b{color:var(--text)}

@@ -25,7 +25,9 @@ export default async (req) => {
   if (req.method !== 'POST') return json({ error: 'method_not_allowed' }, 405);
   if (!originAllowed(req.headers.get('origin'))) return json({ error: 'forbidden' }, 403);
 
+  // Clave propia de Anthropic, o la que inyecta Netlify AI Gateway (que además define ANTHROPIC_BASE_URL).
   const apiKey = env('ANTHROPIC_API_KEY');
+  const baseURL = env('ANTHROPIC_BASE_URL');
   if (!apiKey) return json({ error: 'not_configured' }, 503);
 
   let body;
@@ -35,7 +37,11 @@ export default async (req) => {
 
   const model = env('ZOE_MODEL') || DEFAULT_MODEL;
   const effort = EFFORTS.includes(env('ZOE_EFFORT')) ? env('ZOE_EFFORT') : DEFAULT_EFFORT;
-  const client = new Anthropic({ apiKey, maxRetries: 1, timeout: 45_000 });
+  const direct = (() => {
+    if (!baseURL) return true;
+    try { return /(^|\.)anthropic\.com$/.test(new URL(baseURL).hostname); } catch { return false; }
+  })();
+  const client = new Anthropic({ apiKey, ...(baseURL ? { baseURL } : {}), maxRetries: 1, timeout: 45_000 });
   const abort = new AbortController();
   const enc = new TextEncoder();
 
@@ -45,7 +51,7 @@ export default async (req) => {
         try { controller.enqueue(enc.encode(`data: ${JSON.stringify(obj)}\n\n`)); } catch { /* cliente desconectado */ }
       };
       try {
-        await runChat({ client, messages: parsed.messages, send, signal: abort.signal, model, effort });
+        await runChat({ client, messages: parsed.messages, send, signal: abort.signal, model, effort, direct });
         send({ t: 'done' });
       } catch (err) {
         if (!abort.signal.aborted) {

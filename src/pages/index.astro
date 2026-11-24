@@ -30,13 +30,13 @@ const others = SOLUTIONS.slice(2);
             Hablar con nuestro agente
           </button>
         </div>
-        <p class="hero-note"><span>Vendedor IA desde <b>{PRICE_LINE}</b></span><span>Sin permanencia</span><span>Listo en 7 días</span></p>
+        <p class="hero-note"><span>Desde <b>{PRICE_LINE}</b></span><span>Sin permanencia</span><span>Listo en 7 días</span></p>
       </div>
 
-      <figure class="demo" aria-label="Ejemplo de Vendedor IA atendiendo a un cliente de una inmobiliaria">
+      <figure class="demo" aria-label="Ejemplo de un agente de IA atendiendo a un cliente de una inmobiliaria por WhatsApp">
         <div class="demo-head">
           <span class="avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1C12 7.1 16.9 12 23 12 16.9 12 12 16.9 12 23 12 16.9 7.1 12 1 12 7.1 12 12 7.1 12 1Z" fill="#fff"/></svg></span>
-          <span class="who"><b>Vendedor IA · Inmobiliaria</b><span class="online">Respondiendo ahora</span></span>
+          <span class="who"><b>Inmobiliaria · WhatsApp</b><span class="online">Agente IA respondiendo</span></span>
           <span class="tag">Ejemplo</span>
         </div>
         <div class="convo">
@@ -55,45 +55,22 @@ const others = SOLUTIONS.slice(2);
     </div>
   </section>
 
-  <section class="section-sm">
-    <div class="wrap">
-      <div class="head center">
-        <p class="eyebrow">Qué hacemos</p>
-        <h2 class="h-1">Dos formas de crecer con IA</h2>
+  <section class="section">
+    <div class="wrap split">
+      <div>
+        <div class="head">
+          <p class="eyebrow">Vendedor IA</p>
+          <h2 class="h-1">Tu vendedor que no duerme</h2>
+          <p class="lead">Atiende en WhatsApp, web, Instagram y Facebook, y te entrega clientes listos para cerrar.</p>
+        </div>
+        <ul class="mini">
+          {VENDEDOR.map(([icon, t, d]) => (
+            <li><span class="ico"><Icon name={icon} /></span><span><b>{t}</b>{d}</span></li>
+          ))}
+        </ul>
+        <div class="actions"><a class="btn btn-secondary" href="/vendedor-ia">Cómo funciona</a></div>
       </div>
-      <div class="paths">
-        <a class="path" href="/vendedor-ia">
-          <span class="ico"><Icon name="chat" /></span>
-          <h3 class="h-2">Vendedor IA</h3>
-          <p>Tu vendedor que no duerme. Atiende, califica y agenda en WhatsApp, web, Instagram y Facebook.</p>
-          <ul><li>Listo en 7 días</li><li>Desde {PRICE_LINE}</li></ul>
-          <span class="link">Conocer Vendedor IA →</span>
-        </a>
-        <a class="path alt" href={custom.path}>
-          <span class="ico"><Icon name="app" /></span>
-          <h3 class="h-2">Soluciones de IA a medida</h3>
-          <p>Tu idea o tu proceso, construido con IA: apps, plataformas, agentes y automatizaciones.</p>
-          <ul><li>Prototipo para validar rápido</li><li>Del prototipo al producto</li></ul>
-          <span class="link">Ver soluciones a medida →</span>
-        </a>
-      </div>
-      <p class="more">También: {others.map((s) => <a href={s.path}>{s.name}</a>)}</p>
-    </div>
-  </section>
-
-  <section class="section band-soft">
-    <div class="wrap">
-      <div class="head">
-        <p class="eyebrow">Vendedor IA</p>
-        <h2 class="h-1">Ningún cliente sin respuesta</h2>
-        <p class="lead">La venta se pierde cuando nadie responde a tiempo. Vendedor IA responde en segundos y te entrega clientes listos para cerrar.</p>
-      </div>
-      <div class="grid-4">
-        {VENDEDOR.map(([icon, t, d]) => (
-          <div class="feature card"><span class="ico"><Icon name={icon} /></span><h3 class="h-3">{t}</h3><p>{d}</p></div>
-        ))}
-      </div>
-      <div class="actions"><a class="btn btn-secondary" href="/vendedor-ia">Cómo funciona Vendedor IA</a></div>
+      <PlanCard title="Plan Básico" />
     </div>
   </section>
 
@@ -124,24 +101,11 @@ const others = SOLUTIONS.slice(2);
         <h2 class="h-1">Proyectos que ya funcionan con IA</h2>
       </div>
       <div class="cases">{CASES.map((c) => <CaseCard c={c} />)}</div>
+      <p class="more">Más soluciones: {others.map((s) => <a href={s.path}>{s.name}</a>)}</p>
     </div>
   </section>
 
   <section class="section band-soft">
-    <div class="wrap home-price">
-      <div class="head" style="margin-bottom:0">
-        <p class="eyebrow">Precios</p>
-        <h2 class="h-1">Vendedor IA desde $500.000 + IVA al mes</h2>
-        <p class="lead">El plan Básico incluye 100 conversaciones al mes en todos tus canales. Sin costo de implementación y sin permanencia.</p>
-        <div class="actions" style="margin-top:.4rem">
-          <a class="btn btn-secondary" href="/precios">Ver todos los planes</a>
-        </div>
-      </div>
-      <PlanCard />
-    </div>
-  </section>
-
-  <section class="section">
     <div class="wrap grid-2">
       <div class="head" style="margin-bottom:0;align-content:start">
         <p class="eyebrow">Preguntas frecuentes</p>

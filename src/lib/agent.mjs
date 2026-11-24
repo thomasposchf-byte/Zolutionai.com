@@ -190,22 +190,22 @@ export function sanitizeRequest(body) {
 }
 
 // Ciclo de conversación: transmite el texto, avisa al navegador de cada herramienta y continúa hasta la respuesta final.
-export async function runChat({ client, messages, send, signal, model = DEFAULT_MODEL, effort = DEFAULT_EFFORT }) {
+// `direct`: true cuando se usa la API de Anthropic con clave propia (habilita el modelo de respaldo ante negativas).
+// Con Netlify AI Gateway va en false, porque el gateway no reenvía cabeceras beta.
+export async function runChat({ client, messages, send, signal, model = DEFAULT_MODEL, effort = DEFAULT_EFFORT, direct = true }) {
   let convo = messages;
   for (let round = 0; round < MAX_ROUNDS; round++) {
-    const stream = client.beta.messages.stream(
-      {
-        model,
-        max_tokens: MAX_TOKENS,
-        betas: ['server-side-fallback-2026-07-01'],
-        fallbacks: 'default',
-        output_config: { effort },
-        system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
-        tools: TOOLS,
-        messages: convo,
-      },
-      { signal },
-    );
+    const params = {
+      model,
+      max_tokens: MAX_TOKENS,
+      output_config: { effort },
+      system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+      tools: TOOLS,
+      messages: convo,
+    };
+    const stream = direct
+      ? client.beta.messages.stream({ ...params, betas: ['server-side-fallback-2026-07-01'], fallbacks: 'default' }, { signal })
+      : client.messages.stream(params, { signal });
     stream.on('text', (delta) => send({ t: 'text', v: delta }));
     const msg = await stream.finalMessage();
 

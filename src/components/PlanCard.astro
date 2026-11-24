@@ -1,13 +1,13 @@
 ---
 // Plan Básico de Vendedor IA (inicio, Vendedor IA y precios).
 import { SITE, PLAN, CHANNELS } from '../data/site.mjs';
-interface Props { cta?: boolean; titleTag?: 'h2' | 'h3' }
-const { cta = true, titleTag = 'h3' } = Astro.props;
+interface Props { cta?: boolean; titleTag?: 'h2' | 'h3'; title?: string }
+const { cta = true, titleTag = 'h3', title = 'Vendedor IA Básico' } = Astro.props;
 const T = titleTag;
 ---
 <article class="price-card featured">
-  <span class="badge">Plan Básico</span>
-  <T class="h-3">Vendedor IA Básico</T>
+  <span class="badge">Para empezar</span>
+  <T class="h-3">{title}</T>
   <div class="price"><b>{PLAN.price}</b><span class="per">+ IVA / mes</span></div>
   <p class="price-sub">{PLAN.conversations} conversaciones al mes</p>
   <div class="chips">{CHANNELS.map((c) => <span>{c}</span>)}</div>
@@ -18,5 +18,5 @@ const T = titleTag;
     <li>Soporte técnico 24/7</li>
   </ul>
   <div class="chips ok"><span>Implementación sin costo</span><span>Sin permanencia</span></div>
-  {cta && <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Empezar con el Básico</a>}
+  {cta && <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Empezar ahora</a>}
 </article>
