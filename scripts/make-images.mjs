@@ -1,21 +1,23 @@
-// Genera og.png, logo.png, apple-touch-icon.png y favicon-32.png en public/. Uso: node scripts/make-images.mjs
+// Genera og.png, apple-touch-icon.png y favicon-32.png en public/. Uso: node scripts/make-images.mjs
 import { createRequire } from 'node:module';
+import { readFileSync } from 'node:fs';
 const { chromium } = createRequire(import.meta.url)('playwright'); // Playwright instalado en el sistema, no es dependencia del sitio
+const logo = `data:image/png;base64,${readFileSync('public/logo.png').toString('base64')}`;
+const spark = (fill, size) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C17BE6"/><stop offset=".5" stop-color="#748DED"/><stop offset="1" stop-color="#3CC3F7"/></linearGradient></defs><path d="M12 1C12 7.1 16.9 12 23 12 16.9 12 12 16.9 12 23 12 16.9 7.1 12 1 12 7.1 12 12 7.1 12 1Z" fill="${fill}"/></svg>`;
 const og = `<!doctype html><html><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Figtree:wght@500&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&family=Figtree:wght@600&display=swap">
 <style>
-body{margin:0;width:1200px;height:630px;background:radial-gradient(55% 75% at 85% 30%,rgba(244,181,87,.22),transparent 70%),#0A0F1E;color:#EAEEF7;font-family:Figtree,sans-serif;display:flex;flex-direction:column;justify-content:space-between;padding:64px 72px;box-sizing:border-box}
-.brand{display:flex;align-items:center;gap:16px;font:800 40px 'Bricolage Grotesque';letter-spacing:-.02em}.brand b{color:#F4B557}
-h1{font:800 76px/1.02 'Bricolage Grotesque';letter-spacing:-.03em;margin:0;max-width:960px}h1 em{font-style:normal;color:#F4B557}
-.row{display:flex;gap:14px;font:500 22px 'JetBrains Mono';color:#9AA5C0;text-transform:uppercase;letter-spacing:.06em}
-.row span{border:1px solid #26325A;border-radius:999px;padding:10px 18px}
+body{margin:0;width:1200px;height:630px;box-sizing:border-box;padding:70px 80px;background:radial-gradient(45% 60% at 92% 12%,rgba(60,195,247,.22),transparent 70%),radial-gradient(50% 70% at 80% 100%,rgba(193,123,230,.25),transparent 70%),#fff;font-family:Figtree,sans-serif;display:flex;flex-direction:column;justify-content:space-between;color:#141019}
+h1{font:800 78px/1.04 'Plus Jakarta Sans';letter-spacing:-.035em;margin:0;max-width:900px}h1 span{color:#500868}
+.row{display:flex;gap:14px;font-size:24px;color:#4F4A5C}.row b{color:#500868}
+.row span{border:2px solid #E7E2EE;border-radius:999px;padding:10px 20px;background:#fff}
 </style></head><body>
-<div class="brand"><svg width="56" height="56" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#F4B557"/><path d="M10 10.5h12L10 21.5h12" fill="none" stroke="#1B1304" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Zolutions <b>AI</b></span></div>
-<h1>Agentes de IA que <em>venden</em> por tu empresa, 24/7</h1>
-<div class="row"><span>WhatsApp</span><span>Web</span><span>Instagram</span><span>Facebook</span><span>Desde US$500/mes</span></div>
+<img src="${logo}" style="height:58px;width:auto;align-self:flex-start">
+<h1>IA que <span>vende</span> y <span>trabaja</span> por tu empresa</h1>
+<div class="row"><span>Vendedor IA</span><span>Soluciones a medida</span><span>Desde <b>$500.000 + IVA</b>/mes</span></div>
 </body></html>`;
-const mark = (size, pad) => `<!doctype html><html><body style="margin:0;width:${size}px;height:${size}px;background:${pad ? '#0A0F1E' : 'transparent'};display:grid;place-items:center">
-<svg width="${size - pad * 2}" height="${size - pad * 2}" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="#F4B557"/><path d="M10 10.5h12L10 21.5h12" fill="none" stroke="#1B1304" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></body></html>`;
+const icon = (size) => `<!doctype html><html><body style="margin:0;width:${size}px;height:${size}px;display:grid;place-items:center;background:transparent">
+<div style="width:${size}px;height:${size}px;border-radius:${Math.round(size * 0.24)}px;background:#500868;display:grid;place-items:center">${spark('url(#g)', Math.round(size * 0.68))}</div></body></html>`;
 const b = await chromium.launch();
 const shot = async (html, w, h, file, transparent = false) => {
   const p = await b.newPage({ viewport: { width: w, height: h }, deviceScaleFactor: 1 });
@@ -24,8 +26,7 @@ const shot = async (html, w, h, file, transparent = false) => {
   await p.close();
 };
 await shot(og, 1200, 630, 'og.png');
-await shot(mark(512, 0), 512, 512, 'logo.png', true);
-await shot(mark(180, 0), 180, 180, 'apple-touch-icon.png', true);
-await shot(mark(32, 0), 32, 32, 'favicon-32.png', true);
+await shot(icon(180), 180, 180, 'apple-touch-icon.png', true);
+await shot(icon(32), 32, 32, 'favicon-32.png', true);
 await b.close();
 console.log('ok');

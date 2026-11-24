@@ -218,7 +218,7 @@ function init(root) {
     const p = document.createElement('p'); p.textContent = `Un especialista te contactará por ${lead.contacto}. Si prefieres no esperar:`;
     const acts = document.createElement('div'); acts.className = 'acts';
     const a1 = document.createElement('a'); a1.className = 'btn btn-primary'; a1.href = CAL; a1.target = '_blank'; a1.rel = 'noopener'; a1.textContent = 'Agendar reunión ahora'; a1.dataset.track = 'agendar';
-    const a2 = document.createElement('a'); a2.className = 'btn btn-ghost'; a2.href = waLink(lead); a2.target = '_blank'; a2.rel = 'noopener'; a2.textContent = 'Seguir por WhatsApp'; a2.dataset.track = 'whatsapp';
+    const a2 = document.createElement('a'); a2.className = 'btn btn-secondary'; a2.href = waLink(lead); a2.target = '_blank'; a2.rel = 'noopener'; a2.textContent = 'Seguir por WhatsApp'; a2.dataset.track = 'whatsapp';
     acts.append(a1, a2);
     el.append(hd, p, acts);
     if (!handoffEl || !handoffEl.isConnected) { log.appendChild(el); handoffEl = el; }
@@ -238,7 +238,7 @@ function init(root) {
       <label class="sr" for="mfMsg">¿Qué necesitas?</label><textarea id="mfMsg" placeholder="¿Qué necesitas resolver?" maxlength="600"></textarea>
       <span class="muted" style="font-size:.76rem">Al enviar aceptas la <a href="/privacidad">política de privacidad</a>.</span>
       <span class="muted" id="mfErr" style="font-size:.8rem;color:var(--hot)"></span>
-      <div class="r"><button type="button" class="btn btn-ghost btn-sm" id="mfCancel">Cancelar</button><button class="btn btn-primary btn-sm">Enviar</button></div>`;
+      <div class="r"><button type="button" class="btn btn-secondary btn-sm" id="mfCancel">Cancelar</button><button class="btn btn-primary btn-sm">Enviar</button></div>`;
     log.appendChild(f); scrollLog(); f.querySelector('#mfName').focus();
     f.querySelector('#mfCancel').addEventListener('click', () => f.remove());
     f.addEventListener('submit', async (ev) => {

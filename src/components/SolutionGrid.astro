@@ -1,18 +1,18 @@
 ---
 import Icon from './Icon.astro';
 import { SOLUTIONS } from '../data/site.mjs';
-interface Props { exclude?: string; heading?: 'h2' | 'h3' }
-const { exclude, heading = 'h3' } = Astro.props;
+interface Props { heading?: 'h2' | 'h3'; skipCustom?: boolean }
+const { heading = 'h3', skipCustom = false } = Astro.props;
 const H = heading;
-const items = SOLUTIONS.filter((s) => s.key !== exclude);
+const items = skipCustom ? SOLUTIONS.slice(1) : SOLUTIONS;
 ---
-<div class="sol-grid">
+<div class="grid-3">
   {items.map((s) => (
-    <a class="sol" href={s.path}>
+    <a class="path" href={s.path}>
       <span class="ico"><Icon name={s.icon} /></span>
       <H class="h-3">{s.name}</H>
       <p>{s.short}</p>
-      <span class="meta"><span>Plazo típico: {s.plazo}</span><span class="go">Ver más →</span></span>
+      <span class="link">Ver más →</span>
     </a>
   ))}
 </div>

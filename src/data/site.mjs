@@ -14,48 +14,116 @@ export const SITE = {
   region: 'Región Metropolitana',
   country: 'CL',
   ga4: 'G-Z2L62JSLEH',
-  price: { amount: 500, currency: 'USD', conversations: 100 },
 };
+
+// Plan Básico de Vendedor IA (único precio publicado).
+export const PLAN = {
+  name: 'Vendedor IA Básico',
+  amount: 500000,
+  price: '$500.000',
+  currency: 'CLP',
+  conversations: 100,
+};
+export const PRICE_LINE = `${PLAN.price} + IVA al mes`;
 
 export const waLink = (text) =>
   `https://api.whatsapp.com/send?phone=${SITE.whatsapp}${text ? `&text=${encodeURIComponent(text)}` : ''}`;
 
 export const CHANNELS = ['WhatsApp', 'Web', 'Instagram', 'Facebook'];
 
+// Lo que hace Vendedor IA (inicio y página del producto).
+export const VENDEDOR = [
+  ['chat', 'Responde en segundos', 'A cualquier hora y en todos tus canales, con tu información.'],
+  ['target', 'Califica', 'Detecta quién quiere comprar: necesidad, presupuesto y urgencia.'],
+  ['calendar', 'Agenda', 'Ofrece horarios y confirma la reunión en tu calendario.'],
+  ['handoff', 'Te deriva el cliente', 'Tu equipo recibe al cliente listo, con el resumen.'],
+];
+
+// Lo que construimos a medida.
+export const BUILD = [
+  ['app', 'Apps y plataformas con IA', 'Para tus clientes o tu equipo, en web y celular.'],
+  ['bot', 'Agentes para tu operación', 'Responden, registran y resuelven tareas por tu equipo.'],
+  ['flow', 'Automatización de procesos', 'Menos planillas, menos trabajo manual, menos errores.'],
+  ['plug', 'Integraciones', 'La IA conectada a tu CRM, ERP y herramientas.'],
+];
+
+export const BUILD_STEPS = [
+  ['Idea', 'Conversamos tu proceso o tu idea. La evaluación es gratis.'],
+  ['Prototipo', 'Construimos una primera versión para validarla rápido.'],
+  ['Producto', 'La terminamos, la probamos y la ponemos en marcha.'],
+  ['Mejora', 'Medimos y la mejoramos con tu equipo.'],
+];
+
+export const CASES = [
+  {
+    key: 'driver-assist-ai',
+    name: 'Driver Assist AI',
+    kind: 'Agente de WhatsApp y portal para automotoras',
+    summary: 'Resuelve dudas técnicas por modelo, agenda mantenciones y coordina asistencia en ruta. El equipo ve todo en un panel.',
+    challenge: 'Las automotoras reciben por WhatsApp preguntas técnicas, pedidos de mantención y emergencias en ruta, y el equipo no alcanza a responder todo a tiempo.',
+    solution: 'Un agente de IA en WhatsApp que atiende a cada cliente según su auto, más un portal donde el equipo ve conversaciones, agenda, mantenciones y lo que necesita a una persona.',
+    features: ['Agente de WhatsApp 24/7', 'Respuestas técnicas por modelo de auto', 'Agenda de mantenciones por taller', 'Coordinación de asistencia en ruta', 'Portal con métricas y alertas'],
+    tags: ['WhatsApp', 'Agente IA', 'Portal web'],
+    image: '/casos/driver-assist-ai.webp',
+    link: 'https://driverassistai.netlify.app',
+    linkLabel: 'Ver demo',
+    note: 'La demo usa datos de ejemplo.',
+  },
+  {
+    key: 'budafit',
+    name: 'BudaFit',
+    kind: 'App de entrenamiento y nutrición con coach IA',
+    summary: 'Reconoce la comida en una foto, anota el entreno que le dictas por voz y te dice qué peso hacer hoy.',
+    challenge: 'Quien entrena anota sus series en el celular y usa una app distinta para cada cosa, sin saber si de verdad está avanzando.',
+    solution: 'Una app que junta entreno, comida y hábitos con un coach IA que entiende español de Chile y reconoce también la comida chilena.',
+    features: ['Visión IA: calorías y proteína desde una foto', 'Coach por voz que registra cada serie', 'Sugerencia de peso y repeticiones', 'Avatar, misiones y rachas', 'Funciona en iPhone y Android'],
+    tags: ['App', 'Visión IA', 'Voz'],
+    image: '/casos/budafit.webp',
+    link: 'https://budafit.netlify.app',
+    linkLabel: 'Ver proyecto',
+    note: 'Beta cerrada en diciembre de 2026.',
+  },
+];
+
 export const SOLUTIONS = [
+  {
+    key: 'desarrollo-a-medida',
+    path: '/soluciones/desarrollo-ia-a-medida',
+    name: 'Soluciones de IA a medida',
+    icon: 'app',
+    short: 'Apps, plataformas y automatizaciones con IA hechas para tu negocio.',
+    plazo: 'Según el proyecto',
+    lead: 'Diseñamos y desarrollamos software con IA para tu negocio, del prototipo al producto en uso.',
+    seo: {
+      title: 'Desarrollo de soluciones de IA a medida | Zolutions AI',
+      desc: 'Apps, plataformas, agentes y automatizaciones con inteligencia artificial hechas para tu negocio. Del prototipo al producto. Evaluación gratis.',
+    },
+    faq: [
+      ['¿Cuánto demora un proyecto a medida?', 'Entre 1 y 6 meses según el alcance. Partimos con un prototipo para validar rápido.'],
+      ['¿Cuánto cuesta?', 'Depende del alcance. Lo cotizamos después de una evaluación gratuita.'],
+      ['¿Qué necesito para partir?', 'Solo tu idea o el proceso que quieres mejorar. Nosotros lo bajamos a un plan.'],
+    ],
+  },
   {
     key: 'agentes-ia-whatsapp',
     path: '/soluciones/agentes-ia-whatsapp',
-    name: 'Agentes IA conversacionales',
+    name: 'Agentes IA para WhatsApp',
     icon: 'chat',
-    short: 'Agentes que conversan como una persona en WhatsApp, web, Instagram y Facebook y responden 24/7.',
-    h1: 'Agentes de IA omnicanal: WhatsApp, web, Instagram y Facebook',
-    lead: 'Un agente entrenado con la información de tu empresa que conversa con naturalidad, responde en segundos y resuelve qué pasa después: agenda, cotiza o deriva a tu equipo.',
+    short: 'Agentes que atienden 24/7 en WhatsApp, web, Instagram y Facebook.',
+    h1: 'Agentes de IA para WhatsApp, web y redes sociales',
+    lead: 'Un agente entrenado con tu información que responde en segundos, agenda y deriva a tu equipo.',
     plazo: '~7 días',
     canal: 'WhatsApp, web, Instagram, Facebook',
-    precio: 'Desde US$500/mes + IVA',
-    pains: [
-      'Consultas de noche o fin de semana que se responden al día siguiente',
-      'Ejecutivos repitiendo las mismas respuestas todo el día',
-      'Prospectos que se enfrían mientras esperan una respuesta',
-    ],
-    incluye: [
-      'Entrenamiento con tus productos, precios, políticas y preguntas frecuentes',
-      'Atención omnicanal: WhatsApp Business, chat web, Instagram y Facebook Messenger',
-      'Agendamiento directo en tu calendario',
-      'Derivación a una persona con el resumen de la conversación',
-      'Panel con conversaciones y métricas',
-      'Ajustes continuos y soporte 24/7',
-    ],
-    ideal: 'Empresas que reciben muchas consultas repetitivas por WhatsApp o redes sociales y quieren responder al instante sin sumar personal.',
+    precio: `Desde ${PRICE_LINE}`,
+    pains: ['Consultas de noche que se responden al día siguiente', 'Ejecutivos repitiendo las mismas respuestas', 'Clientes que se enfrían esperando'],
+    incluye: ['Entrenado con tus productos, precios y políticas', 'WhatsApp, chat web, Instagram y Facebook', 'Agenda en tu calendario', 'Deriva a tu equipo con resumen'],
     faq: [
-      ['¿Es un chatbot?', 'No. Usa IA generativa: entiende preguntas abiertas, recuerda el contexto de la conversación y responde con tu información, sin menús de botones.'],
-      ['¿Qué pasa si no sabe responder algo?', 'Lo reconoce y deriva la conversación a tu equipo con el resumen, en vez de inventar una respuesta.'],
-      ['¿Cuánto cuesta?', 'Desde US$500 al mes + IVA, con 100 conversaciones mensuales, implementación sin costo y sin permanencia.'],
+      ['¿Es un chatbot?', 'No. Entiende preguntas abiertas y recuerda el contexto, sin menús de botones.'],
+      ['¿Qué pasa si no sabe algo?', 'Lo reconoce y deriva la conversación a tu equipo, en vez de inventar.'],
     ],
     seo: {
       title: 'Agentes IA para WhatsApp, web y redes | Zolutions AI',
-      desc: 'Agentes de IA que responden 24/7 en WhatsApp, web, Instagram y Facebook, agendan y derivan a tu equipo. Desde US$500 al mes + IVA, listos en 7 días.',
+      desc: 'Agentes de IA que responden 24/7 en WhatsApp, web, Instagram y Facebook, agendan y derivan a tu equipo. Desde $500.000 + IVA al mes.',
     },
   },
   {
@@ -63,156 +131,79 @@ export const SOLUTIONS = [
     path: '/soluciones/automatizacion-comercial',
     name: 'Automatización comercial',
     icon: 'flow',
-    short: 'Captación, calificación, seguimiento y CRM conectados en un solo flujo automático.',
-    h1: 'Automatización comercial con IA, del primer mensaje al cierre',
-    lead: 'Conectamos captación, calificación, seguimiento y CRM para que ningún prospecto quede sin respuesta ni sin un siguiente paso.',
+    short: 'Captación, seguimiento y CRM conectados en un solo flujo.',
+    h1: 'Automatización comercial con IA',
+    lead: 'Conectamos captación, seguimiento y CRM para que ningún cliente quede sin respuesta.',
     plazo: '2 a 6 semanas',
     canal: 'WhatsApp, email, CRM',
-    pains: [
-      'Leads que llegan por varios canales y terminan en planillas distintas',
-      'Seguimientos que dependen de la memoria de cada ejecutivo',
-      'Reportes comerciales armados a mano cada semana',
-    ],
-    incluye: [
-      'Captura automática de leads desde formularios, WhatsApp y anuncios',
-      'Calificación y asignación al ejecutivo correcto',
-      'Secuencias de seguimiento por WhatsApp y email',
-      'Registro automático en tu CRM',
-      'Alertas cuando un prospecto muestra intención de compra',
-      'Reporte comercial automático',
-    ],
-    ideal: 'Equipos comerciales que pierden oportunidades por falta de seguimiento o por trabajo manual entre sistemas.',
+    pains: ['Leads repartidos en varias planillas', 'Seguimientos que dependen de la memoria', 'Reportes armados a mano'],
+    incluye: ['Captura automática de leads', 'Asignación al ejecutivo correcto', 'Seguimiento por WhatsApp y email', 'Registro en tu CRM y reportes'],
     faq: [
-      ['¿Necesito tener un CRM?', 'No es obligatorio. Si no tienes uno, te recomendamos el más simple para tu operación y lo configuramos.'],
-      ['¿Mis vendedores tienen que cambiar su forma de trabajar?', 'Lo mínimo. La automatización se adapta a tu proceso actual y elimina las tareas repetitivas.'],
+      ['¿Necesito un CRM?', 'No. Si no tienes, te recomendamos uno simple y lo configuramos.'],
+      ['¿Cambia cómo trabaja mi equipo?', 'Lo mínimo. Se adapta a tu proceso y quita lo repetitivo.'],
     ],
     seo: {
       title: 'Automatización comercial con IA | Zolutions AI',
-      desc: 'Automatiza captación, calificación, seguimiento y registro en CRM con IA. Ningún prospecto sin respuesta ni sin siguiente paso. Evaluación gratis.',
+      desc: 'Automatiza captación, seguimiento y registro en CRM con IA. Ningún cliente sin respuesta ni sin siguiente paso. Evaluación gratis.',
     },
   },
   {
     key: 'optimizacion-ads-ia',
     path: '/soluciones/optimizacion-ads-ia',
-    name: 'Optimización de Ads con IA',
+    name: 'Ads con IA',
     icon: 'ads',
-    short: 'Tracking e inteligencia de datos para invertir en los anuncios que generan ventas.',
-    h1: 'Campañas de Ads optimizadas con IA y datos reales de venta',
-    lead: 'Medimos qué campañas traen ventas, no solo clics. Nuestro modelo de IA analiza, gestiona y optimiza tus campañas en tiempo real.',
+    short: 'Invierte solo en los anuncios que generan ventas.',
+    h1: 'Campañas de Ads optimizadas con IA',
+    lead: 'Medimos qué anuncios traen ventas, no solo clics, y los optimizamos en tiempo real.',
     plazo: '2 a 4 semanas',
     canal: 'Meta Ads, Google Ads',
-    pains: [
-      'Presupuesto en anuncios sin saber cuáles generan ventas',
-      'Tracking incompleto entre el anuncio, la conversación y la venta',
-      'Optimizaciones manuales que llegan tarde',
-    ],
-    incluye: [
-      'Auditoría y configuración de tracking: píxeles, conversiones y eventos',
-      'Conexión entre anuncios, conversaciones y ventas cerradas',
-      'Análisis y optimización continua con IA',
-      'Alertas de gasto y rendimiento',
-      'Panel de costo por lead y costo por venta',
-    ],
-    ideal: 'Empresas que invierten en Meta o Google Ads y quieren saber exactamente qué anuncios generan ventas.',
+    pains: ['No sabes qué anuncio vende', 'Tracking incompleto', 'Ajustes que llegan tarde'],
+    incluye: ['Tracking completo de conversiones', 'Anuncios conectados a ventas reales', 'Optimización continua con IA', 'Panel de costo por venta'],
     faq: [
-      ['¿Reemplaza a mi agencia de marketing?', 'No necesariamente. Podemos trabajar con tu agencia aportando el tracking y la optimización con IA.'],
-      ['¿Desde qué inversión conviene?', 'Depende de tu rubro. Lo revisamos en la evaluación gratuita.'],
+      ['¿Reemplaza a mi agencia?', 'No necesariamente. Podemos trabajar junto a tu agencia.'],
+      ['¿Desde qué inversión conviene?', 'Depende del rubro. Lo vemos en la evaluación gratuita.'],
     ],
     seo: {
       title: 'Optimización de campañas Ads con IA | Zolutions AI',
-      desc: 'Tracking completo e IA que analiza y optimiza tus campañas de Meta y Google Ads en tiempo real según las ventas que generan, no solo los clics.',
+      desc: 'Tracking completo e IA que optimiza tus campañas de Meta y Google Ads en tiempo real según las ventas que generan, no solo los clics.',
     },
   },
   {
     key: 'integraciones-ia',
     path: '/soluciones/integraciones-ia',
-    name: 'Integraciones personalizadas',
+    name: 'Integraciones',
     icon: 'plug',
-    short: 'Conectamos la IA con tu CRM, ERP, e-commerce y las herramientas que ya usas.',
-    h1: 'Integraciones de IA con tu CRM, ERP y herramientas',
-    lead: 'Hacemos que la IA trabaje con los sistemas que ya usas: lee y registra datos donde tu equipo los necesita.',
+    short: 'La IA conectada a tu CRM, ERP y herramientas.',
+    h1: 'Integraciones de IA con tus sistemas',
+    lead: 'Hacemos que la IA lea y registre datos en los sistemas que ya usas.',
     plazo: '1 a 6 semanas',
     canal: 'API, webhooks',
-    pains: [
-      'Información repartida entre sistemas que no se comunican',
-      'Doble digitación entre CRM, planillas y facturación',
-      'Herramientas de IA aisladas que nadie usa',
-    ],
-    incluye: [
-      'Conexión con CRM, ERP, e-commerce, calendarios y planillas',
-      'APIs y webhooks a medida',
-      'Flujos automáticos entre sistemas',
-      'Control de accesos y seguridad',
-      'Documentación y monitoreo',
-    ],
-    ideal: 'Empresas con varios sistemas que necesitan que la IA consulte y registre información automáticamente.',
+    pains: ['Sistemas que no se comunican', 'Doble digitación', 'Herramientas de IA aisladas'],
+    incluye: ['CRM, ERP, e-commerce y planillas', 'APIs y webhooks a medida', 'Flujos automáticos', 'Accesos seguros y monitoreo'],
     faq: [
-      ['¿Con qué sistemas pueden integrar?', 'Con la mayoría de los que tienen API o exportación de datos. Lo confirmamos en la evaluación.'],
-      ['¿Es seguro conectar mis sistemas?', 'Trabajamos con accesos mínimos y controlados para cada integración.'],
+      ['¿Con qué sistemas integran?', 'Con la mayoría de los que tienen API o exportan datos.'],
+      ['¿Es seguro?', 'Usamos accesos mínimos y controlados en cada integración.'],
     ],
     seo: {
       title: 'Integraciones de IA con tu CRM y sistemas | Zolutions AI',
-      desc: 'Conectamos la IA con tu CRM, ERP, e-commerce, calendario y planillas para que lea y registre datos automáticamente. Integraciones a medida y seguras.',
-    },
-  },
-  {
-    key: 'desarrollo-a-medida',
-    path: '/soluciones/desarrollo-ia-a-medida',
-    name: 'Soluciones a medida',
-    icon: 'build',
-    short: 'Diseñamos y construimos la solución de IA que tu desafío necesita.',
-    h1: 'Desarrollo de soluciones de IA a medida',
-    lead: 'Cuando tu desafío no calza con un producto estándar, lo diseñamos y construimos contigo, desde el prototipo hasta la operación.',
-    plazo: '1 a 6 meses',
-    canal: 'Según el proyecto',
-    pains: [
-      'Procesos internos únicos que ningún software resuelve',
-      'Documentos o datos que se procesan a mano',
-      'Ideas de IA sin un equipo técnico para ejecutarlas',
-    ],
-    incluye: [
-      'Levantamiento del proceso y caso de negocio',
-      'Prototipo funcional para validar',
-      'Desarrollo, pruebas e implementación',
-      'Capacitación de tu equipo',
-      'Mejora continua y soporte 24/7',
-    ],
-    ideal: 'Empresas con un proceso específico que quieren automatizar o mejorar con IA.',
-    faq: [
-      ['¿Cuánto demora un proyecto a medida?', 'Entre 1 y 6 meses según el alcance. Partimos con un prototipo para validar rápido.'],
-      ['¿El desarrollo queda para mi empresa?', 'Lo definimos en la propuesta según el tipo de proyecto.'],
-    ],
-    seo: {
-      title: 'Desarrollo de IA a medida para empresas | Zolutions AI',
-      desc: 'Diseñamos y desarrollamos soluciones de inteligencia artificial a medida: del prototipo a la operación, con capacitación y soporte 24/7.',
+      desc: 'Conectamos la IA con tu CRM, ERP, e-commerce, calendario y planillas para que lea y registre datos automáticamente. Integraciones a medida.',
     },
   },
   {
     key: 'asesoria-ia',
     path: '/asesoria-ia',
-    name: 'Asesorías IA',
+    name: 'Asesoría IA',
     icon: 'compass',
-    short: 'Especialistas que te acompañan a decidir dónde y cómo usar IA, desde el día 1.',
+    short: 'Te ayudamos a decidir dónde y cómo usar IA.',
     h1: 'Asesoría en inteligencia artificial para empresas',
-    lead: 'Te ayudamos a decidir dónde la IA genera retorno en tu empresa y en qué orden implementarla.',
+    lead: 'Te ayudamos a decidir dónde la IA genera retorno y en qué orden implementarla.',
     plazo: 'Desde el día 1',
     canal: 'Reuniones y talleres',
-    pains: [
-      'No saber por dónde empezar con IA',
-      'Pilotos que nunca pasan de prueba',
-      'Invertir en herramientas que el equipo no adopta',
-    ],
-    incluye: [
-      'Diagnóstico de procesos y oportunidades',
-      'Hoja de ruta priorizada por impacto y esfuerzo',
-      'Selección de herramientas y proveedores',
-      'Acompañamiento en la implementación',
-      'Capacitación a equipos',
-    ],
-    ideal: 'Gerencias que quieren una estrategia de IA clara antes de invertir.',
+    pains: ['No saber por dónde empezar', 'Pilotos que no pasan de prueba', 'Herramientas que nadie usa'],
+    incluye: ['Diagnóstico de procesos', 'Hoja de ruta priorizada', 'Selección de herramientas', 'Capacitación a equipos'],
     faq: [
-      ['¿La primera evaluación tiene costo?', 'No. La evaluación inicial es gratuita.'],
-      ['¿Trabajan con empresas fuera de Chile?', 'Sí, operamos desde Santiago para empresas de cualquier país.'],
+      ['¿La primera evaluación tiene costo?', 'No, es gratis.'],
+      ['¿Trabajan fuera de Chile?', 'Sí, con empresas de cualquier país.'],
     ],
     seo: {
       title: 'Asesoría en IA para empresas | Zolutions AI',
@@ -221,46 +212,34 @@ export const SOLUTIONS = [
   },
 ];
 
-export const STEPS = [
-  ['Evaluación', 'Gratis', 'Revisamos tu proceso comercial actual y detectamos dónde la IA tendría más impacto.'],
-  ['Diseño y desarrollo', 'Días o semanas', 'Construimos y entrenamos la solución con la información y el tono de tu empresa.'],
-  ['Optimización', 'Continua', 'Medimos resultados, ajustamos y mejoramos cada semana.'],
-];
-
 export const INDUSTRIES = [
-  ['Inmobiliarias', ['Responde consultas por propiedad las 24 horas', 'Califica por presupuesto, comuna y financiamiento', 'Agenda visitas en el calendario de cada corredor']],
-  ['Retail y e-commerce', ['Recomienda productos según lo que busca el cliente', 'Informa stock, despachos y cambios', 'Recupera carritos abandonados por WhatsApp']],
-  ['Salud y clínicas', ['Agenda, confirma y recuerda horas', 'Responde sobre prestaciones, convenios y preparación', 'Reduce inasistencias con recordatorios automáticos']],
-  ['Educación', ['Informa programas, aranceles y fechas', 'Califica postulantes y agenda entrevistas', 'Hace seguimiento hasta la matrícula']],
-  ['Automotriz', ['Cotiza modelos y versiones', 'Agenda test drives y servicio técnico', 'Deriva al vendedor con el perfil del cliente']],
-  ['Servicios profesionales y B2B', ['Califica solicitudes según tamaño y necesidad', 'Prepara la información para la propuesta', 'Agenda reuniones con el área comercial']],
-  ['Turismo y hotelería', ['Responde disponibilidad y tarifas en varios idiomas', 'Gestiona reservas y cambios', 'Ofrece servicios adicionales durante la estadía']],
+  ['Inmobiliarias', ['Responde por cada propiedad', 'Califica por presupuesto y comuna', 'Agenda visitas']],
+  ['Automotriz', ['Cotiza modelos', 'Agenda test drives y mantenciones', 'Atiende dudas técnicas']],
+  ['Salud y clínicas', ['Agenda y confirma horas', 'Responde sobre prestaciones', 'Reduce inasistencias']],
+  ['Retail y e-commerce', ['Recomienda productos', 'Informa stock y despacho', 'Recupera carritos']],
+  ['Educación', ['Informa programas y aranceles', 'Agenda entrevistas', 'Sigue hasta la matrícula']],
+  ['Servicios B2B', ['Califica solicitudes', 'Prepara la propuesta', 'Agenda reuniones']],
 ];
 
 export const FAQ = [
-  ['¿Sus agentes conversacionales son un chatbot?', 'No. Usan inteligencia artificial generativa: entienden lenguaje natural, recuerdan el contexto de la conversación y responden con la información de tu empresa, sin menús de botones.'],
-  ['¿Cuánto demora implementar una solución de IA?', 'Un agente conversacional toma alrededor de 7 días. Las soluciones a medida pueden tomar hasta 6 meses, según su alcance.'],
-  ['¿Cuánto cuesta?', 'Un agente conversacional parte desde US$500 al mes + IVA, con 100 conversaciones mensuales en WhatsApp, web, Instagram y Facebook, implementación sin costo y sin permanencia. Vendedor IA y las soluciones a medida se cotizan después de una evaluación gratuita.'],
-  ['¿En qué canales funcionan los agentes?', 'En WhatsApp, chat web, Instagram y Facebook Messenger, todos conectados al mismo agente.'],
-  ['¿En qué industrias trabajan?', 'En casi todas: inmobiliarias, retail, salud, educación, automotriz, servicios profesionales y turismo, entre otras.'],
-  ['¿Trabajan con empresas fuera de Chile?', 'Sí. Operamos desde Santiago para empresas de cualquier país.'],
-  ['¿Tienen soporte técnico?', 'Sí. Todas nuestras soluciones incluyen soporte técnico 24/7.'],
+  ['¿Es un chatbot?', 'No. Usa IA generativa: entiende lo que te escriben, recuerda el contexto y responde con tu información.'],
+  ['¿Cuánto demora?', 'Vendedor IA queda funcionando en unos 7 días. Un proyecto a medida toma entre 1 y 6 meses.'],
+  ['¿Cuánto cuesta?', `Vendedor IA Básico cuesta ${PRICE_LINE}, sin costo de implementación y sin permanencia. Los proyectos a medida se cotizan tras una evaluación gratis.`],
+  ['¿Trabajan fuera de Chile?', 'Sí. Trabajamos desde Santiago con empresas de cualquier país.'],
 ];
 
 export const VFAQ = [
-  ['¿En qué se diferencia de un chatbot?', 'Un chatbot responde preguntas. Vendedor IA tiene un objetivo comercial: califica, recomienda, agenda y hace seguimiento hasta que el cliente avanza en la compra.'],
-  ['¿Puede equivocarse?', 'Puede pasar. Por eso lo entrenamos solo con tu información, le definimos qué no debe responder y deriva a tu equipo cuando no está seguro.'],
-  ['¿Qué pasa cuando el cliente quiere hablar con una persona?', 'Lo deriva de inmediato a tu equipo con el resumen de la conversación, para que nadie tenga que volver a preguntar lo mismo.'],
-  ['¿Cuánto cuesta?', 'Vendedor IA se cotiza según canales, volumen e integraciones. Como referencia, un agente conversacional omnicanal parte desde US$500 al mes + IVA con 100 conversaciones.'],
+  ['¿En qué se diferencia de un chatbot?', 'Un chatbot responde. Vendedor IA vende: califica, agenda y sigue al cliente hasta la compra.'],
+  ['¿Puede equivocarse?', 'Puede pasar. Por eso solo usa tu información y deriva a tu equipo cuando no está seguro.'],
+  ['¿Y si el cliente quiere hablar con una persona?', 'Lo deriva de inmediato, con el resumen de la conversación.'],
 ];
 
 export const PFAQ = [
-  ['¿Tiene costo la implementación?', 'No. En el Agente Conversacional la implementación no tiene costo: pagas solo la mensualidad. En Vendedor IA y en el plan Empresa se define en la propuesta.'],
-  ['¿Hay permanencia mínima?', 'No. El Agente Conversacional es un plan mensual y puedes cancelarlo cuando quieras.'],
-  ['¿Los precios incluyen IVA?', 'No. Los valores están en dólares (USD) y se les suma IVA.'],
-  ['¿Qué necesito para partir?', 'Acceso a tus canales (WhatsApp Business, Instagram, Facebook y tu sitio web) y la información de tu negocio: productos, precios, políticas y preguntas frecuentes.'],
-  ['¿Puedo pasar de un plan a otro?', 'Sí. Puedes partir con el Agente Conversacional y pasar a Vendedor IA cuando quieras calificar, cotizar y hacer seguimiento automático.'],
-  ['¿Por qué Vendedor IA no tiene precio publicado?', 'Porque depende de cuántos canales, conversaciones e integraciones necesitas. Lo cotizamos en la evaluación gratuita, sin compromiso.'],
+  ['¿Qué cuenta como una conversación?', 'Todo lo que habla un mismo cliente en 24 horas, en cualquier canal. Si escribe diez veces ese día, es una.'],
+  ['¿La implementación tiene costo?', 'No, en el plan Básico. En los planes a medida se define en la propuesta.'],
+  ['¿Hay permanencia?', 'No. Es un plan mensual y puedes cancelarlo cuando quieras.'],
+  ['¿Qué pasa con las tarifas de WhatsApp?', 'Responder a quien te escribe no tiene costo de Meta. Los mensajes que inicia tu empresa tienen una tarifa de Meta aparte.'],
+  ['¿Puedo cambiar de plan?', 'Sí. Puedes partir con el Básico y pasar al Avanzado cuando lo necesites.'],
 ];
 
 // Páginas que el agente puede mostrar al visitante (clave -> ruta y nombre).
@@ -269,6 +248,7 @@ export const PAGES = {
   'vendedor-ia': { path: '/vendedor-ia', name: 'Vendedor IA' },
   soluciones: { path: '/soluciones', name: 'Soluciones' },
   ...Object.fromEntries(SOLUTIONS.map((s) => [s.key, { path: s.path, name: s.name }])),
+  casos: { path: '/casos', name: 'Casos de éxito' },
   industrias: { path: '/industrias', name: 'Industrias' },
   precios: { path: '/precios', name: 'Precios' },
   contacto: { path: '/contacto', name: 'Contacto' },

@@ -1,8 +1,9 @@
 ---
 // Agente Zoe: botón flotante, burbuja proactiva y ventana de chat. La lógica está en src/scripts/chat.js.
 import { SITE, waLink } from '../data/site.mjs';
+import Spark from './Spark.astro';
 interface Props { chips?: string[]; nudge?: [string, string]; pageName: string }
-const { chips = ['¿Qué es Vendedor IA?', '¿Cuánto demora implementarlo?', '¿Cuánto cuesta?', 'Quiero una evaluación'], nudge, pageName } = Astro.props;
+const { chips = ['¿Qué es Vendedor IA?', '¿Cuánto cuesta?', 'Tengo una idea para una app', 'Quiero una evaluación'], nudge, pageName } = Astro.props;
 ---
 <div id="zoe-root" data-page={pageName} data-cal={SITE.calendar} data-wa={SITE.whatsapp} data-wa-shown={SITE.whatsappDisplay}>
   {nudge && (
@@ -12,12 +13,12 @@ const { chips = ['¿Qué es Vendedor IA?', '¿Cuánto demora implementarlo?', '�
     </div>
   )}
   <button class="zoe-launch" id="zoeLaunch" type="button" aria-controls="zoe" aria-expanded="false">
-    <span class="avatar">Z</span>
-    <span>¿Hablamos?<small>Respondo al instante</small></span>
+    <span class="avatar"><Spark white /></span>
+    <span class="t">¿Hablamos?<small>Respondo al instante</small></span>
   </button>
   <section class="zoe" id="zoe" hidden aria-label="Chat con Zoe, agente IA de Zolutions">
     <div class="zoe-head">
-      <span class="avatar">Z</span>
+      <span class="avatar"><Spark white /></span>
       <div class="who"><b>Zoe · Agente IA</b><span class="status on" id="zoeStatus">En línea · responde en segundos</span></div>
       <button class="icon-btn sq" id="zoeClose" type="button" aria-label="Cerrar chat"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
     </div>

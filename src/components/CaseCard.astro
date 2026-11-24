@@ -1,0 +1,18 @@
+---
+interface Props { c: { key: string; name: string; kind: string; summary: string; tags: string[]; image: string; link: string; linkLabel: string }; heading?: 'h2' | 'h3' }
+const { c, heading = 'h3' } = Astro.props;
+const H = heading;
+---
+<article class="case">
+  <div class="shot"><img src={c.image} alt={`Pantalla de ${c.name}`} width="960" height="552" loading="lazy" decoding="async" /></div>
+  <div class="body">
+    <span class="kind">{c.kind}</span>
+    <H class="h-2">{c.name}</H>
+    <p>{c.summary}</p>
+    <div class="tags">{c.tags.map((t) => <span>{t}</span>)}</div>
+    <div class="row">
+      <a class="link" href={`/casos#${c.key}`}>Ver el caso →</a>
+      <a class="link" href={c.link} target="_blank" rel="noopener">{c.linkLabel} ↗</a>
+    </div>
+  </div>
+</article>

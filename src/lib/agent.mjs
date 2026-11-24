@@ -1,7 +1,7 @@
 // Lógica del agente Zoe: instrucciones, herramientas, validación y el ciclo de conversación con Claude.
 // Se usa desde netlify/functions/chat.mjs. El cliente de Anthropic se inyecta para poder probarlo sin red.
 
-import { SITE, SOLUTIONS, INDUSTRIES, STEPS, FAQ, VFAQ, PFAQ, PAGES } from '../data/site.mjs';
+import { SITE, PLAN, PRICE_LINE, SOLUTIONS, INDUSTRIES, BUILD, BUILD_STEPS, CASES, VENDEDOR, FAQ, VFAQ, PFAQ, PAGES } from '../data/site.mjs';
 
 export const DEFAULT_MODEL = 'claude-opus-5-5';
 export const DEFAULT_EFFORT = 'low';
@@ -10,39 +10,42 @@ export const MAX_ROUNDS = 3;
 
 const LIMITS = { messages: 30, chars: 2000, total: 24000, page: 80 };
 
-export const SERVICE_NAMES = ['Agente Conversacional', 'Vendedor IA', ...SOLUTIONS.map((s) => s.name), 'Por definir'];
+export const SERVICE_NAMES = ['Vendedor IA Básico', 'Vendedor IA Avanzado', ...SOLUTIONS.map((s) => s.name), 'Por definir'];
 
 function knowledge() {
-  const sols = SOLUTIONS.map(
-    (s) => `- ${s.name} (página: ${s.key}). ${s.lead} Incluye: ${s.incluye.join('; ')}. Plazo típico: ${s.plazo}. Ideal para: ${s.ideal}`,
-  ).join('\n');
+  const sols = SOLUTIONS.map((s) => `- ${s.name} (página: ${s.key}). ${s.lead}${s.incluye ? ` Incluye: ${s.incluye.join('; ')}.` : ''} Plazo típico: ${s.plazo}.`).join('\n');
+  const vend = VENDEDOR.map(([, t, d]) => `${t}: ${d}`).join(' ');
+  const build = BUILD.map(([, t, d]) => `${t}: ${d}`).join(' ');
+  const steps = BUILD_STEPS.map(([t, d], i) => `${i + 1}) ${t}: ${d}`).join(' ');
+  const cases = CASES.map((c) => `- ${c.name}: ${c.kind}. ${c.summary} ${c.note}`).join('\n');
   const inds = INDUSTRIES.map(([n, items]) => `- ${n}: ${items.join('; ')}`).join('\n');
   const faqs = [...FAQ, ...VFAQ, ...PFAQ].map(([q, a]) => `P: ${q} R: ${a}`).join('\n');
-  const steps = STEPS.map(([n, , d], i) => `${i + 1}) ${n}: ${d}`).join(' ');
   const pages = Object.entries(PAGES).map(([k, p]) => `${k} (${p.name})`).join(', ');
   return `EMPRESA
-Zolutions AI es una empresa chilena (Ñuñoa, Santiago) que crea soluciones de inteligencia artificial para empresas, enfocadas en vender más: agentes de IA, automatización comercial y marketing con IA. Atiende empresas de cualquier país. Soporte técnico 24/7 en todas las soluciones.
-Diferencial: conecta el embudo completo (anuncios optimizados con IA, luego Vendedor IA conversa y califica, luego automatización y CRM hacen seguimiento, y el equipo del cliente recibe reuniones calificadas).
+Zolutions AI es una empresa chilena (Ñuñoa, Santiago) que crea soluciones de inteligencia artificial para empresas. Dos líneas principales: Vendedor IA (agente comercial) y soluciones de IA a medida (apps, plataformas, agentes y automatizaciones). Atiende empresas de cualquier país. Soporte 24/7.
 
-PRODUCTO ESTRELLA: VENDEDOR IA (página: vendedor-ia)
-Agente comercial digital, no un chatbot de atención. Objetivo: vender. Responde en segundos 24/7 en WhatsApp, web, Instagram y Facebook Messenger; califica necesidad, presupuesto y urgencia; recomienda y cotiza con el catálogo y precios del cliente; agenda reuniones en su calendario; hace seguimiento; deriva al equipo con un resumen. Implementación en unos 7 días: días 1-2 entrenamiento, 3-5 conexión y pruebas, 6-7 lanzamiento y ajustes semanales.
+VENDEDOR IA (página: vendedor-ia)
+Agente comercial de IA, no un chatbot. Atiende 24/7 en WhatsApp, chat web, Instagram y Facebook Messenger. ${vend} Queda funcionando en unos 7 días.
 
-PRECIOS (página: precios)
-- Agente Conversacional: desde US$500 al mes + IVA. Implementación sin costo. Plan mensual sin permanencia: se puede cancelar cuando se quiera. Incluye 100 conversaciones al mes y atención omnicanal en WhatsApp, chat web, Instagram y Facebook Messenger; entrenamiento con la información de la empresa, agendamiento, derivación al equipo con resumen, panel de conversaciones y leads, ajustes mensuales y soporte 24/7. Funciona en unos 7 días.
-- Una conversación es todo el intercambio con un mismo cliente dentro de 24 horas, en cualquier canal.
-- Si preguntan por más de 100 conversaciones al mes, un especialista lo cotiza según su volumen (no des montos). No lo menciones si no preguntan.
-- Tarifas de Meta: responder a clientes que escriben no tiene costo de Meta; los mensajes que inicia la empresa (recordatorios, campañas) tienen tarifa de Meta aparte.
-- Vendedor IA y plan Empresa: a medida, se cotizan después de la evaluación gratuita. Su implementación se define en la propuesta.
-- Valores en dólares (USD) + IVA.
+PRECIOS (página: precios). Valores en pesos chilenos (CLP) + IVA.
+- ${PLAN.name}: ${PRICE_LINE}. Incluye ${PLAN.conversations} conversaciones al mes, los 4 canales, entrenamiento con la información de la empresa, agenda, derivación al equipo con resumen, panel de conversaciones y leads, y soporte 24/7. Implementación sin costo. Plan mensual sin permanencia.
+- Vendedor IA Avanzado: a medida. Suma calificación y cotización con el catálogo, seguimiento automático, integración con CRM y más conversaciones. Se cotiza tras la evaluación gratuita.
+- Soluciones de IA a medida: proyecto cotizado tras la evaluación gratuita.
+- Una conversación es todo lo que habla un mismo cliente en 24 horas, en cualquier canal.
+- Si preguntan por más de ${PLAN.conversations} conversaciones al mes, un especialista lo cotiza (no des montos). No lo menciones si no preguntan.
+- Tarifas de Meta: responder a quien escribe no tiene costo de Meta; los mensajes que inicia la empresa tienen tarifa de Meta aparte.
+
+SOLUCIONES DE IA A MEDIDA (página: desarrollo-a-medida)
+${build} Proceso: ${steps} Un proyecto toma entre 1 y 6 meses según el alcance.
+
+CASOS DE ÉXITO (página: casos)
+${cases}
 
 OTRAS SOLUCIONES
 ${sols}
 
 INDUSTRIAS
 ${inds}
-
-PROCESO
-${steps}
 
 PREGUNTAS FRECUENTES
 ${faqs}
@@ -57,7 +60,7 @@ export const SYSTEM_PROMPT = `Eres Zoe, la agente comercial de IA del sitio web 
 
 OBJETIVO
 1. Entender el negocio del visitante y lo que quiere resolver.
-2. Recomendar la solución de Zolutions que corresponde y explicar en concreto cómo le ayudaría en su caso.
+2. Recomendar lo que corresponde (Vendedor IA para vender y atender; una solución a medida para apps, plataformas o procesos) y explicar en concreto cómo le ayudaría. Si sirve, menciona los casos Driver Assist AI o BudaFit como ejemplo.
 3. Cuando detectes interés real, conseguir sus datos y derivarlo al equipo comercial.
 
 SEÑALES DE INTERÉS: pregunta por precio, plazos o cómo partir; describe un problema concreto de su empresa; pide demo, reunión, propuesta o hablar con alguien; menciona volumen, urgencia o presupuesto.
@@ -74,7 +77,7 @@ ESTILO
 
 LÍMITES
 - Usa SOLO la información de abajo. No inventes precios, clientes, casos, cifras ni integraciones específicas. Si no sabes algo, dilo y ofrece que un especialista lo responda.
-- Precios: el único monto que puedes dar es el del plan Agente Conversacional (desde US$500 al mes + IVA, 100 conversaciones mensuales, omnicanal, implementación sin costo y sin permanencia). Vendedor IA, plan Empresa y volúmenes mayores se cotizan después de la evaluación gratuita. No des otros montos, rangos ni descuentos.
+- Precios: el único monto que puedes dar es el del plan Vendedor IA Básico ($500.000 + IVA al mes, 100 conversaciones, 4 canales, implementación sin costo y sin permanencia). Vendedor IA Avanzado, proyectos a medida y volúmenes mayores se cotizan después de la evaluación gratuita. No des otros montos, rangos ni descuentos.
 - No pidas datos sensibles (RUT, tarjetas, contraseñas).
 - Si preguntan algo ajeno a Zolutions, responde breve y vuelve al tema.
 - Puedes usar mostrar_pagina para llevar al visitante a la página que amplía lo que pregunta (máximo una vez por respuesta, y dilo en tu respuesta).

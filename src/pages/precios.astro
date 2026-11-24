@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Faq from '../components/Faq.astro';
-import AgentPlan from '../components/AgentPlan.astro';
+import PlanCard from '../components/PlanCard.astro';
 import { SITE, PFAQ } from '../data/site.mjs';
 import { breadcrumb, faqPage, agentOffer } from '../lib/schema.mjs';
 
@@ -11,8 +11,8 @@ const schema = [
   breadcrumb(crumbs),
   {
     '@type': 'Product',
-    name: 'Agente Conversacional de IA',
-    description: 'Agente de IA omnicanal (WhatsApp, web, Instagram y Facebook) con 100 conversaciones al mes, implementación sin costo y sin permanencia.',
+    name: 'Vendedor IA Básico',
+    description: 'Agente comercial de IA en WhatsApp, web, Instagram y Facebook con 100 conversaciones al mes, implementación sin costo y sin permanencia.',
     brand: { '@type': 'Brand', name: 'Zolutions AI' },
     offers: agentOffer(),
   },
@@ -20,79 +20,62 @@ const schema = [
 ];
 ---
 <Base
-  title="Precios de agentes de IA para empresas | Zolutions AI"
-  description="Agentes de IA omnicanal desde US$500 al mes con 100 conversaciones en WhatsApp, web, Instagram y Facebook. Implementación sin costo y sin permanencia."
+  title="Precios de Vendedor IA y soluciones de IA | Zolutions AI"
+  description="Vendedor IA Básico: $500.000 + IVA al mes con 100 conversaciones en WhatsApp, web, Instagram y Facebook. Sin costo de implementación ni permanencia."
   path="/precios"
   pageName="Precios"
   schema={schema}
-  chips={['¿Qué cuenta como una conversación?', '¿Hay permanencia?', '¿Qué plan me conviene?', 'Quiero una evaluación']}
+  chips={['¿Qué cuenta como una conversación?', '¿Hay permanencia?', '¿Qué plan me conviene?']}
   nudge={['¿No sabes qué plan te conviene?', 'Cuéntame cuántas consultas recibes al mes.']}
 >
   <section class="page-hero">
     <div class="wrap">
       <Crumbs items={[crumbs[0], { name: 'Precios' }]} />
       <p class="eyebrow">Precios</p>
-      <h1 class="h-1" style="margin-top:.8rem">Precios de agentes de IA para empresas</h1>
-      <p class="lead">Parte con un agente conversacional omnicanal a precio conocido y crece a Vendedor IA o a una solución a medida cuando lo necesites.</p>
+      <h1 class="h-1">Precios claros, sin permanencia</h1>
+      <p class="lead">Parte con Vendedor IA Básico y crece cuando lo necesites.</p>
     </div>
   </section>
 
-  <section class="section-tight">
+  <section class="section-sm">
     <div class="wrap plans">
-      <AgentPlan full titleTag="h2" />
+      <PlanCard titleTag="h2" />
       <article class="price-card">
-        <h2 class="h-3">Vendedor IA</h2>
-        <p class="muted">Para vender, no solo responder.</p>
+        <h2 class="h-3">Vendedor IA Avanzado</h2>
         <div class="price"><b class="quote">A medida</b></div>
-        <p class="price-sub">Según canales y volumen</p>
-        <ul class="checklist small">
-          <li>Todo lo del Agente Conversacional</li>
-          <li>Calificación de prospectos: necesidad, presupuesto y urgencia</li>
-          <li>Recomendación y cotización con tu catálogo</li>
-          <li>Seguimiento automático por WhatsApp y email</li>
-          <li>Registro en tu CRM</li>
-          <li>Volumen de conversaciones según tu operación</li>
+        <p class="price-sub">Para equipos que venden todos los días</p>
+        <ul class="checklist">
+          <li>Todo lo del plan Básico</li>
+          <li>Califica y cotiza con tu catálogo</li>
+          <li>Seguimiento automático</li>
+          <li>Conectado a tu CRM</li>
+          <li>Más conversaciones al mes</li>
         </ul>
-        <a class="btn btn-ghost" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Cotizar Vendedor IA</a>
+        <a class="btn btn-secondary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Cotizar el Avanzado</a>
       </article>
       <article class="price-card">
-        <h2 class="h-3">Empresa</h2>
-        <p class="muted">IA en todo tu proceso comercial.</p>
-        <div class="price"><b class="quote">A medida</b></div>
-        <p class="price-sub">Proyecto según alcance</p>
-        <ul class="checklist small">
-          <li>Automatización comercial completa</li>
-          <li>Integraciones con CRM, ERP y e-commerce</li>
-          <li>Optimización de Ads con IA</li>
-          <li>Desarrollo de soluciones a medida</li>
-          <li>Asesoría y hoja de ruta de IA</li>
-          <li>Alto volumen de conversaciones</li>
+        <h2 class="h-3">Solución de IA a medida</h2>
+        <div class="price"><b class="quote">Por proyecto</b></div>
+        <p class="price-sub">Tu idea, construida con IA</p>
+        <ul class="checklist">
+          <li>Apps y plataformas con IA</li>
+          <li>Agentes para tu operación</li>
+          <li>Automatización de procesos</li>
+          <li>Integraciones con tus sistemas</li>
         </ul>
-        <a class="btn btn-ghost" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar evaluación gratis</a>
+        <a class="btn btn-secondary" href="/soluciones/desarrollo-ia-a-medida">Ver soluciones a medida</a>
       </article>
     </div>
+    <div class="wrap"><p class="muted small" style="margin-top:1.4rem">Valores en pesos chilenos (CLP) + IVA. Implementación sin costo en el plan Básico.</p></div>
   </section>
 
-  <section class="section band-surface">
-    <div class="wrap">
-      <div class="section-head"><p class="eyebrow">Cómo se cobra</p><h2 class="h-2">Reglas claras desde el primer día</h2></div>
-      <div class="billing">
-        <div class="bill"><h3 class="h-3">¿Qué cuenta como una conversación?</h3><p>Todo el intercambio con un mismo cliente dentro de 24 horas, en cualquier canal. Si te escribe diez veces ese día, cuenta como una.</p></div>
-        <div class="bill"><h3 class="h-3">Sin permanencia</h3><p>El Agente Conversacional es un plan mensual: puedes cancelarlo cuando quieras. Y su implementación no tiene costo.</p></div>
-        <div class="bill"><h3 class="h-3">Tarifas de WhatsApp (Meta)</h3><p>Responder a clientes que te escriben no tiene costo de Meta. Los mensajes que inicia tu empresa, como recordatorios o campañas, tienen una tarifa de Meta que se paga aparte.</p></div>
-        <div class="bill"><h3 class="h-3">¿Cuánto demora en estar listo?</h3><p>Unos 7 días desde que recibimos la información de tu empresa: entrenamiento, conexión de canales, pruebas y lanzamiento.</p></div>
-      </div>
-      <p class="muted" style="margin-top:1.5rem;font-size:.9rem">Valores en dólares estadounidenses (USD) + IVA.</p>
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="section band-soft">
     <div class="wrap grid-2">
-      <div class="section-head" style="margin-bottom:0;align-content:start">
+      <div class="head" style="margin-bottom:0;align-content:start">
         <p class="eyebrow">Preguntas frecuentes</p>
-        <h2 class="h-2">Sobre precios y planes</h2>
-        <p class="lead">¿No sabes qué plan te conviene? Cuéntale a Zoe cuántas consultas recibes al mes y te orienta.</p>
-        <div><button class="btn btn-ghost" type="button" data-open-chat="¿Qué plan me conviene? Recibimos unas ___ consultas al mes">Preguntarle a Zoe</button></div>
+        <h2 class="h-1">Cómo se cobra</h2>
+        <p class="lead">¿Dudas con tu caso? Zoe te orienta en segundos.</p>
+        <div><button class="btn btn-secondary" type="button" data-open-chat="¿Qué plan me conviene? Recibimos unas ___ consultas al mes">Preguntarle a Zoe</button></div>
       </div>
       <Faq items={PFAQ} />
     </div>

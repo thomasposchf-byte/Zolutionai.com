@@ -1,101 +1,119 @@
 ---
 import Base from '../layouts/Base.astro';
 import Crumbs from '../components/Crumbs.astro';
+import Icon from '../components/Icon.astro';
 import Faq from '../components/Faq.astro';
-import { SITE, VFAQ } from '../data/site.mjs';
+import PlanCard from '../components/PlanCard.astro';
+import { SITE, PRICE_LINE, VENDEDOR, INDUSTRIES, VFAQ } from '../data/site.mjs';
 import { breadcrumb, faqPage, service } from '../lib/schema.mjs';
 
 const crumbs = [{ name: 'Inicio', path: '/' }, { name: 'Vendedor IA', path: '/vendedor-ia' }];
 const schema = [
   breadcrumb(crumbs),
-  service({ name: 'Vendedor IA', description: 'Agente comercial con IA que responde en segundos, califica prospectos, agenda reuniones y hace seguimiento 24/7 en WhatsApp, web, Instagram y Facebook.', path: '/vendedor-ia' }),
+  service({ name: 'Vendedor IA', description: 'Agente comercial con IA que responde, califica, agenda y deriva a tu equipo 24/7 en WhatsApp, web, Instagram y Facebook.', path: '/vendedor-ia', offer: true }),
   faqPage(VFAQ),
 ];
 ---
 <Base
   title="Vendedor IA: agente comercial con IA 24/7 | Zolutions AI"
-  description="Vendedor IA responde en segundos, califica prospectos, agenda reuniones y hace seguimiento en WhatsApp y web. Tu agente comercial con IA, activo 24/7."
+  description="Vendedor IA responde en segundos, califica, agenda reuniones y deriva a tu equipo en WhatsApp, web, Instagram y Facebook. Desde $500.000 + IVA al mes."
   path="/vendedor-ia"
   pageName="Vendedor IA"
   schema={schema}
   chips={['¿En qué se diferencia de un chatbot?', '¿Sirve para mi rubro?', '¿Cuánto cuesta?', 'Quiero una demo']}
-  nudge={['¿Quieres ver cómo vendería en tu rubro?', 'Cuéntame a qué se dedica tu empresa.']}
+  nudge={['¿Quieres verlo vendiendo en tu rubro?', 'Cuéntame a qué se dedica tu empresa.']}
 >
   <section class="page-hero">
     <div class="wrap">
       <Crumbs items={[crumbs[0], { name: 'Vendedor IA' }]} />
-      <div class="hero-grid">
-        <div>
-          <p class="eyebrow">Producto estrella</p>
-          <h1 class="h-1" style="margin-top:.8rem">Vendedor IA: tu agente comercial que trabaja 24/7</h1>
-          <p class="lead">Responde en segundos, entiende lo que el cliente necesita, recomienda, agenda y hace seguimiento. Cuando el cliente está listo, se lo entrega a tu equipo con todo el contexto.</p>
-          <div class="actions">
-            <button class="btn btn-primary" type="button" data-open-chat="Quiero ver cómo vendería Vendedor IA en mi rubro">Pruébalo: habla con Zoe</button>
-            <a class="btn btn-ghost" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar demo con un especialista</a>
-          </div>
-          <div class="chips-row">
-            <span class="info-chip"><b>~7 días</b> de implementación</span>
-            <span class="info-chip"><b>Omnicanal:</b> WhatsApp, web, Instagram y Facebook</span>
-            <span class="info-chip"><b>Soporte</b> 24/7</span>
-          </div>
-        </div>
-        <div class="note-box">
-          <p class="eyebrow" style="margin-bottom:.6rem">Así funciona esta web</p>
-          <p style="color:var(--text);font-size:1.05rem;line-height:1.5">Zoe, la agente que ves abajo a la derecha, es un Vendedor IA entrenado para Zolutions. Pregúntale lo que quieras: responde, te recomienda una solución y, si te interesa, te conecta con nuestro equipo.</p>
-        </div>
+      <p class="eyebrow">Producto estrella</p>
+      <h1 class="h-1" style="max-width:20ch">Vendedor IA: tu agente comercial 24/7</h1>
+      <p class="lead">Atiende en segundos, detecta quién quiere comprar y le agenda una reunión con tu equipo.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar una demo</a>
+        <button class="btn btn-secondary" type="button" data-open-chat="Quiero ver cómo vendería Vendedor IA en mi rubro">Pruébalo: habla con Zoe</button>
+      </div>
+      <div class="info"><span>Desde <b>{PRICE_LINE}</b></span><span><b>WhatsApp, web, Instagram y Facebook</b></span><span>Listo en <b>7 días</b></span></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head"><p class="eyebrow">Qué hace</p><h2 class="h-1">Lo que hace un buen vendedor, sin pausas</h2></div>
+      <div class="grid-4">
+        {VENDEDOR.map(([icon, t, d]) => (
+          <div class="feature card"><span class="ico"><Icon name={icon} /></span><h3 class="h-3">{t}</h3><p>{d}</p></div>
+        ))}
+      </div>
+      <p class="muted small" style="margin-top:1.2rem">Zoe, el agente de este sitio, es un Vendedor IA. Pruébalo abajo a la derecha.</p>
+    </div>
+  </section>
+
+  <section class="section band-soft">
+    <div class="wrap grid-2" style="align-items:center">
+      <div class="head" style="margin-bottom:0">
+        <p class="eyebrow">No es un chatbot</p>
+        <h2 class="h-1">Un chatbot responde. Vendedor IA vende.</h2>
+        <p class="lead">Conversa como una persona y siempre busca el siguiente paso de la venta.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="vs">
+          <caption class="sr">Comparación entre un chatbot y Vendedor IA</caption>
+          <thead><tr><th scope="col"><span class="sr">Aspecto</span></th><th scope="col">Chatbot</th><th scope="col" class="us">Vendedor IA</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Conversación</th><td>Menús y botones</td><td class="us">Lenguaje natural</td></tr>
+            <tr><th scope="row">Objetivo</th><td>Responder</td><td class="us">Vender</td></tr>
+            <tr><th scope="row">Si no sabe</th><td>“No entendí”</td><td class="us">Te deriva el cliente</td></tr>
+            <tr><th scope="row">Resultado</th><td>Consultas atendidas</td><td class="us">Reuniones y ventas</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <div class="section-head"><p class="eyebrow">Qué hace</p><h2 class="h-2">Seis tareas de un vendedor, sin pausas</h2></div>
-      <div class="caps">
-        <div class="cap"><h3 class="h-3">Responde en segundos</h3><p>En WhatsApp, chat web, Instagram y Facebook, de día o de noche, con la información real de tu empresa.</p></div>
-        <div class="cap"><h3 class="h-3">Califica a cada prospecto</h3><p>Detecta necesidad, presupuesto, urgencia y poder de decisión durante la conversación.</p></div>
-        <div class="cap"><h3 class="h-3">Recomienda y cotiza</h3><p>Sugiere el producto o plan adecuado según tu catálogo, tus precios y tus reglas comerciales.</p></div>
-        <div class="cap"><h3 class="h-3">Agenda reuniones</h3><p>Ofrece horarios disponibles y confirma directamente en el calendario de tu equipo.</p></div>
-        <div class="cap"><h3 class="h-3">Hace seguimiento</h3><p>Retoma conversaciones que quedaron abiertas y recuerda citas para reducir inasistencias.</p></div>
-        <div class="cap"><h3 class="h-3">Deriva a tu equipo</h3><p>Cuando el cliente está listo o pide una persona, avisa a tu vendedor con el resumen del caso.</p></div>
+      <div class="head"><p class="eyebrow">Planes</p><h2 class="h-1">Parte simple y crece cuando lo necesites</h2></div>
+      <div class="grid-2">
+        <PlanCard />
+        <article class="price-card">
+          <h3 class="h-3">Vendedor IA Avanzado</h3>
+          <div class="price"><b class="quote">A medida</b></div>
+          <p class="price-sub">Para equipos que venden todos los días</p>
+          <ul class="checklist">
+            <li>Todo lo del plan Básico</li>
+            <li>Califica y cotiza con tu catálogo</li>
+            <li>Seguimiento automático</li>
+            <li>Conectado a tu CRM</li>
+            <li>Más conversaciones al mes</li>
+          </ul>
+          <a class="btn btn-secondary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Cotizar el Avanzado</a>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="section band-surface">
-    <div class="wrap">
-      <div class="section-head"><p class="eyebrow">Una conversación, explicada</p><h2 class="h-2">Cómo convierte una consulta en una reunión</h2><p class="lead">Ejemplo de una clínica dental. Cada respuesta tiene un objetivo comercial.</p></div>
-      <div class="anno">
-        <div class="anno-row"><div class="msg in">Hola, ¿cuánto cuesta un blanqueamiento?</div><div class="why"><b>Consulta de precio</b>Señal de intención de compra.</div></div>
-        <div class="anno-row"><div class="msg out">¡Hola! El blanqueamiento parte en $150.000 e incluye evaluación. ¿Es para ti? ¿Te has hecho uno antes?</div><div class="why"><b>Responde y califica</b>Da el dato y avanza con una pregunta.</div></div>
-        <div class="anno-row"><div class="msg in">Para mí, nunca me he hecho uno. Me caso en marzo.</div><div class="why"><b>Detecta urgencia</b>Hay una fecha límite.</div></div>
-        <div class="anno-row"><div class="msg out">¡Felicitaciones! Con tiempo antes de marzo podemos hacerlo en dos sesiones. ¿Te agendo la evaluación este jueves a las 18:30?</div><div class="why"><b>Propone el siguiente paso</b>Un horario concreto, no un “avísame”.</div></div>
-        <div class="anno-row"><div class="msg in">Sí, el jueves me sirve.</div><div class="why"><b>Cierra y deriva</b>Agenda en el calendario y avisa al equipo.</div></div>
-      </div>
-      <p class="muted" style="margin-top:1rem;font-size:.85rem">Precios y horarios del ejemplo son ilustrativos.</p>
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="section band-soft">
     <div class="wrap grid-2">
       <div>
-        <div class="section-head"><p class="eyebrow">Implementación</p><h2 class="h-2">Tu Vendedor IA funcionando en unos 7 días</h2></div>
-        <ol class="timeline">
-          <li><span class="d">Días 1 y 2</span><h3 class="h-3">Entrenamiento</h3><p>Cargamos tu catálogo, precios, políticas y preguntas frecuentes, y definimos su forma de vender.</p></li>
-          <li><span class="d">Días 3 a 5</span><h3 class="h-3">Conexión y pruebas</h3><p>Lo conectamos a tus canales y calendario y probamos conversaciones reales con tu equipo.</p></li>
-          <li><span class="d">Días 6 y 7</span><h3 class="h-3">Lanzamiento</h3><p>Sale a conversar con clientes y lo ajustamos cada semana según los resultados.</p></li>
+        <div class="head"><p class="eyebrow">Implementación</p><h2 class="h-2">Funcionando en 7 días</h2></div>
+        <ol class="timeline" style="grid-template-columns:minmax(0,1fr)">
+          <li><span class="d">Días 1 y 2</span><b>Lo entrenamos</b><p>Con tu catálogo, precios y preguntas frecuentes.</p></li>
+          <li><span class="d">Días 3 a 5</span><b>Lo conectamos</b><p>A tus canales y calendario, y lo probamos con tu equipo.</p></li>
+          <li><span class="d">Días 6 y 7</span><b>Sale a vender</b><p>Y lo ajustamos cada semana según los resultados.</p></li>
         </ol>
       </div>
       <div>
-        <div class="section-head"><p class="eyebrow">Se conecta con tus herramientas</p><h2 class="h-2">Trabaja donde ya trabaja tu equipo</h2></div>
-        <div class="integr"><span>WhatsApp Business</span><span>Chat web</span><span>Instagram</span><span>Facebook Messenger</span><span>Google Calendar</span><span>Tu CRM</span><span>Planillas</span><span>E-commerce</span><span>Email</span></div>
-        <p class="muted" style="margin-top:1rem">¿Usas otro sistema? Lo integramos a medida.</p>
+        <div class="head"><p class="eyebrow">Industrias</p><h2 class="h-2">Funciona en tu rubro</h2></div>
+        <div class="inds">{INDUSTRIES.map(([n]) => <a href="/industrias">{n}</a>)}</div>
+        <p class="muted" style="margin-top:1.2rem">Si tus clientes preguntan antes de comprar, Vendedor IA puede responderles y venderles.</p>
       </div>
     </div>
   </section>
 
-  <section class="section band-surface">
+  <section class="section">
     <div class="wrap grid-2">
-      <div class="section-head" style="margin-bottom:0"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre Vendedor IA</h2></div>
+      <div class="head" style="margin-bottom:0"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h-2">Sobre Vendedor IA</h2></div>
       <Faq items={VFAQ} />
     </div>
   </section>

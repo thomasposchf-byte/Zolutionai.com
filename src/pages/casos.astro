@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { SITE, CASES } from '../data/site.mjs';
+import { breadcrumb } from '../lib/schema.mjs';
+---
+<Base
+  title="Casos de éxito con IA | Zolutions AI"
+  description="Driver Assist AI y BudaFit: un agente de WhatsApp para automotoras y una app de entrenamiento con coach IA, desarrollados por Zolutions AI."
+  path="/casos"
+  pageName="Casos de éxito"
+  schema={[breadcrumb([{ name: 'Inicio', path: '/' }, { name: 'Casos de éxito', path: '/casos' }])]}
+  chips={['¿Pueden hacer algo así para mi empresa?', '¿Cuánto demora un proyecto?', 'Quiero una evaluación']}
+  nudge={['¿Te imaginas algo así para tu empresa?', 'Cuéntame tu idea.']}
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Casos de éxito' }]} />
+      <p class="eyebrow">Casos de éxito</p>
+      <h1 class="h-1">Proyectos que ya funcionan con IA</h1>
+      <p class="lead">Dos ejemplos de lo que construimos: un agente que atiende clientes y una app con IA.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      {CASES.map((c, i) => (
+        <>
+          {i > 0 && <hr class="case-sep" />}
+          <article class="case-detail" id={c.key}>
+            <div class="shot"><img src={c.image} alt={`Pantalla de ${c.name}`} width="960" height="552" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" /></div>
+            <div>
+              <p class="eyebrow">{c.kind}</p>
+              <h2 class="h-1" style="margin-top:.6rem">{c.name}</h2>
+              <dl>
+                <div><dt>El desafío</dt><dd>{c.challenge}</dd></div>
+                <div><dt>Lo que construimos</dt><dd>{c.solution}</dd></div>
+              </dl>
+              <ul class="checklist" style="margin-top:1.2rem">{c.features.map((f) => <li>{f}</li>)}</ul>
+              <div class="actions">
+                <a class="btn btn-secondary" href={c.link} target="_blank" rel="noopener">{c.linkLabel} ↗</a>
+              </div>
+              <p class="muted small" style="margin-top:.8rem">{c.note}</p>
+            </div>
+          </article>
+        </>
+      ))}
+    </div>
+  </section>
+
+  <section class="section-sm band-soft">
+    <div class="wrap" style="text-align:center;display:grid;justify-items:center;gap:1rem">
+      <h2 class="h-1">¿Quieres el tuyo?</h2>
+      <p class="lead">Cuéntanos tu idea y te decimos cómo la construiríamos.</p>
+      <div class="actions" style="margin-top:.4rem;justify-content:center">
+        <button class="btn btn-primary" type="button" data-open-chat="Quiero algo parecido para mi empresa: ">Cuéntanos tu idea</button>
+        <a class="btn btn-secondary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar evaluación gratis</a>
+      </div>
+    </div>
+  </section>
+</Base>

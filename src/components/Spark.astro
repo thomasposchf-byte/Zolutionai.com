@@ -1,0 +1,10 @@
+---
+// Destello de la marca. "fill" blanco para avatares; si no, usa el degradado de la marca.
+interface Props { white?: boolean; size?: number }
+const { white = false, size = 18 } = Astro.props;
+const id = `sg${Math.random().toString(36).slice(2, 7)}`;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true">
+  {!white && <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C17BE6"/><stop offset=".5" stop-color="#748DED"/><stop offset="1" stop-color="#3CC3F7"/></linearGradient></defs>}
+  <path d="M12 1C12 7.1 16.9 12 23 12 16.9 12 12 16.9 12 23 12 16.9 7.1 12 1 12 7.1 12 12 7.1 12 1Z" fill={white ? '#fff' : `url(#${id})`} />
+</svg>

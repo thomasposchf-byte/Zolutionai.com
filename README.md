@@ -5,7 +5,7 @@ Reemplaza el sitio hecho en Renderforest.
 
 ## Qué incluye
 
-- **13 páginas indexables**, cada una con su title, descripción, H1, URL limpia y datos estructurados (empresa, servicio, precio, preguntas frecuentes, migas de pan). Sitemap y robots.txt automáticos.
+- **14 páginas indexables**, cada una con su title, descripción, H1, URL limpia y datos estructurados (empresa, servicio, precio, preguntas frecuentes, migas de pan). Sitemap y robots.txt automáticos.
 - **Zoe, el agente de IA** (abajo a la derecha en todas las páginas):
   - Responde con la información del negocio.
   - Detecta interés y pide nombre, empresa y contacto.
@@ -18,13 +18,13 @@ Reemplaza el sitio hecho en Renderforest.
 
 | Carpeta | Contenido |
 |---|---|
-| `src/data/site.mjs` | **Todo el contenido**: servicios, precios, preguntas frecuentes, industrias, contacto |
+| `src/data/site.mjs` | **Todo el contenido**: servicios, precio del plan Básico, casos de éxito, preguntas frecuentes, industrias, contacto |
 | `src/lib/agent.mjs` | Instrucciones, herramientas y validaciones del agente Zoe |
 | `netlify/functions/chat.mjs` | Endpoint `/api/chat` que conversa con Claude, con un límite de 12 mensajes por minuto por IP |
 | `src/pages/` | Páginas del sitio |
 | `src/components/`, `src/layouts/` | Piezas reutilizables (menú, pie, chat, tarjetas) |
 | `src/scripts/` | Chat, menú móvil, cookies y analítica |
-| `public/` | Ícono, imagen para redes (`og.png`), robots.txt y el formulario oculto de leads |
+| `public/` | Logo, ícono, imagen para redes (`og.png`), capturas de los casos, robots.txt y el formulario oculto de leads |
 | `tests/` | Pruebas del agente y del endpoint |
 | `demo/index.html` | Demo de diseño original (referencia, no se publica) |
 
@@ -39,6 +39,17 @@ npm run build   # genera dist/
 npm test        # pruebas
 node scripts/make-images.mjs   # regenera og.png e íconos
 ```
+
+## Oferta publicada
+
+- **Vendedor IA Básico:** $500.000 + IVA al mes (CLP). Incluye 100 conversaciones al mes en WhatsApp, web, Instagram y Facebook. Implementación sin costo y sin permanencia.
+- **Vendedor IA Avanzado** y **soluciones de IA a medida:** se cotizan después de la evaluación gratuita.
+- **Conversación:** todo lo que habla un mismo cliente en 24 horas, en cualquier canal.
+
+## Marca
+
+- Colores del logo: negro, morado `#500868`, cian `#00B0F0` y el destello (degradado `#C17BE6` → `#748DED` → `#3CC3F7`).
+- Tipografías: Plus Jakarta Sans (títulos) y Figtree (texto).
 
 ## Publicar en Netlify (una sola vez)
 
@@ -63,4 +74,4 @@ node scripts/make-images.mjs   # regenera og.png e íconos
 
 - [ ] Crear el correo `contacto@zolutionsai.com`
 - [ ] Completar la política de privacidad (razón social, RUT, plazo de conservación, fecha) y revisarla con un abogado
-- [ ] Logos y 2 o 3 casos reales de clientes (la sección se agrega cuando existan)
+- [ ] Resultados medibles de Driver Assist AI y BudaFit para sumarlos a los casos (si existen)

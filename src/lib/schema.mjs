@@ -1,5 +1,5 @@
 // Datos estructurados (JSON-LD) para Google.
-import { SITE } from '../data/site.mjs';
+import { SITE, PLAN } from '../data/site.mjs';
 
 const ORG_ID = `${SITE.url}/#org`;
 const SITE_ID = `${SITE.url}/#website`;
@@ -14,7 +14,7 @@ export function baseGraph({ path, title, description }) {
       url: `${SITE.url}/`,
       logo: `${SITE.url}/logo.png`,
       image: `${SITE.url}/og.png`,
-      description: 'Agentes de IA y automatización comercial para empresas.',
+      description: 'Agentes y soluciones de inteligencia artificial para empresas.',
       email: SITE.email,
       telephone: SITE.phone,
       address: {
@@ -59,14 +59,14 @@ export const faqPage = (list) => ({
 
 export const agentOffer = () => ({
   '@type': 'Offer',
-  name: 'Agente Conversacional',
-  description: `100 conversaciones al mes en WhatsApp, web, Instagram y Facebook. Implementación sin costo, sin permanencia.`,
-  price: String(SITE.price.amount),
-  priceCurrency: SITE.price.currency,
+  name: PLAN.name,
+  description: `${PLAN.conversations} conversaciones al mes en WhatsApp, web, Instagram y Facebook. Implementación sin costo, sin permanencia.`,
+  price: String(PLAN.amount),
+  priceCurrency: PLAN.currency,
   priceSpecification: {
     '@type': 'UnitPriceSpecification',
-    price: SITE.price.amount,
-    priceCurrency: SITE.price.currency,
+    price: PLAN.amount,
+    priceCurrency: PLAN.currency,
     unitCode: 'MON',
     valueAddedTaxIncluded: false,
   },

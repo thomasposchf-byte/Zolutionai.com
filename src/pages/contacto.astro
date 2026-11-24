@@ -4,7 +4,7 @@ import Crumbs from '../components/Crumbs.astro';
 import { SITE, SOLUTIONS, waLink } from '../data/site.mjs';
 import { breadcrumb } from '../lib/schema.mjs';
 
-const services = ['Agente Conversacional', 'Vendedor IA', ...SOLUTIONS.map((s) => s.name), 'Aún no lo sé'];
+const services = ['Vendedor IA', ...SOLUTIONS.map((s) => s.name), 'Aún no lo sé'];
 ---
 <Base
   title="Contacto y evaluación gratis | Zolutions AI"
@@ -20,11 +20,11 @@ const services = ['Agente Conversacional', 'Vendedor IA', ...SOLUTIONS.map((s) =
     <div class="wrap">
       <Crumbs items={[{ name: 'Inicio', path: '/' }, { name: 'Contacto' }]} />
       <p class="eyebrow">Contacto</p>
-      <h1 class="h-1" style="margin-top:.8rem">Conversemos sobre tu proceso comercial</h1>
-      <p class="lead">Agenda una evaluación gratis: revisamos cómo vendes hoy y te decimos dónde la IA tendría más impacto. Sin compromiso.</p>
+      <h1 class="h-1">Conversemos</h1>
+      <p class="lead">Agenda una evaluación gratis, escríbenos o déjanos tus datos.</p>
     </div>
   </section>
-  <section class="section-tight">
+  <section class="section-sm">
     <div class="wrap contact-grid">
       <div class="contact-card">
         <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar" style="justify-self:start">Agendar evaluación gratis</a>

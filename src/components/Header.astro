@@ -5,6 +5,8 @@ import { SITE, SOLUTIONS } from '../data/site.mjs';
 const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const isSol = path === '/soluciones' || SOLUTIONS.some((s) => s.path === path);
 const cur = (p: string) => (path === p ? 'page' : undefined);
+const custom = SOLUTIONS[0];
+const rest = SOLUTIONS.slice(1);
 ---
 <header class="site-header">
   <div class="wrap nav">
@@ -12,18 +14,19 @@ const cur = (p: string) => (path === p ? 'page' : undefined);
     <ul class="menu">
       <li><a href="/vendedor-ia" aria-current={cur('/vendedor-ia')}>Vendedor IA</a></li>
       <li class="has-mega">
-        <a class="menu-trigger" href="/soluciones" aria-current={isSol ? 'page' : undefined} aria-haspopup="true">Soluciones <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></a>
+        <a href="/soluciones" aria-current={isSol ? 'page' : undefined} aria-haspopup="true">Soluciones <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg></a>
         <div class="mega">
-          <a class="featured" href="/vendedor-ia">Vendedor IA <small>Nuestro agente comercial que vende 24/7</small></a>
-          {SOLUTIONS.map((s) => <a href={s.path}>{s.name}<small>{s.short}</small></a>)}
+          <a class="feat" href="/vendedor-ia">Vendedor IA<small>Tu agente comercial que vende 24/7</small></a>
+          <a class="feat" href={custom.path}>{custom.name}<small>{custom.short}</small></a>
+          {rest.map((s) => <a href={s.path}>{s.name}<small>{s.short}</small></a>)}
         </div>
       </li>
-      <li><a href="/industrias" aria-current={cur('/industrias')}>Industrias</a></li>
+      <li><a href="/casos" aria-current={cur('/casos')}>Casos</a></li>
       <li><a href="/precios" aria-current={cur('/precios')}>Precios</a></li>
       <li><a href="/contacto" aria-current={cur('/contacto')}>Contacto</a></li>
     </ul>
     <a class="btn btn-primary btn-sm nav-cta" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Evaluación gratis</a>
-    <button class="burger" id="burger" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Abrir menú">
       <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
     </button>
   </div>
@@ -31,9 +34,9 @@ const cur = (p: string) => (path === p ? 'page' : undefined);
     <div class="wrap">
       <a href="/">Inicio</a>
       <a href="/vendedor-ia">Vendedor IA</a>
-      <a href="/soluciones">Soluciones</a>
-      {SOLUTIONS.map((s) => <a class="sub" href={s.path}>{s.name}</a>)}
-      <a href="/industrias">Industrias</a>
+      <a href={custom.path}>{custom.name}</a>
+      <a href="/soluciones">Todas las soluciones</a>
+      <a href="/casos">Casos de éxito</a>
       <a href="/precios">Precios</a>
       <a href="/contacto">Contacto</a>
       <a class="btn btn-primary" href={SITE.calendar} target="_blank" rel="noopener" data-track="agendar">Agendar evaluación gratis</a>
