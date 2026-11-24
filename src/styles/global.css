@@ -2,7 +2,7 @@
    Layout: "embudo" — bandas a todo el ancho que avanzan como etapas de una venta (atraer → conversar → seguir → cerrar); contenido en columna de 1200px; el agente Zoe flota fijo abajo a la derecha en todas las páginas. Tema oscuro único, deliberado: marca navy + ámbar. */
 :root{
   --ink:#0A0F1E; --surface:#10172C; --raised:#172040; --line:#26325A; --line-soft:#1A2446;
-  --text:#EAEEF7; --muted:#9AA5C0; --dim:#6F7B9A;
+  --text:#EAEEF7; --muted:#9AA5C0; --dim:#8B97B3;
   --amber:#F4B557; --amber-hi:#F8C676; --amber-ink:#8A5200; --on-amber:#1B1304;
   --ok:#43D39E; --hot:#FF8A5C;
   --paper:#EEF1F7; --paper-2:#E3E8F2; --paper-text:#10172C; --paper-muted:#55607B; --paper-line:#D3D9E6;

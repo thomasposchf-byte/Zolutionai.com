@@ -10,6 +10,9 @@ import CtaBand from '../components/CtaBand.astro';
 import Chat from '../components/Chat.astro';
 import { SITE } from '../data/site.mjs';
 import { baseGraph } from '../lib/schema.mjs';
+// Precarga de las fuentes principales para evitar saltos de diseño al cargar.
+import fontDisplay from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2?url';
+import fontBody from '@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -34,6 +37,8 @@ const graph = { '@context': 'https://schema.org', '@graph': [...baseGraph({ path
   <title>{title}</title>
   <meta name="description" content={description}>
   <link rel="canonical" href={canonical}>
+  <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href={fontBody} as="font" type="font/woff2" crossorigin>
   {noindex && <meta name="robots" content="noindex, follow">}
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Zolutions AI">
@@ -61,7 +66,7 @@ const graph = { '@context': 'https://schema.org', '@graph': [...baseGraph({ path
   <Footer />
   <Chat pageName={pageName} chips={chips} nudge={nudge} />
   <div class="cookie" id="cookieBanner" hidden role="dialog" aria-label="Preferencias de cookies">
-    <p>Usamos cookies analíticas para entender qué páginas sirven más. Solo se activan si las aceptas. <a href="/privacidad">Más información</a>.</p>
+    <p>Usamos cookies analíticas para entender qué páginas sirven más. Solo se activan si las aceptas. Detalles en nuestra <a href="/privacidad">política de privacidad</a>.</p>
     <div class="r">
       <button class="btn btn-ghost btn-sm" type="button" id="cookieReject">Rechazar</button>
       <button class="btn btn-primary btn-sm" type="button" id="cookieAccept">Aceptar</button>
